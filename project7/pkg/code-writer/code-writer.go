@@ -35,10 +35,58 @@ func (c *CodeWriter) WriteArithmetic(cmd string) {
 	check(err)
 }
 
-func (c *CodeWriter) WritePushPop(cmd string, segment string, index int) {
+func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, index int) {
 	_, err := c.File.WriteString(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
 	check(err)
-	// _, err = c.File.WriteString(fmt.Sprintf("@%d", index))
+	if cmdType == "C_PUSH" {
+		if segment == "constant" {
+			_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
+			check(err)
+
+			_, err = c.File.WriteString("D=A\n") // D=10
+			check(err)
+		} else {
+			/*
+				eg. push local 5
+				@5
+				D=A
+				@local
+				A=D+A
+				D=M
+			*/
+			// @5
+			_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
+			check(err)
+
+			_, err = c.File.WriteString("D=A\n")
+			check(err)
+
+			_, err = c.File.WriteString(fmt.Sprintf("@%s\n", segment))
+			check(err)
+
+			_, err = c.File.WriteString("A=D+A\n")
+			check(err)
+
+			_, err = c.File.WriteString("D=M\n")
+			check(err)
+		}
+
+		// increment SP
+		_, err = c.File.WriteString("@SP\n")
+		check(err)
+
+		_, err = c.File.WriteString("AM=M+1\n")
+		check(err)
+
+		// Get back to the SP that want to push value to
+		_, err = c.File.WriteString("A=A-1\n")
+		check(err)
+
+		_, err = c.File.WriteString("M=D\n")
+		check(err)
+	} else {
+
+	}
 }
 
 func check(err error) {

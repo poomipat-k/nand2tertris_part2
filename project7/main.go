@@ -73,7 +73,7 @@ func main() {
 		}
 		cmdType := parser.CommandType()
 		if cmdType == "C_POP" || cmdType == "C_PUSH" {
-			cw.WritePushPop(parser.Command(), parser.Arg1(), parser.Arg2())
+			cw.WritePushPop(parser.Command(), parser.CommandType(), parser.Arg1(), parser.Arg2())
 		} else {
 			cw.WriteArithmetic(parser.Command())
 		}

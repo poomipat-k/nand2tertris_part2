@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+
+	codeWriter "github.com/poomipat-k/nand2tetris2/project7/pkg/code-writer"
+	vmParser "github.com/poomipat-k/nand2tetris2/project7/pkg/vm-parser"
 )
 
 /*
@@ -49,7 +53,36 @@ CodeWriter:
 */
 
 func main() {
-	args := os.Args[1:]
+	fileName := os.Args[1]
+	outFileName := os.Args[2]
+	fmt.Printf("filename %s, outFileName: %s\n", fileName, outFileName)
 
-	fmt.Println("==Project 7 args: ", args)
+	parser, err := vmParser.NewParser(fileName)
+	check(err)
+	defer parser.File.Close()
+
+	cw, err := codeWriter.NewCodeWriter(outFileName)
+	check(err)
+	defer cw.File.Close()
+
+	for parser.HasMoreCommands() {
+		valid, err := parser.Advance()
+		check(err)
+		if !valid {
+			continue
+		}
+		cmdType := parser.CommandType()
+		if cmdType == "C_POP" || cmdType == "C_PUSH" {
+			cw.WritePushPop(parser.Command(), parser.Arg1(), parser.Arg2())
+		} else {
+			cw.WriteArithmetic(parser.Command())
+		}
+		// fmt.Println("=====")
+	}
+}
+
+func check(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
 }

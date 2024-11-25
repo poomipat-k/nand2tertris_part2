@@ -75,8 +75,8 @@ func (c *CodeWriter) writePush(segment string, index int) {
 		_, err = c.File.WriteString("D=A\n")
 		check(err)
 
-		segmentSym := MEMORY_SEGMENT_DICT[segment]
-		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", segmentSym))
+		smSym := MEMORY_SEGMENT_DICT[segment]
+		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
 		check(err)
 
 		_, err = c.File.WriteString("A=D+A\n")
@@ -102,12 +102,66 @@ func (c *CodeWriter) writePush(segment string, index int) {
 }
 
 func (c *CodeWriter) writePop(segment string, index int) {
-	// var err error
-	// invalid
+	// invalid segment
 	if segment == "constant" {
 		return
 	}
+	var err error
+	smSym := MEMORY_SEGMENT_DICT[segment]
 
+	if index == 0 {
+		// decrement SP
+		_, err = c.File.WriteString("@SP\n")
+		check(err)
+		_, err = c.File.WriteString("AM=M-1\n")
+		check(err)
+		_, err = c.File.WriteString("D=M\n")
+		check(err)
+
+		// save D to desired ram position (segment + index)
+		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
+		check(err)
+		_, err = c.File.WriteString("A=M\n")
+		check(err)
+		_, err = c.File.WriteString("M=D\n")
+		check(err)
+	} else {
+		// segment(M) = segment + index
+		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
+		check(err)
+		_, err = c.File.WriteString("D=A\n")
+		check(err)
+		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
+		check(err)
+		_, err = c.File.WriteString("M=D+M\n")
+		check(err)
+
+		// decrement SP
+		_, err = c.File.WriteString("@SP\n")
+		check(err)
+		_, err = c.File.WriteString("AM=M-1\n")
+		check(err)
+		_, err = c.File.WriteString("D=M\n")
+		check(err)
+
+		// save D to desired ram position (segment + index)
+		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
+		check(err)
+		_, err = c.File.WriteString("A=M\n")
+		check(err)
+		_, err = c.File.WriteString("M=D\n")
+		check(err)
+
+		// revert segment back segment + index -> segment
+		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
+		check(err)
+		_, err = c.File.WriteString("D=A\n")
+		check(err)
+		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
+		check(err)
+		_, err = c.File.WriteString("M=M-D\n")
+		check(err)
+	}
 }
 
 func check(err error) {

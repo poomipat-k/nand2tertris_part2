@@ -21,6 +21,13 @@ var COMMAND_DICT = map[string]string{
 	"C_POP":  "pop",
 }
 
+var MEMORY_SEGMENT_DICT = map[string]string{
+	"local":    "LCL",
+	"argument": "ARG",
+	"this":     "THIS",
+	"that":     "THAT",
+}
+
 type CodeWriter struct {
 	File *os.File
 }
@@ -39,54 +46,68 @@ func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, in
 	_, err := c.File.WriteString(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
 	check(err)
 	if cmdType == "C_PUSH" {
-		if segment == "constant" {
-			_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-			check(err)
+		c.writePush(segment, index)
+	} else {
+		c.writePop(segment, index)
+	}
+}
 
-			_, err = c.File.WriteString("D=A\n") // D=10
-			check(err)
-		} else {
-			/*
-				eg. push local 5
-				@5
-				D=A
-				@local
-				A=D+A
-				D=M
-			*/
-			// @5
-			_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-			check(err)
-
-			_, err = c.File.WriteString("D=A\n")
-			check(err)
-
-			_, err = c.File.WriteString(fmt.Sprintf("@%s\n", segment))
-			check(err)
-
-			_, err = c.File.WriteString("A=D+A\n")
-			check(err)
-
-			_, err = c.File.WriteString("D=M\n")
-			check(err)
-		}
-
-		// increment SP
-		_, err = c.File.WriteString("@SP\n")
+func (c *CodeWriter) writePush(segment string, index int) {
+	var err error
+	if segment == "constant" {
+		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
 		check(err)
 
-		_, err = c.File.WriteString("AM=M+1\n")
-		check(err)
-
-		// Get back to the SP that want to push value to
-		_, err = c.File.WriteString("A=A-1\n")
-		check(err)
-
-		_, err = c.File.WriteString("M=D\n")
+		_, err = c.File.WriteString("D=A\n") // D=10
 		check(err)
 	} else {
+		/*
+			eg. push local 5
+			@5
+			D=A
+			@local
+			A=D+A
+			D=M
+		*/
+		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
+		check(err)
 
+		_, err = c.File.WriteString("D=A\n")
+		check(err)
+
+		segmentSym := MEMORY_SEGMENT_DICT[segment]
+		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", segmentSym))
+		check(err)
+
+		_, err = c.File.WriteString("A=D+A\n")
+		check(err)
+
+		_, err = c.File.WriteString("D=M\n")
+		check(err)
 	}
+
+	// increment SP
+	_, err = c.File.WriteString("@SP\n")
+	check(err)
+
+	_, err = c.File.WriteString("AM=M+1\n")
+	check(err)
+
+	// Get back to the SP that want to push value to
+	_, err = c.File.WriteString("A=A-1\n")
+	check(err)
+
+	_, err = c.File.WriteString("M=D\n")
+	check(err)
+}
+
+func (c *CodeWriter) writePop(segment string, index int) {
+	// var err error
+	// invalid
+	if segment == "constant" {
+		return
+	}
+
 }
 
 func check(err error) {

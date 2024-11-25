@@ -77,7 +77,6 @@ func main() {
 		} else {
 			cw.WriteArithmetic(parser.Command())
 		}
-		// fmt.Println("=====")
 	}
 }
 

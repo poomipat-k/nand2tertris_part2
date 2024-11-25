@@ -57,7 +57,7 @@ M=D
 // push local 0
 @0
 D=A
-@local
+@LCL
 A=D+A
 D=M
 @SP
@@ -67,7 +67,7 @@ M=D
 // push that 5
 @5
 D=A
-@that
+@THAT
 A=D+A
 D=M
 @SP
@@ -78,7 +78,7 @@ M=D
 // push argument 1
 @1
 D=A
-@argument
+@ARG
 A=D+A
 D=M
 @SP
@@ -89,7 +89,7 @@ M=D
 // push this 6
 @6
 D=A
-@this
+@THIS
 A=D+A
 D=M
 @SP
@@ -99,7 +99,7 @@ M=D
 // push this 6
 @6
 D=A
-@this
+@THIS
 A=D+A
 D=M
 @SP
@@ -111,7 +111,7 @@ M=D
 // push temp 6
 @6
 D=A
-@temp
+@
 A=D+A
 D=M
 @SP

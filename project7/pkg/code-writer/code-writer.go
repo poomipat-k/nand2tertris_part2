@@ -108,60 +108,52 @@ func (c *CodeWriter) writePop(segment string, index int) {
 	}
 	var err error
 	smSym := MEMORY_SEGMENT_DICT[segment]
+	/*
+		@LCL
+		D=M
+		@0
+		D=D+A
+		@R13
+		M=D
+		@SP
+		AM=M-1
+		D=M
+		@R13
+		A=M
+		M=D
+	*/
 
-	if index == 0 {
-		// decrement SP
-		_, err = c.File.WriteString("@SP\n")
-		check(err)
-		_, err = c.File.WriteString("AM=M-1\n")
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
-
-		// save D to desired ram position (segment + index)
-		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
-		check(err)
-		_, err = c.File.WriteString("A=M\n")
-		check(err)
-		_, err = c.File.WriteString("M=D\n")
-		check(err)
-	} else {
-		// segment(M) = segment + index
+	_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
+	check(err)
+	_, err = c.File.WriteString("D=M\n")
+	check(err)
+	if index > 0 {
 		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
 		check(err)
-		_, err = c.File.WriteString("D=A\n")
-		check(err)
-		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
-		check(err)
-		_, err = c.File.WriteString("M=D+M\n")
-		check(err)
-
-		// decrement SP
-		_, err = c.File.WriteString("@SP\n")
-		check(err)
-		_, err = c.File.WriteString("AM=M-1\n")
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
-
-		// save D to desired ram position (segment + index)
-		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
-		check(err)
-		_, err = c.File.WriteString("A=M\n")
-		check(err)
-		_, err = c.File.WriteString("M=D\n")
-		check(err)
-
-		// revert segment back segment + index -> segment
-		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-		check(err)
-		_, err = c.File.WriteString("D=A\n")
-		check(err)
-		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
-		check(err)
-		_, err = c.File.WriteString("M=M-D\n")
+		_, err = c.File.WriteString("D=D+A\n")
 		check(err)
 	}
+	// save LCL+index address to R13 (general purpose register)
+	_, err = c.File.WriteString("@R13\n")
+	check(err)
+	_, err = c.File.WriteString("M=D\n")
+	check(err)
+
+	// decrement SP
+	_, err = c.File.WriteString("@SP\n")
+	check(err)
+	_, err = c.File.WriteString("AM=M-1\n")
+	check(err)
+	_, err = c.File.WriteString("D=M\n")
+	check(err)
+
+	// save D to desired ram position (Get address from M of R13 register)
+	_, err = c.File.WriteString("@R13\n")
+	check(err)
+	_, err = c.File.WriteString("A=M\n")
+	check(err)
+	_, err = c.File.WriteString("M=D\n")
+	check(err)
 }
 
 func check(err error) {

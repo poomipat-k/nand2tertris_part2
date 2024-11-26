@@ -47,6 +47,10 @@ func (c *CodeWriter) writePop(segment string, index int) {
 		c.writePopStatic(index)
 		return
 	}
+	if segment == "pointer" {
+		c.writePopPointer(index)
+		return
+	}
 	smSym := MEMORY_SEGMENT_DICT[segment]
 	/*
 		@LCL
@@ -129,6 +133,26 @@ func (c *CodeWriter) writePopStatic(index int) {
 	check(err)
 }
 
+func (c *CodeWriter) writePopPointer(val int) {
+	var err error
+	// decrement SP
+	_, err = c.File.WriteString("@SP\n")
+	check(err)
+	_, err = c.File.WriteString("AM=M-1\n")
+	check(err)
+	_, err = c.File.WriteString("D=M\n")
+	check(err)
+
+	targetSegment := "THIS"
+	if val == 1 {
+		targetSegment = "THAT"
+	}
+	_, err = c.File.WriteString(fmt.Sprintf("@%s\n", targetSegment))
+	check(err)
+	_, err = c.File.WriteString("M=D\n")
+	check(err)
+}
+
 func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
 	var err error
 	if segment == "constant" {
@@ -150,6 +174,17 @@ func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
 	}
 	if segment == "static" {
 		_, err = c.File.WriteString(fmt.Sprintf("@%s.%d\n", c.programName, index))
+		check(err)
+		_, err = c.File.WriteString("D=M\n")
+		check(err)
+		return
+	}
+	if segment == "pointer" {
+		targetSegment := "THIS"
+		if index == 1 {
+			targetSegment = "THAT"
+		}
+		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", targetSegment))
 		check(err)
 		_, err = c.File.WriteString("D=M\n")
 		check(err)

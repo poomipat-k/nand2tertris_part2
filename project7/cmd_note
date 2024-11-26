@@ -4,3 +4,5 @@ go run main.go  ./tests/SimpleAdd/SimpleAdd.vm ./tests/SimpleAdd/SimpleAdd.asm
 
 go run main.go  ./tests/StaticTest/StaticTest.vm ./tests/StaticTest/StaticTest.asm
 
+go run main.go  ./tests/PointerTest/PointerTest.vm ./tests/PointerTest/PointerTest.asm
+

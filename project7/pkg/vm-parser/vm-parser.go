@@ -2,7 +2,6 @@ package vmParser
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -65,7 +64,6 @@ func (p *VMParser) Advance() (bool, error) {
 	if len(cmd) == 0 {
 		return false, nil
 	}
-	fmt.Println("cmd: ", cmd, "len cmd: ", len(cmd))
 	cl := len(cmd)
 	// arithmetic
 	first := strings.ToLower(cmd[0])

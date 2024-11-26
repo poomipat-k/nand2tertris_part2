@@ -15,45 +15,8 @@ func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, in
 
 func (c *CodeWriter) writePush(segment string, index int) {
 	var err error
-	// Get data into D register
-	if segment == "constant" {
-		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-		check(err)
-
-		_, err = c.File.WriteString("D=A\n")
-		check(err)
-	} else if segment == "temp" {
-		// temp is store at RAM[5] to RAM[12]
-		offset := 5 + index
-		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", offset))
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
-	} else {
-		/*
-				eg. push local 3
-				@LCL
-			 	D=M
-				@3
-				A=D+A
-				D=M
-				@SP
-				AM=M+1
-				A=A-1
-				M=D
-		*/
-		smSym := MEMORY_SEGMENT_DICT[segment]
-		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
-		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-		check(err)
-		_, err = c.File.WriteString("A=D+A\n")
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
-	}
+	// get data to D register
+	c._savePushDataToDRegister(segment, index)
 
 	// increment SP
 	_, err = c.File.WriteString("@SP\n")
@@ -143,5 +106,49 @@ func (c *CodeWriter) writePopTemp(index int) {
 	_, err = c.File.WriteString(fmt.Sprintf("@%d\n", offset))
 	check(err)
 	_, err = c.File.WriteString("M=D\n")
+	check(err)
+}
+
+func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
+	var err error
+	if segment == "constant" {
+		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
+		check(err)
+
+		_, err = c.File.WriteString("D=A\n")
+		check(err)
+		return
+	}
+	if segment == "temp" {
+		// temp is store at RAM[5] to RAM[12]
+		offset := 5 + index
+		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", offset))
+		check(err)
+		_, err = c.File.WriteString("D=M\n")
+		check(err)
+		return
+	}
+	/*
+			eg. push local 3
+			@LCL
+		 	D=M
+			@3
+			A=D+A
+			D=M
+			@SP
+			AM=M+1
+			A=A-1
+			M=D
+	*/
+	smSym := MEMORY_SEGMENT_DICT[segment]
+	_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
+	check(err)
+	_, err = c.File.WriteString("D=M\n")
+	check(err)
+	_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
+	check(err)
+	_, err = c.File.WriteString("A=D+A\n")
+	check(err)
+	_, err = c.File.WriteString("D=M\n")
 	check(err)
 }

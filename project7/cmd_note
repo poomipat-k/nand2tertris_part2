@@ -4,25 +4,3 @@ go run main.go  ./tests/SimpleAdd/SimpleAdd.vm ./tests/SimpleAdd/SimpleAdd.asm
 
 go run main.go  ./tests/StaticTest/StaticTest.vm ./tests/StaticTest/StaticTest.asm
 
-
-// push local 0
-@0
-D=A
-@LCL
-A=D+A
-D=M
-@SP
-AM=M+1
-A=A-1
-M=D
-
-// push local 0, want
-@LCL
-D=M
-@0
-A=D+A
-D=M
-@SP
-AM=M+1
-A=A-1
-M=D

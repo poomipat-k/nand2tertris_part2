@@ -43,6 +43,10 @@ func (c *CodeWriter) writePop(segment string, index int) {
 		c.writePopTemp(index)
 		return
 	}
+	if segment == "static" {
+		c.writePopStatic(index)
+		return
+	}
 	smSym := MEMORY_SEGMENT_DICT[segment]
 	/*
 		@LCL
@@ -109,6 +113,22 @@ func (c *CodeWriter) writePopTemp(index int) {
 	check(err)
 }
 
+func (c *CodeWriter) writePopStatic(index int) {
+	var err error
+	// decrement SP
+	_, err = c.File.WriteString("@SP\n")
+	check(err)
+	_, err = c.File.WriteString("AM=M-1\n")
+	check(err)
+	_, err = c.File.WriteString("D=M\n")
+	check(err)
+
+	_, err = c.File.WriteString(fmt.Sprintf("@%s.%d\n", c.programName, index))
+	check(err)
+	_, err = c.File.WriteString("M=D\n")
+	check(err)
+}
+
 func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
 	var err error
 	if segment == "constant" {
@@ -123,6 +143,13 @@ func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
 		// temp is store at RAM[5] to RAM[12]
 		offset := 5 + index
 		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", offset))
+		check(err)
+		_, err = c.File.WriteString("D=M\n")
+		check(err)
+		return
+	}
+	if segment == "static" {
+		_, err = c.File.WriteString(fmt.Sprintf("@%s.%d\n", c.programName, index))
 		check(err)
 		_, err = c.File.WriteString("D=M\n")
 		check(err)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	codeWriter "github.com/poomipat-k/nand2tetris2/project7/pkg/code-writer"
 	vmParser "github.com/poomipat-k/nand2tetris2/project7/pkg/vm-parser"
@@ -56,12 +57,15 @@ func main() {
 	fileName := os.Args[1]
 	outFileName := os.Args[2]
 	fmt.Printf("filename %s, outFileName: %s\n", fileName, outFileName)
+	splits := strings.Split(fileName, "/")
+	programName := splits[len(splits)-1]
+	programName = programName[:len(programName)-3]
 
 	parser, err := vmParser.NewParser(fileName)
 	check(err)
 	defer parser.File.Close()
 
-	cw, err := codeWriter.NewCodeWriter(outFileName)
+	cw, err := codeWriter.NewCodeWriter(outFileName, programName)
 	check(err)
 	defer cw.File.Close()
 

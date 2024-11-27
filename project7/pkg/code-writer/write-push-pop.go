@@ -4,8 +4,8 @@ import "fmt"
 
 func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, index int) {
 	// write command in comment
-	_, err := c.File.WriteString(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
-	check(err)
+	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
+
 	if cmdType == "C_PUSH" {
 		c.writePush(segment, index)
 	} else {
@@ -14,23 +14,18 @@ func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, in
 }
 
 func (c *CodeWriter) writePush(segment string, index int) {
-	var err error
 	// get data to D register
 	c._savePushDataToDRegister(segment, index)
 
 	// increment SP
-	_, err = c.File.WriteString("@SP\n")
-	check(err)
-
-	_, err = c.File.WriteString("AM=M+1\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("AM=M+1\n")
 
 	// Get back to the SP that want to push value to
-	_, err = c.File.WriteString("A=A-1\n")
-	check(err)
+	c.WriteCmd("A=A-1\n")
 
-	_, err = c.File.WriteString("M=D\n")
-	check(err)
+	c.WriteCmd("M=D\n")
+
 }
 
 func (c *CodeWriter) writePop(segment string, index int) {
@@ -38,7 +33,6 @@ func (c *CodeWriter) writePop(segment string, index int) {
 	if segment == "constant" {
 		return
 	}
-	var err error
 	if segment == "temp" {
 		c.writePopTemp(index)
 		return
@@ -67,116 +61,109 @@ func (c *CodeWriter) writePop(segment string, index int) {
 		M=D
 	*/
 
-	_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
-	_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-	check(err)
-	_, err = c.File.WriteString("D=D+A\n")
-	check(err)
+	c.WriteCmd(fmt.Sprintf("@%s\n", smSym))
+
+	c.WriteCmd("D=M\n")
+
+	c.WriteCmd(fmt.Sprintf("@%d\n", index))
+
+	c.WriteCmd("D=D+A\n")
+
 	// save LCL+index address to R13 (general purpose register)
-	_, err = c.File.WriteString("@R13\n")
-	check(err)
-	_, err = c.File.WriteString("M=D\n")
-	check(err)
+	c.WriteCmd("@R13\n")
+
+	c.WriteCmd("M=D\n")
 
 	// decrement SP
-	_, err = c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
 
 	// save D to the desired ram position (Get address from M of R13 register)
-	_, err = c.File.WriteString("@R13\n")
-	check(err)
-	_, err = c.File.WriteString("A=M\n")
-	check(err)
-	_, err = c.File.WriteString("M=D\n")
-	check(err)
+	c.WriteCmd("@R13\n")
+
+	c.WriteCmd("A=M\n")
+
+	c.WriteCmd("M=D\n")
+
 }
 
 func (c *CodeWriter) writePopTemp(index int) {
-	var err error
 
 	// decrement SP
-	_, err = c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
 
 	// temp is store at RAM[5] to RAM[12]
 	offset := 5 + index
-	_, err = c.File.WriteString(fmt.Sprintf("@%d\n", offset))
-	check(err)
-	_, err = c.File.WriteString("M=D\n")
-	check(err)
+	c.WriteCmd(fmt.Sprintf("@%d\n", offset))
+
+	c.WriteCmd("M=D\n")
+
 }
 
 func (c *CodeWriter) writePopStatic(index int) {
-	var err error
-	// decrement SP
-	_, err = c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
 
-	_, err = c.File.WriteString(fmt.Sprintf("@%s.%d\n", c.programName, index))
-	check(err)
-	_, err = c.File.WriteString("M=D\n")
-	check(err)
+	// decrement SP
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
+
+	c.WriteCmd(fmt.Sprintf("@%s.%d\n", c.programName, index))
+
+	c.WriteCmd("M=D\n")
+
 }
 
 func (c *CodeWriter) writePopPointer(val int) {
-	var err error
+
 	// decrement SP
-	_, err = c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
 
 	targetSegment := "THIS"
 	if val == 1 {
 		targetSegment = "THAT"
 	}
-	_, err = c.File.WriteString(fmt.Sprintf("@%s\n", targetSegment))
-	check(err)
-	_, err = c.File.WriteString("M=D\n")
-	check(err)
+	c.WriteCmd(fmt.Sprintf("@%s\n", targetSegment))
+
+	c.WriteCmd("M=D\n")
+
 }
 
 func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
-	var err error
-	if segment == "constant" {
-		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-		check(err)
 
-		_, err = c.File.WriteString("D=A\n")
-		check(err)
+	if segment == "constant" {
+		c.WriteCmd(fmt.Sprintf("@%d\n", index))
+
+		c.WriteCmd("D=A\n")
+
 		return
 	}
 	if segment == "temp" {
 		// temp is store at RAM[5] to RAM[12]
 		offset := 5 + index
-		_, err = c.File.WriteString(fmt.Sprintf("@%d\n", offset))
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
+		c.WriteCmd(fmt.Sprintf("@%d\n", offset))
+
+		c.WriteCmd("D=M\n")
+
 		return
 	}
 	if segment == "static" {
-		_, err = c.File.WriteString(fmt.Sprintf("@%s.%d\n", c.programName, index))
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
+		c.WriteCmd(fmt.Sprintf("@%s.%d\n", c.programName, index))
+
+		c.WriteCmd("D=M\n")
+
 		return
 	}
 	if segment == "pointer" {
@@ -184,10 +171,10 @@ func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
 		if index == 1 {
 			targetSegment = "THAT"
 		}
-		_, err = c.File.WriteString(fmt.Sprintf("@%s\n", targetSegment))
-		check(err)
-		_, err = c.File.WriteString("D=M\n")
-		check(err)
+		c.WriteCmd(fmt.Sprintf("@%s\n", targetSegment))
+
+		c.WriteCmd("D=M\n")
+
 		return
 	}
 	/*
@@ -203,14 +190,14 @@ func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
 			M=D
 	*/
 	smSym := MEMORY_SEGMENT_DICT[segment]
-	_, err = c.File.WriteString(fmt.Sprintf("@%s\n", smSym))
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
-	_, err = c.File.WriteString(fmt.Sprintf("@%d\n", index))
-	check(err)
-	_, err = c.File.WriteString("A=D+A\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
+	c.WriteCmd(fmt.Sprintf("@%s\n", smSym))
+
+	c.WriteCmd("D=M\n")
+
+	c.WriteCmd(fmt.Sprintf("@%d\n", index))
+
+	c.WriteCmd("A=D+A\n")
+
+	c.WriteCmd("D=M\n")
+
 }

@@ -4,8 +4,8 @@ import "fmt"
 
 func (c *CodeWriter) WriteArithmetic(cmd string) {
 	// write command in comment
-	_, err := c.File.WriteString(fmt.Sprintf("// %s\n", cmd))
-	check(err)
+	c.WriteComment(fmt.Sprintf("// %s\n", cmd))
+
 	if cmd == "add" {
 		c.writeAdd()
 	} else if cmd == "sub" {
@@ -18,75 +18,138 @@ func (c *CodeWriter) WriteArithmetic(cmd string) {
 		c.writeOr()
 	} else if cmd == "not" {
 		c.writeNot()
+	} else if cmd == "eq" {
+		c.writeEq()
+	} else if cmd == "gt" {
+		c.writeGt()
+	} else if cmd == "lt" {
+		c.writeLt()
 	}
 }
 
 func (c *CodeWriter) writeAdd() {
-	_, err := c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
-	_, err = c.File.WriteString("A=A-1\n")
-	check(err)
-	_, err = c.File.WriteString("M=D+M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
+
+	c.WriteCmd("A=A-1\n")
+
+	c.WriteCmd("M=D+M\n")
+
 }
 
 func (c *CodeWriter) writeSub() {
-	_, err := c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
-	_, err = c.File.WriteString("A=A-1\n")
-	check(err)
-	_, err = c.File.WriteString("M=M-D\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
+
+	c.WriteCmd("A=A-1\n")
+
+	c.WriteCmd("M=M-D\n")
+
 }
 
 func (c *CodeWriter) writeNeg() {
-	_, err := c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("A=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("M=-M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("A=M-1\n")
+
+	c.WriteCmd("M=-M\n")
+
 }
 
 func (c *CodeWriter) writeAnd() {
-	_, err := c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
-	_, err = c.File.WriteString("A=A-1\n")
-	check(err)
-	_, err = c.File.WriteString("M=D&M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
+
+	c.WriteCmd("A=A-1\n")
+
+	c.WriteCmd("M=D&M\n")
+
 }
 
 func (c *CodeWriter) writeOr() {
-	_, err := c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("AM=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("D=M\n")
-	check(err)
-	_, err = c.File.WriteString("A=A-1\n")
-	check(err)
-	_, err = c.File.WriteString("M=D|M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("AM=M-1\n")
+
+	c.WriteCmd("D=M\n")
+
+	c.WriteCmd("A=A-1\n")
+
+	c.WriteCmd("M=D|M\n")
+
 }
 
 func (c *CodeWriter) writeNot() {
-	_, err := c.File.WriteString("@SP\n")
-	check(err)
-	_, err = c.File.WriteString("A=M-1\n")
-	check(err)
-	_, err = c.File.WriteString("M=!M\n")
-	check(err)
+	c.WriteCmd("@SP\n")
+
+	c.WriteCmd("A=M-1\n")
+
+	c.WriteCmd("M=!M\n")
+
+}
+
+func (c *CodeWriter) writeEq() {
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("AM=M-1\n")
+	c.WriteCmd("D=M\n")
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("AM=M-1\n")
+	c.WriteCmd("D=D-M\n")
+	// D == 0 then -1 else 0
+	c.WriteCmd("M=-1\n") // set true
+	current := c.lineCounter
+	c.WriteCmd(fmt.Sprintf("@%d\n", current+5))
+	c.WriteCmd("D;JEQ\n")
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("A=M\n")
+	c.WriteCmd("M=0\n") // set false
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("M=M+1\n")
+}
+
+func (c *CodeWriter) writeGt() {
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("AM=M-1\n")
+	c.WriteCmd("D=M\n")
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("AM=M-1\n")
+	c.WriteCmd("D=M-D\n")
+	// D > 0 then -1 else 0
+	c.WriteCmd("M=-1\n") // set true
+	current := c.lineCounter
+	c.WriteCmd(fmt.Sprintf("@%d\n", current+5))
+	c.WriteCmd("D;JGT\n")
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("A=M\n")
+	c.WriteCmd("M=0\n") // set false
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("M=M+1\n")
+}
+
+func (c *CodeWriter) writeLt() {
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("AM=M-1\n")
+	c.WriteCmd("D=M\n")
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("AM=M-1\n")
+	c.WriteCmd("D=M-D\n")
+	// D < 0 then -1 else 0
+	c.WriteCmd("M=-1\n") // set true
+	current := c.lineCounter
+	c.WriteCmd(fmt.Sprintf("@%d\n", current+5))
+	c.WriteCmd("D;JLT\n")
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("A=M\n")
+	c.WriteCmd("M=0\n") // set false
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("M=M+1\n")
 }

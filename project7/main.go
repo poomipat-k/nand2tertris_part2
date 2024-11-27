@@ -63,15 +63,18 @@ func main() {
 
 	parser, err := vmParser.NewParser(fileName)
 	check(err)
+
 	defer parser.File.Close()
 
 	cw, err := codeWriter.NewCodeWriter(outFileName, programName)
 	check(err)
+
 	defer cw.File.Close()
 
 	for parser.HasMoreCommands() {
 		valid, err := parser.Advance()
 		check(err)
+
 		if !valid {
 			continue
 		}
@@ -82,6 +85,7 @@ func main() {
 			cw.WriteArithmetic(parser.Command())
 		}
 	}
+
 }
 
 func check(err error) {

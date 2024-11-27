@@ -6,3 +6,5 @@ go run main.go  ./tests/StaticTest/StaticTest.vm ./tests/StaticTest/StaticTest.a
 
 go run main.go  ./tests/PointerTest/PointerTest.vm ./tests/PointerTest/PointerTest.asm
 
+go run main.go  ./tests/StackTest/StackTest.vm ./tests/StackTest/StackTest.asm
+

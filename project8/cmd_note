@@ -1,0 +1,10 @@
+go run main.go  ./tests/BasicTest/BasicTest.vm ./tests/BasicTest/BasicTest.asm
+
+go run main.go  ./tests/SimpleAdd/SimpleAdd.vm ./tests/SimpleAdd/SimpleAdd.asm
+
+go run main.go  ./tests/StaticTest/StaticTest.vm ./tests/StaticTest/StaticTest.asm
+
+go run main.go  ./tests/PointerTest/PointerTest.vm ./tests/PointerTest/PointerTest.asm
+
+go run main.go  ./tests/StackTest/StackTest.vm ./tests/StackTest/StackTest.asm
+

@@ -1,10 +1,16 @@
-go run main.go  ./tests/BasicTest/BasicTest.vm ./tests/BasicTest/BasicTest.asm
+// project 7
+go run main.go  ./old_tests/BasicTest/BasicTest.vm
 
-go run main.go  ./tests/SimpleAdd/SimpleAdd.vm ./tests/SimpleAdd/SimpleAdd.asm
+go run main.go  ./old_tests/SimpleAdd/SimpleAdd.vm
 
-go run main.go  ./tests/StaticTest/StaticTest.vm ./tests/StaticTest/StaticTest.asm
+go run main.go  ./old_tests/StaticTest/StaticTest.vm
 
-go run main.go  ./tests/PointerTest/PointerTest.vm ./tests/PointerTest/PointerTest.asm
+go run main.go  ./old_tests/PointerTest/PointerTest.vm
 
-go run main.go  ./tests/StackTest/StackTest.vm ./tests/StackTest/StackTest.asm
+go run main.go  ./old_tests/StackTest/StackTest.vm
 
+
+// project 8
+go run main.go  ./tests/BasicLoop/BasicLoop.vm 
+
+go run main.go  ./tests/FibonacciElement

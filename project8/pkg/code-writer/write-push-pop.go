@@ -116,7 +116,7 @@ func (c *CodeWriter) writePopStatic(index int) {
 
 	c.WriteCmd("D=M\n")
 
-	c.WriteCmd(fmt.Sprintf("@%s.%d\n", c.programName, index))
+	c.WriteCmd(fmt.Sprintf("@%s.%d\n", c.filename, index))
 
 	c.WriteCmd("M=D\n")
 
@@ -160,7 +160,7 @@ func (c *CodeWriter) _savePushDataToDRegister(segment string, index int) {
 		return
 	}
 	if segment == "static" {
-		c.WriteCmd(fmt.Sprintf("@%s.%d\n", c.programName, index))
+		c.WriteCmd(fmt.Sprintf("@%s.%d\n", c.filename, index))
 
 		c.WriteCmd("D=M\n")
 

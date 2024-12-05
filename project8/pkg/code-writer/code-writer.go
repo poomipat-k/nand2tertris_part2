@@ -29,20 +29,23 @@ var MEMORY_SEGMENT_DICT = map[string]string{
 
 type CodeWriter struct {
 	File        *os.File
-	programName string
+	filename    string
 	lineCounter int
 }
 
-func NewCodeWriter(fileName, programName string) (*CodeWriter, error) {
+func NewCodeWriter(fileName string) (*CodeWriter, error) {
 	writeFile, err := os.Create(fileName)
-	return &CodeWriter{File: writeFile, programName: programName}, err
+	return &CodeWriter{File: writeFile}, err
+}
+
+func (c *CodeWriter) SetFileName(filename string) {
+	c.filename = filename
 }
 
 func (c *CodeWriter) WriteCmd(cmd string) {
 	_, err := c.File.WriteString(cmd)
 	check(err)
 	c.lineCounter++
-	// fmt.Println("now line:", c.lineCounter)
 }
 
 func (c *CodeWriter) WriteComment(cmd string) {

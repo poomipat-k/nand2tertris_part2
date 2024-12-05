@@ -15,3 +15,9 @@ func (c *CodeWriter) WriteIf(cmd string, target string) {
 	c.WriteCmd(fmt.Sprintf("@%s\n", target))
 	c.WriteCmd("D;JNE\n")
 }
+
+func (c *CodeWriter) WriteGoto(cmd string, target string) {
+	c.WriteNonCmd(fmt.Sprintf("// %s\n", cmd))
+	c.WriteCmd(fmt.Sprintf("@%s\n", target))
+	c.WriteCmd("0;JMP\n")
+}

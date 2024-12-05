@@ -45,6 +45,8 @@ func main() {
 				cw.WriteLabel(parser.Command(), parser.Arg1())
 			} else if cmdType == "C_IF" {
 				cw.WriteIf(parser.Command(), parser.Arg1())
+			} else if cmdType == "C_GOTO" {
+				cw.WriteGoto(parser.Command(), parser.Arg1())
 			} else {
 				cw.WriteArithmetic(parser.Command())
 			}

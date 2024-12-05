@@ -2,7 +2,6 @@ package vmParser
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -89,7 +88,9 @@ func (p *VMParser) Advance() (bool, error) {
 			p._commandType = "C_IF"
 			p._arg1 = cmd[1]
 		} else if first == "goto" {
-			fmt.Println("===goto")
+			p._command = first
+			p._commandType = "C_GOTO"
+			p._arg1 = cmd[1]
 		}
 		p._arg2 = -1
 		return true, nil

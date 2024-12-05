@@ -48,7 +48,7 @@ func (c *CodeWriter) WriteCmd(cmd string) {
 	c.lineCounter++
 }
 
-func (c *CodeWriter) WriteComment(cmd string) {
+func (c *CodeWriter) WriteNonCmd(cmd string) {
 	_, err := c.File.WriteString(cmd)
 	check(err)
 }

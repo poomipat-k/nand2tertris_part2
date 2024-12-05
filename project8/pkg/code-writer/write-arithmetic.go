@@ -4,7 +4,7 @@ import "fmt"
 
 func (c *CodeWriter) WriteArithmetic(cmd string) {
 	// write command in comment
-	c.WriteComment(fmt.Sprintf("// %s\n", cmd))
+	c.WriteNonCmd(fmt.Sprintf("// %s\n", cmd))
 
 	if cmd == "add" {
 		c.writeAdd()

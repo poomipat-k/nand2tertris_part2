@@ -2,6 +2,7 @@ package vmParser
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -68,12 +69,33 @@ func (p *VMParser) Advance() (bool, error) {
 	// arithmetic
 	first := strings.ToLower(cmd[0])
 	if cl == 1 {
+		if first == "return" {
+			return true, nil
+		}
 		p._commandType = "C_ARITHMETIC"
 		p._command = cmd[0]
 		p._arg1 = ""
 		p._arg2 = -1
-		// push or pop
-	} else if cl == 3 {
+		return true, nil
+	}
+
+	if cl == 2 {
+		if first == "label" {
+			p._command = first
+			p._commandType = "C_LABEL"
+			p._arg1 = cmd[1]
+		} else if first == "if-goto" {
+			p._command = first
+			p._commandType = "C_IF"
+			p._arg1 = cmd[1]
+		} else if first == "goto" {
+			fmt.Println("===goto")
+		}
+		p._arg2 = -1
+		return true, nil
+	}
+
+	if cl == 3 {
 		if first == "push" {
 			p._commandType = "C_PUSH"
 		} else if first == "pop" {
@@ -112,6 +134,6 @@ func getCommands(line string) []string {
 		return []string{}
 	}
 
-	str := splits[0]
+	str := strings.TrimSpace(splits[0])
 	return strings.Split(str, " ")
 }

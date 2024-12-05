@@ -41,6 +41,10 @@ func main() {
 			cmdType := parser.CommandType()
 			if cmdType == "C_POP" || cmdType == "C_PUSH" {
 				cw.WritePushPop(parser.Command(), parser.CommandType(), parser.Arg1(), parser.Arg2())
+			} else if cmdType == "C_LABEL" {
+				cw.WriteLabel(parser.Command(), parser.Arg1())
+			} else if cmdType == "C_IF" {
+				cw.WriteIf(parser.Command(), parser.Arg1())
 			} else {
 				cw.WriteArithmetic(parser.Command())
 			}

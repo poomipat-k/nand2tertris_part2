@@ -4,7 +4,7 @@ import "fmt"
 
 func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, index int) {
 	// write command in comment
-	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
+	c.WriteNonCmd(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
 
 	if cmdType == "C_PUSH" {
 		c.writePush(segment, index)

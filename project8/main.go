@@ -39,16 +39,21 @@ func main() {
 				continue
 			}
 			cmdType := parser.CommandType()
+			cmd := parser.Command()
 			if cmdType == "C_POP" || cmdType == "C_PUSH" {
-				cw.WritePushPop(parser.Command(), parser.CommandType(), parser.Arg1(), parser.Arg2())
+				cw.WritePushPop(cmd, cmdType, parser.Arg1(), parser.Arg2())
 			} else if cmdType == "C_LABEL" {
-				cw.WriteLabel(parser.Command(), parser.Arg1())
+				cw.WriteLabel(cmd, parser.Arg1())
 			} else if cmdType == "C_IF" {
-				cw.WriteIf(parser.Command(), parser.Arg1())
+				cw.WriteIf(cmd, parser.Arg1())
 			} else if cmdType == "C_GOTO" {
-				cw.WriteGoto(parser.Command(), parser.Arg1())
+				cw.WriteGoto(cmd, parser.Arg1())
+			} else if cmdType == "C_FUNCTION" {
+				cw.WriteFunction(cmd, parser.Arg1(), parser.Arg2())
+			} else if cmdType == "C_RETURN" {
+				cw.WriteReturn()
 			} else {
-				cw.WriteArithmetic(parser.Command())
+				cw.WriteArithmetic(cmd)
 			}
 		}
 

@@ -15,4 +15,8 @@ go run main.go  ./tests/BasicLoop/BasicLoop.vm
 
 go run main.go  ./tests/FibonacciSeries/FibonacciSeries.vm
 
+
+// func
+go run main.go  ./tests/SimpleFunction/SimpleFunction.vm
+
 go run main.go  ./tests/FibonacciElement

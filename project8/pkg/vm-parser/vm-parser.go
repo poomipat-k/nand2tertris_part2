@@ -69,6 +69,10 @@ func (p *VMParser) Advance() (bool, error) {
 	first := strings.ToLower(cmd[0])
 	if cl == 1 {
 		if first == "return" {
+			p._commandType = "C_RETURN"
+			p._command = cmd[0]
+			p._arg1 = ""
+			p._arg2 = -1
 			return true, nil
 		}
 		p._commandType = "C_ARITHMETIC"
@@ -101,9 +105,11 @@ func (p *VMParser) Advance() (bool, error) {
 			p._commandType = "C_PUSH"
 		} else if first == "pop" {
 			p._commandType = "C_POP"
+		} else if first == "function" {
+			p._commandType = "C_FUNCTION"
 		}
 		p._command = first
-		p._arg1 = strings.ToLower(cmd[1])
+		p._arg1 = cmd[1]
 		v, err := strconv.Atoi(cmd[2])
 		if err != nil {
 			log.Fatal(err)

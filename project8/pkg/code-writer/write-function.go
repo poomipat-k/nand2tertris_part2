@@ -1,6 +1,8 @@
 package codeWriter
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func (c *CodeWriter) WriteFunction(cmd string, functionName string, nLocalVars int) {
 	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, functionName, nLocalVars))
@@ -8,6 +10,8 @@ func (c *CodeWriter) WriteFunction(cmd string, functionName string, nLocalVars i
 	for i := 0; i < nLocalVars; i++ {
 		c.writePush("constant", 0)
 	}
+	c.curFuncName = functionName
+	c.curFuncCallCounter = 1
 }
 
 func (c *CodeWriter) WriteReturn() {
@@ -61,10 +65,13 @@ func (c *CodeWriter) WriteReturn() {
 
 func (c *CodeWriter) WriteCall(cmd string, functionName string, nArgs int) {
 	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, functionName, nArgs))
+	// generate returnAddress label
+
+	returnLabel := fmt.Sprintf("%s.%d", c.curFuncName, c.curFuncCallCounter)
+	c.curFuncCallCounter++
+
 	// push returnAddress (using label create below)
-	retAddr := c.lineCounter
-	retAddr += 42
-	c.WriteCmd(fmt.Sprintf("@%d\n", retAddr))
+	c.WriteCmd(fmt.Sprintf("@%s\n", returnLabel))
 	c.WriteCmd("D=A\n")
 	c.pushDToStack()
 
@@ -101,7 +108,7 @@ func (c *CodeWriter) WriteCall(cmd string, functionName string, nArgs int) {
 	// goto functionName
 	c.WriteGoto("goto", functionName)
 	// (returnAddress) declares a label for the return address eg. Sys$ret.1
-	// c.WriteLabel("label", fmt.Sprintf("%s$ret.%d", c.currentFuncName))
+	c.WriteLabel("label", returnLabel)
 
 }
 

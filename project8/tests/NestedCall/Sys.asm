@@ -27,6 +27,12 @@ D=M
 @THAT
 M=D
 // call Sys.main 0
+@Sys.init.1
+D=A
+@SP
+AM=M+1
+A=A-1
+M=D
 @LCL
 D=M
 @SP
@@ -66,6 +72,8 @@ M=D
 // goto Sys.main
 @Sys.main
 0;JMP
+// label Sys.init.1
+(Sys.init.1)
 // pop temp 1
 @SP
 AM=M-1
@@ -203,6 +211,12 @@ AM=M+1
 A=A-1
 M=D
 // call Sys.add12 1
+@Sys.main.1
+D=A
+@SP
+AM=M+1
+A=A-1
+M=D
 @LCL
 D=M
 @SP
@@ -242,6 +256,8 @@ M=D
 // goto Sys.add12
 @Sys.add12
 0;JMP
+// label Sys.main.1
+(Sys.main.1)
 // pop temp 0
 @SP
 AM=M-1

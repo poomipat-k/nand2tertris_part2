@@ -28,21 +28,16 @@ var MEMORY_SEGMENT_DICT = map[string]string{
 }
 
 type CodeWriter struct {
-	File        *os.File
-	lineCounter int
-	filename    string
-	callStack   Stack
+	File               *os.File
+	lineCounter        int
+	filename           string
+	curFuncName        string
+	curFuncCallCounter int
 }
 
 func NewCodeWriter(fileName string) (*CodeWriter, error) {
 	writeFile, err := os.Create(fileName)
-	callStack := Stack{
-		items: []StackItem{{
-			funcName: "init",
-			counter:  1,
-		}},
-	}
-	return &CodeWriter{File: writeFile, callStack: callStack}, err
+	return &CodeWriter{File: writeFile, curFuncName: "Sys.init", curFuncCallCounter: 1}, err
 }
 
 func (c *CodeWriter) SetFileName(filename string) {

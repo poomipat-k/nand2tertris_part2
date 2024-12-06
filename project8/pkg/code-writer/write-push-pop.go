@@ -16,16 +16,6 @@ func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, in
 func (c *CodeWriter) writePush(segment string, index int) {
 	// get data to D register
 	c._savePushDataToDRegister(segment, index)
-
-	// // increment SP
-	// c.WriteCmd("@SP\n")
-	// c.WriteCmd("AM=M+1\n")
-
-	// // Get back to the SP that want to push value to
-	// c.WriteCmd("A=A-1\n")
-
-	// c.WriteCmd("M=D\n")
-
 	c.pushDToStack()
 }
 

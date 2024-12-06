@@ -67,7 +67,7 @@ func (c *CodeWriter) WriteCall(cmd string, functionName string, nArgs int) {
 	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, functionName, nArgs))
 	// generate returnAddress label
 
-	returnLabel := fmt.Sprintf("%s.%d", c.curFuncName, c.curFuncCallCounter)
+	returnLabel := fmt.Sprintf("%s$ret.%d", c.curFuncName, c.curFuncCallCounter)
 	c.curFuncCallCounter++
 
 	// push returnAddress (using label create below)

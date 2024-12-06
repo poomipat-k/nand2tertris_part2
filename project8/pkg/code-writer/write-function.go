@@ -3,7 +3,7 @@ package codeWriter
 import "fmt"
 
 func (c *CodeWriter) WriteFunction(cmd string, functionName string, nLocalVars int) {
-	c.WriteNonCmd(fmt.Sprintf("// %s\n", cmd))
+	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, functionName, nLocalVars))
 	c.WriteNonCmd(fmt.Sprintf("(%s)\n", functionName))
 	for i := 0; i < nLocalVars; i++ {
 		c.writePush("constant", 0)
@@ -16,7 +16,7 @@ func (c *CodeWriter) WriteReturn() {
 		R14 is endFrame
 		R15 is retAddr
 	*/
-	c.WriteNonCmd("// return\n")
+	c.WriteComment("// return\n")
 	// endFrame = LCL
 	c.WriteCmd("@LCL\n")
 	c.WriteCmd("D=M\n")
@@ -57,6 +57,52 @@ func (c *CodeWriter) WriteReturn() {
 	c.WriteCmd("@R15\n")
 	c.WriteCmd("A=M\n")
 	c.WriteCmd("0;JMP\n")
+}
+
+func (c *CodeWriter) WriteCall(cmd string, functionName string, nArgs int) {
+	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, functionName, nArgs))
+	// push returnAddress (using label create below)
+	retAddr := c.lineCounter
+	retAddr += 42
+	c.WriteCmd(fmt.Sprintf("@%d\n", retAddr))
+	c.WriteCmd("D=A\n")
+	c.pushDToStack()
+
+	// push LCL
+	c.WriteCmd("@LCL\n")
+	c.WriteCmd("D=M\n")
+	c.pushDToStack()
+	// push ARG
+	c.WriteCmd("@ARG\n")
+	c.WriteCmd("D=M\n")
+	c.pushDToStack()
+	// push THIS
+	c.WriteCmd("@THIS\n")
+	c.WriteCmd("D=M\n")
+	c.pushDToStack()
+	// push THAT
+	c.WriteCmd("@THAT\n")
+	c.WriteCmd("D=M\n")
+	c.pushDToStack()
+	// ARG = SP - 5 - nArgs
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("D=M\n")
+	c.WriteCmd("@5\n")
+	c.WriteCmd("D=D-A\n")
+	c.WriteCmd(fmt.Sprintf("@%d\n", nArgs))
+	c.WriteCmd("D=D-A\n")
+	c.WriteCmd("@ARG\n")
+	c.WriteCmd("M=D\n")
+	// LCL = SP
+	c.WriteCmd("@SP\n")
+	c.WriteCmd("D=M\n")
+	c.WriteCmd("@LCL\n")
+	c.WriteCmd("M=D\n")
+	// goto functionName
+	c.WriteGoto("goto", functionName)
+	// (returnAddress) declares a label for the return address eg. Sys$ret.1
+	// c.WriteLabel("label", fmt.Sprintf("%s$ret.%d", c.currentFuncName))
+
 }
 
 func (c *CodeWriter) getEndFrameMinusXToDRegister(val int) {

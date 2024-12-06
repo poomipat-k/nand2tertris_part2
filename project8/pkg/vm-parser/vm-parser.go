@@ -107,6 +107,8 @@ func (p *VMParser) Advance() (bool, error) {
 			p._commandType = "C_POP"
 		} else if first == "function" {
 			p._commandType = "C_FUNCTION"
+		} else if first == "call" {
+			p._commandType = "C_CALL"
 		}
 		p._command = first
 		p._arg1 = cmd[1]

@@ -4,7 +4,7 @@ import "fmt"
 
 func (c *CodeWriter) WritePushPop(cmd string, cmdType string, segment string, index int) {
 	// write command in comment
-	c.WriteNonCmd(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
+	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, segment, index))
 
 	if cmdType == "C_PUSH" {
 		c.writePush(segment, index)
@@ -17,6 +17,19 @@ func (c *CodeWriter) writePush(segment string, index int) {
 	// get data to D register
 	c._savePushDataToDRegister(segment, index)
 
+	// // increment SP
+	// c.WriteCmd("@SP\n")
+	// c.WriteCmd("AM=M+1\n")
+
+	// // Get back to the SP that want to push value to
+	// c.WriteCmd("A=A-1\n")
+
+	// c.WriteCmd("M=D\n")
+
+	c.pushDToStack()
+}
+
+func (c *CodeWriter) pushDToStack() {
 	// increment SP
 	c.WriteCmd("@SP\n")
 	c.WriteCmd("AM=M+1\n")
@@ -25,7 +38,6 @@ func (c *CodeWriter) writePush(segment string, index int) {
 	c.WriteCmd("A=A-1\n")
 
 	c.WriteCmd("M=D\n")
-
 }
 
 func (c *CodeWriter) writePop(segment string, index int) {

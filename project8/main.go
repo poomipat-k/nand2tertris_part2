@@ -52,6 +52,8 @@ func main() {
 				cw.WriteFunction(cmd, parser.Arg1(), parser.Arg2())
 			} else if cmdType == "C_RETURN" {
 				cw.WriteReturn()
+			} else if cmdType == "C_CALL" {
+				cw.WriteCall(cmd, parser.Arg1(), parser.Arg2())
 			} else {
 				cw.WriteArithmetic(cmd)
 			}

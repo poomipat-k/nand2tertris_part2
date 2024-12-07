@@ -1,3 +1,56 @@
+// INIT
+@256
+D=A
+@SP
+M=D
+// call Sys.init 0
+@Bootstrap$ret.1
+D=A
+@SP
+AM=M+1
+A=A-1
+M=D
+@LCL
+D=M
+@SP
+AM=M+1
+A=A-1
+M=D
+@ARG
+D=M
+@SP
+AM=M+1
+A=A-1
+M=D
+@THIS
+D=M
+@SP
+AM=M+1
+A=A-1
+M=D
+@THAT
+D=M
+@SP
+AM=M+1
+A=A-1
+M=D
+@SP
+D=M
+@5
+D=D-A
+@0
+D=D-A
+@ARG
+M=D
+@SP
+D=M
+@LCL
+M=D
+// goto Sys.init
+@Sys.init
+0;JMP
+// label Bootstrap$ret.1
+(Bootstrap$ret.1)
 // function Main.fibonacci 0
 (Main.fibonacci)
 // push argument 0
@@ -25,24 +78,24 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@27
+@75
 D;JLT
 @SP
 A=M
 M=0
 @SP
 M=M+1
-// if-goto N_LT_2
+// if-goto Main.fibonacci$N_LT_2
 @SP
 AM=M-1
 D=M
-@N_LT_2
+@Main.fibonacci$N_LT_2
 D;JNE
-// goto N_GE_2
-@N_GE_2
+// goto Main.fibonacci$N_GE_2
+@Main.fibonacci$N_GE_2
 0;JMP
-// label N_LT_2
-(N_LT_2)
+// label Main.fibonacci$N_LT_2
+(Main.fibonacci$N_LT_2)
 // push argument 0
 @ARG
 D=M
@@ -112,8 +165,8 @@ M=D
 @R15
 A=M
 0;JMP
-// label N_GE_2
-(N_GE_2)
+// label Main.fibonacci$N_GE_2
+(Main.fibonacci$N_GE_2)
 // push argument 0
 @ARG
 D=M
@@ -379,9 +432,9 @@ M=D
 0;JMP
 // label Sys.init$ret.1
 (Sys.init$ret.1)
-// label END
-(END)
-// goto END
-@END
+// label Sys.init$END
+(Sys.init$END)
+// goto Sys.init$END
+@Sys.init$END
 0;JMP
 // END file: Sys

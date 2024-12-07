@@ -24,6 +24,8 @@ func main() {
 	check(err)
 	defer cw.File.Close()
 
+	cw.WriteInit()
+
 	for _, fPath := range filePaths {
 		fmt.Println("==fPath:", fPath)
 		parser, err := vmParser.NewParser(fPath)
@@ -43,11 +45,14 @@ func main() {
 			if cmdType == "C_POP" || cmdType == "C_PUSH" {
 				cw.WritePushPop(cmd, cmdType, parser.Arg1(), parser.Arg2())
 			} else if cmdType == "C_LABEL" {
-				cw.WriteLabel(cmd, parser.Arg1())
+				label := fmt.Sprintf("%s$%s", cw.CurFuncName, parser.Arg1())
+				cw.WriteLabel(cmd, label)
 			} else if cmdType == "C_IF" {
-				cw.WriteIf(cmd, parser.Arg1())
+				label := fmt.Sprintf("%s$%s", cw.CurFuncName, parser.Arg1())
+				cw.WriteIf(cmd, label)
 			} else if cmdType == "C_GOTO" {
-				cw.WriteGoto(cmd, parser.Arg1())
+				label := fmt.Sprintf("%s$%s", cw.CurFuncName, parser.Arg1())
+				cw.WriteGoto(cmd, label)
 			} else if cmdType == "C_FUNCTION" {
 				cw.WriteFunction(cmd, parser.Arg1(), parser.Arg2())
 			} else if cmdType == "C_RETURN" {

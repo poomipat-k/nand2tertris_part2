@@ -10,7 +10,7 @@ func (c *CodeWriter) WriteFunction(cmd string, functionName string, nLocalVars i
 	for i := 0; i < nLocalVars; i++ {
 		c.writePush("constant", 0)
 	}
-	c.curFuncName = functionName
+	c.CurFuncName = functionName
 	c.curFuncCallCounter = 1
 }
 
@@ -67,7 +67,7 @@ func (c *CodeWriter) WriteCall(cmd string, functionName string, nArgs int) {
 	c.WriteComment(fmt.Sprintf("// %s %s %d\n", cmd, functionName, nArgs))
 	// generate returnAddress label
 
-	returnLabel := fmt.Sprintf("%s$ret.%d", c.curFuncName, c.curFuncCallCounter)
+	returnLabel := fmt.Sprintf("%s$ret.%d", c.CurFuncName, c.curFuncCallCounter)
 	c.curFuncCallCounter++
 
 	// push returnAddress (using label create below)
@@ -109,7 +109,6 @@ func (c *CodeWriter) WriteCall(cmd string, functionName string, nArgs int) {
 	c.WriteGoto("goto", functionName)
 	// (returnAddress) declares a label for the return address eg. Sys$ret.1
 	c.WriteLabel("label", returnLabel)
-
 }
 
 func (c *CodeWriter) getEndFrameMinusXToDRegister(val int) {

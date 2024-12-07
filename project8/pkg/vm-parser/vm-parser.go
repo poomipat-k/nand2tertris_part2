@@ -117,7 +117,7 @@ func (p *VMParser) Advance() (bool, error) {
 			log.Fatal(err)
 		}
 		p._arg2 = v
-
+		return true, nil
 	} else {
 		log.Fatal("invalid VM instruction")
 	}
@@ -139,7 +139,7 @@ func (p *VMParser) Arg2() int {
 
 func getCommands(line string) []string {
 	splits := strings.Split(line, "//")
-	if splits[0] == "" {
+	if strings.TrimSpace(splits[0]) == "" {
 		return []string{}
 	}
 

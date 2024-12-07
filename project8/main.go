@@ -58,6 +58,7 @@ func main() {
 				cw.WriteArithmetic(cmd)
 			}
 		}
+		cw.WriteComment(fmt.Sprintf("// END file: %s\n", fileName))
 
 		parser.File.Close()
 	}
@@ -74,7 +75,6 @@ func check(err error) {
 func processInput(path string) ([]string, string) {
 	splits := strings.Split(path, "/")
 	fileOrDirName := splits[len(splits)-1]
-	fmt.Println("fileOrDirName:", fileOrDirName)
 	splitFileOrDirName := strings.Split(fileOrDirName, ".")
 	// .vm file
 	if len(splitFileOrDirName) == 2 {
@@ -82,8 +82,20 @@ func processInput(path string) ([]string, string) {
 		return []string{path}, fmt.Sprintf("%s/%s.asm", strings.Join(splits[:len(splits)-1], "/"), fileName)
 	}
 	// directory
-
-	return []string{}, ""
+	dirName := fileOrDirName
+	fileInfo, err := os.ReadDir(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	vmFilePaths := []string{}
+	for _, f := range fileInfo {
+		name := f.Name()
+		sp := strings.Split(name, ".")
+		if len(sp) == 2 && sp[1] == "vm" {
+			vmFilePaths = append(vmFilePaths, fmt.Sprintf("%s/%s", path, name))
+		}
+	}
+	return vmFilePaths, fmt.Sprintf("%s/%s.asm", path, dirName)
 }
 
 func getFileName(filepath string) string {

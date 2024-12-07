@@ -24,7 +24,9 @@ func main() {
 	check(err)
 	defer cw.File.Close()
 
-	cw.WriteInit()
+	if len(filePaths) > 1 {
+		cw.WriteInit()
+	}
 
 	for _, fPath := range filePaths {
 		fmt.Println("==fPath:", fPath)

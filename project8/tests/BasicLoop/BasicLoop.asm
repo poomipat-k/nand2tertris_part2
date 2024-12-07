@@ -18,8 +18,8 @@ D=M
 @R13
 A=M
 M=D
-// label
-(LOOP)
+// label Sys.init$LOOP
+(Sys.init$LOOP)
 // push argument 0
 @ARG
 D=M
@@ -105,11 +105,11 @@ D=M
 AM=M+1
 A=A-1
 M=D
-// if-goto
+// if-goto Sys.init$LOOP
 @SP
 AM=M-1
 D=M
-@LOOP
+@Sys.init$LOOP
 D;JNE
 // push local 0
 @LCL
@@ -121,3 +121,4 @@ D=M
 AM=M+1
 A=A-1
 M=D
+// END file: BasicLoop

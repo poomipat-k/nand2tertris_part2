@@ -90,8 +90,8 @@ D=M
 @R13
 A=M
 M=D
-// label
-(LOOP)
+// label Sys.init$LOOP
+(Sys.init$LOOP)
 // push argument 0
 @ARG
 D=M
@@ -102,18 +102,17 @@ D=M
 AM=M+1
 A=A-1
 M=D
-// if-goto
+// if-goto Sys.init$COMPUTE_ELEMENT
 @SP
 AM=M-1
 D=M
-@COMPUTE_ELEMENT
+@Sys.init$COMPUTE_ELEMENT
 D;JNE
-// goto
-@END
+// goto Sys.init$END
+@Sys.init$END
 0;JMP
-// label
-(COMPUTE_ELEMENT)
-// 
+// label Sys.init$COMPUTE_ELEMENT
+(Sys.init$COMPUTE_ELEMENT)
 // push that 0
 @THAT
 D=M
@@ -153,7 +152,6 @@ D=M
 @R13
 A=M
 M=D
-// 
 // push pointer 1
 @THAT
 D=M
@@ -180,7 +178,6 @@ AM=M-1
 D=M
 @THAT
 M=D
-// 
 // push argument 0
 @ARG
 D=M
@@ -217,8 +214,9 @@ D=M
 @R13
 A=M
 M=D
-// goto
-@LOOP
+// goto Sys.init$LOOP
+@Sys.init$LOOP
 0;JMP
-// label
-(END)
+// label Sys.init$END
+(Sys.init$END)
+// END file: FibonacciSeries

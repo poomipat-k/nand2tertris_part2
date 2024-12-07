@@ -1,4 +1,4 @@
-// function
+// function SimpleFunction.test 2
 (SimpleFunction.test)
 @0
 D=A
@@ -133,3 +133,4 @@ M=D
 @R15
 A=M
 0;JMP
+// END file: SimpleFunction

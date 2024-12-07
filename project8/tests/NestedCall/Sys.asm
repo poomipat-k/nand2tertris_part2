@@ -80,10 +80,10 @@ AM=M-1
 D=M
 @6
 M=D
-// label LOOP
-(LOOP)
-// goto LOOP
-@LOOP
+// label Sys.init$LOOP
+(Sys.init$LOOP)
+// goto Sys.init$LOOP
+@Sys.init$LOOP
 0;JMP
 // function Sys.main 5
 (Sys.main)
@@ -507,3 +507,4 @@ M=D
 @R15
 A=M
 0;JMP
+// END file: Sys

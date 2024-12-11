@@ -1,0 +1,40 @@
+class Draw {
+    // 16x16
+    function void drawEnemy(int location) {
+        var int memAddress; 
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress, 8184);
+        do Memory.poke(memAddress +32, 12300);
+        do Memory.poke(memAddress +64, 28686);
+        do Memory.poke(memAddress +96, -1);
+        do Memory.poke(memAddress +128, 24582);
+        do Memory.poke(memAddress +160, 12300);
+        do Memory.poke(memAddress +192, 6168);
+        do Memory.poke(memAddress +224, 3120);
+        do Memory.poke(memAddress +256, 1632);
+        do Memory.poke(memAddress +288, 2016);
+        do Memory.poke(memAddress +320, 960);
+        do Memory.poke(memAddress +352, 960);
+        do Memory.poke(memAddress +384, 960);
+        do Memory.poke(memAddress +416, 384);
+        do Memory.poke(memAddress +448, 384);
+        do Memory.poke(memAddress +480, 384);
+        return;
+    }
+
+    // 8x16
+    function void drawWeapon(int location) {
+        var int memAddress; 
+        let memAddress = 16384+location;
+        // column 0
+        do Memory.poke(memAddress, 31);
+        do Memory.poke(memAddress +32, 8177);
+        do Memory.poke(memAddress +64, 16369);
+        do Memory.poke(memAddress +96, -4079);
+        do Memory.poke(memAddress +128, -4079);
+        do Memory.poke(memAddress +160, 16369);
+        do Memory.poke(memAddress +192, 8177);
+        do Memory.poke(memAddress +224, 63);
+        return;
+    }
+}

@@ -1,0 +1,7 @@
+class Main {
+    function void main() {
+        do Draw.drawEnemy(300);
+        do Draw.drawWeapon(0);
+        return;
+    }
+}

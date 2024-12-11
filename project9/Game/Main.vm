@@ -1,0 +1,9 @@
+function Main.main 0
+    push constant 300
+    call Draw.drawEnemy 1
+    pop temp 0
+    push constant 0
+    call Draw.drawWeapon 1
+    pop temp 0
+    push constant 0
+    return

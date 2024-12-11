@@ -1,0 +1,157 @@
+function Draw.drawEnemy 1
+    push constant 16384
+    push argument 0
+    add
+    pop local 0
+    push local 0
+    push constant 8184
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 32
+    add
+    push constant 12300
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 64
+    add
+    push constant 28686
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 96
+    add
+    push constant 1
+    neg
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 128
+    add
+    push constant 24582
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 160
+    add
+    push constant 12300
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 192
+    add
+    push constant 6168
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 224
+    add
+    push constant 3120
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 256
+    add
+    push constant 1632
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 288
+    add
+    push constant 2016
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 320
+    add
+    push constant 960
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 352
+    add
+    push constant 960
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 384
+    add
+    push constant 960
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 416
+    add
+    push constant 384
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 448
+    add
+    push constant 384
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 480
+    add
+    push constant 384
+    call Memory.poke 2
+    pop temp 0
+    push constant 0
+    return
+function Draw.drawWeapon 1
+    push constant 16384
+    push argument 0
+    add
+    pop local 0
+    push local 0
+    push constant 31
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 32
+    add
+    push constant 8177
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 64
+    add
+    push constant 16369
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 96
+    add
+    push constant 4079
+    neg
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 128
+    add
+    push constant 4079
+    neg
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 160
+    add
+    push constant 16369
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 192
+    add
+    push constant 8177
+    call Memory.poke 2
+    pop temp 0
+    push local 0
+    push constant 224
+    add
+    push constant 63
+    call Memory.poke 2
+    pop temp 0
+    push constant 0
+    return

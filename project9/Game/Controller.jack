@@ -1,0 +1,55 @@
+class Controller {
+    field Gun gun;
+    field int direction; // the gun's current direction:
+                         // 0=none, 1=up, 2=down
+
+    constructor Controller new() {
+        let gun = Gun.new(0, false);
+        let direction = 0;
+        return this;
+    }
+
+    method void dispose() {
+        do gun.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void moveGun() {
+        if (direction = 1) { 
+            do gun.moveUp();
+        }
+        if (direction = 2) {
+            do gun.moveDown();
+        }
+
+        do Sys.wait(1);
+        return;
+    }
+
+    method void run() {
+        var char key;
+        var boolean exit;
+        let exit = false;
+
+        while(~exit) {
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+                do moveGun();
+            }
+            if (key = 81) { let exit = true; } // q key
+            if (key = 131) { let direction = 1; } // up arrow
+            if (key = 133) { let direction = 2; } // down arrow
+            // if (key = 32) { let direction = 0; } // space bar
+
+            // waits for the key to be released
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+                do moveGun();
+            }
+
+            let direction = 0;
+        }
+        return;
+    }
+}

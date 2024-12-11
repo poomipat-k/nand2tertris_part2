@@ -1,7 +1,11 @@
 class Main {
     function void main() {
-        do Draw.drawEnemy(300);
-        do Draw.drawWeapon(0);
+        // do Draw.drawEnemy(31);
+        
+        var Controller game;
+        let game = Controller.new();
+        do game.run();
+        do game.dispose();
         return;
     }
 }

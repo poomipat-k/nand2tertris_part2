@@ -21,20 +21,4 @@ class Draw {
         do Memory.poke(memAddress +480, 384);
         return;
     }
-
-    // 8x16
-    function void drawWeapon(int location) {
-        var int memAddress; 
-        let memAddress = 16384+location;
-        // column 0
-        do Memory.poke(memAddress, 31);
-        do Memory.poke(memAddress +32, 8177);
-        do Memory.poke(memAddress +64, 16369);
-        do Memory.poke(memAddress +96, -4079);
-        do Memory.poke(memAddress +128, -4079);
-        do Memory.poke(memAddress +160, 16369);
-        do Memory.poke(memAddress +192, 8177);
-        do Memory.poke(memAddress +224, 63);
-        return;
-    }
 }

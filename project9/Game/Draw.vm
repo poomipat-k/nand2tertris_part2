@@ -150,7 +150,7 @@ function Draw.drawWeapon 1
     push local 0
     push constant 224
     add
-    push constant 63
+    push constant 31
     call Memory.poke 2
     pop temp 0
     push constant 0

@@ -1,0 +1,66 @@
+class Gun {
+    field int y; 
+    field boolean reloading;
+
+    /** Constructs a new gun  0 <= y <= 247*/
+    constructor Gun new(int posY, boolean reload) {
+        // let posY = y;
+        let y = posY;
+        let reloading = reload;
+        do draw();
+        return this;
+    }
+
+    /** Disposes this gun. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Draw the gun on the screen. */
+    method void draw() {
+        var int memAddress; 
+        let memAddress = 16384 + (y*32);
+        do Memory.poke(memAddress, 31);
+        do Memory.poke(memAddress +32, 8177);
+        do Memory.poke(memAddress +64, 16369);
+        do Memory.poke(memAddress +96, -4079);
+        do Memory.poke(memAddress +128, -4079);
+        do Memory.poke(memAddress +160, 16369);
+        do Memory.poke(memAddress +192, 8177);
+        do Memory.poke(memAddress +224, 31);
+        return;
+    }
+
+    method void erase() {
+        var int memAddress; 
+        let memAddress = 16384 + (y*32);
+        do Memory.poke(memAddress, 0);
+        do Memory.poke(memAddress +32, 0);
+        do Memory.poke(memAddress +64, 0);
+        do Memory.poke(memAddress +96, 0);
+        do Memory.poke(memAddress +128, 0);
+        do Memory.poke(memAddress +160, 0);
+        do Memory.poke(memAddress +192, 0);
+        do Memory.poke(memAddress +224, 0);
+        return;
+    }
+
+    method void moveUp() {
+        if (y > 0) {
+            do erase();
+            let y = y - 2;
+            do draw();
+        }
+        return;
+    }
+
+    method void moveDown() {
+        if (y < 247) {
+            do erase();
+            let y = y + 2;
+            do draw();
+        }
+        return;
+    }
+}

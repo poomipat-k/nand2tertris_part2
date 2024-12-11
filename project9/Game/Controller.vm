@@ -1,0 +1,127 @@
+function Controller.new 0
+    push constant 2
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 0
+    push constant 0
+    call Gun.new 2
+    pop this 0
+    push constant 0
+    pop this 1
+    push pointer 0
+    return
+function Controller.dispose 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Gun.dispose 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function Controller.moveGun 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    push constant 1
+    eq
+    not
+    if-goto Controller_1
+    push this 0
+    call Gun.moveUp 1
+    pop temp 0
+    goto Controller_0
+label Controller_1
+label Controller_0
+    push this 1
+    push constant 2
+    eq
+    not
+    if-goto Controller_3
+    push this 0
+    call Gun.moveDown 1
+    pop temp 0
+    goto Controller_2
+label Controller_3
+label Controller_2
+    push constant 1
+    call Sys.wait 1
+    pop temp 0
+    push constant 0
+    return
+function Controller.run 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 1
+label Controller_4
+    push local 1
+    not
+    not
+    if-goto Controller_5
+label Controller_6
+    push local 0
+    push constant 0
+    eq
+    not
+    if-goto Controller_7
+    call Keyboard.keyPressed 0
+    pop local 0
+    push pointer 0
+    call Controller.moveGun 1
+    pop temp 0
+    goto Controller_6
+label Controller_7
+    push local 0
+    push constant 81
+    eq
+    not
+    if-goto Controller_9
+    push constant 1
+    neg
+    pop local 1
+    goto Controller_8
+label Controller_9
+label Controller_8
+    push local 0
+    push constant 131
+    eq
+    not
+    if-goto Controller_11
+    push constant 1
+    pop this 1
+    goto Controller_10
+label Controller_11
+label Controller_10
+    push local 0
+    push constant 133
+    eq
+    not
+    if-goto Controller_13
+    push constant 2
+    pop this 1
+    goto Controller_12
+label Controller_13
+label Controller_12
+label Controller_14
+    push local 0
+    push constant 0
+    eq
+    not
+    not
+    if-goto Controller_15
+    call Keyboard.keyPressed 0
+    pop local 0
+    push pointer 0
+    call Controller.moveGun 1
+    pop temp 0
+    goto Controller_14
+label Controller_15
+    push constant 0
+    pop this 1
+    goto Controller_4
+label Controller_5
+    push constant 0
+    return

@@ -4,7 +4,6 @@ class Gun {
 
     /** Constructs a new gun  0 <= y <= 247*/
     constructor Gun new(int posY, boolean reload) {
-        // let posY = y;
         let y = posY;
         let reloading = reload;
         do draw();
@@ -56,11 +55,58 @@ class Gun {
     }
 
     method void moveDown() {
-        if (y < 247) {
+        if (y < 246) {
             do erase();
             let y = y + 2;
             do draw();
         }
+        return;
+    }
+
+    /** fires a gun by scanning enemy  */
+    method void fire() {
+        let reloading = true;
+        do drawLaser();
+        // do Sys.wait(5);
+        // do eraseFire();
+        let reloading = false;
+        return;
+    }
+
+    method void drawLaser() {
+        var int memAddress; 
+        var int i;
+        var int curY;
+        var int value;
+        let curY = y;
+        let memAddress = 16384 + (curY*32) + 96; // 96 is skip 3 rows, 1 col is 16px 
+        let i = 0 ;
+        while (i < 64) {
+            if (i = 0) {
+                do Memory.poke(memAddress + i, -4079);
+            } else {
+                if (i = 32) {
+                    do Memory.poke(memAddress +i, -4079);
+                } else {
+                    do Memory.poke(memAddress + i, -1);
+                }
+            }
+            let i = i + 1;
+        }
+
+        // let i = 0;
+        // while (i < 64) {
+        //     if (i = 0) {
+        //         do Memory.poke(memAddress +i, -4079);
+        //     } else {
+        //         if (i = 32) {
+        //             do Memory.poke(memAddress +i, -4079);
+        //         } else {
+        //             do Memory.poke(memAddress + i, 0);
+        //         }
+        //     }
+        //     let i = i + 1;
+        // }
         return;
     }
 }

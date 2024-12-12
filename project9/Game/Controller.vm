@@ -46,7 +46,7 @@ label Controller_0
     goto Controller_2
 label Controller_3
 label Controller_2
-    push constant 1
+    push constant 100
     call Sys.wait 1
     pop temp 0
     push constant 0
@@ -105,20 +105,31 @@ label Controller_10
     goto Controller_12
 label Controller_13
 label Controller_12
+    push local 0
+    push constant 32
+    eq
+    not
+    if-goto Controller_15
+    push this 0
+    call Gun.fire 1
+    pop temp 0
+    goto Controller_14
+label Controller_15
 label Controller_14
+label Controller_16
     push local 0
     push constant 0
     eq
     not
     not
-    if-goto Controller_15
+    if-goto Controller_17
     call Keyboard.keyPressed 0
     pop local 0
     push pointer 0
     call Controller.moveGun 1
     pop temp 0
-    goto Controller_14
-label Controller_15
+    goto Controller_16
+label Controller_17
     push constant 0
     pop this 1
     goto Controller_4

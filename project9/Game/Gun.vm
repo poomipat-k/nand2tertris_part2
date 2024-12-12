@@ -162,7 +162,7 @@ function Gun.moveDown 0
     push argument 0
     pop pointer 0
     push this 0
-    push constant 247
+    push constant 246
     lt
     not
     if-goto Gun_3
@@ -179,5 +179,84 @@ function Gun.moveDown 0
     goto Gun_2
 label Gun_3
 label Gun_2
+    push constant 0
+    return
+function Gun.fire 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    pop this 1
+    push pointer 0
+    call Gun.drawLaser 1
+    pop temp 0
+    push constant 0
+    pop this 1
+    push constant 0
+    return
+function Gun.drawLaser 4
+    push argument 0
+    pop pointer 0
+    push this 0
+    pop local 2
+    push constant 16384
+    push local 2
+    push constant 32
+    call Math.multiply 2
+    add
+    push constant 96
+    add
+    pop local 0
+    push constant 0
+    pop local 1
+label Gun_4
+    push local 1
+    push constant 64
+    lt
+    not
+    if-goto Gun_5
+    push local 1
+    push constant 0
+    eq
+    not
+    if-goto Gun_7
+    push local 0
+    push local 1
+    add
+    push constant 4079
+    neg
+    call Memory.poke 2
+    pop temp 0
+    goto Gun_6
+label Gun_7
+    push local 1
+    push constant 32
+    eq
+    not
+    if-goto Gun_9
+    push local 0
+    push local 1
+    add
+    push constant 4079
+    neg
+    call Memory.poke 2
+    pop temp 0
+    goto Gun_8
+label Gun_9
+    push local 0
+    push local 1
+    add
+    push constant 1
+    neg
+    call Memory.poke 2
+    pop temp 0
+label Gun_8
+label Gun_6
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Gun_4
+label Gun_5
     push constant 0
     return

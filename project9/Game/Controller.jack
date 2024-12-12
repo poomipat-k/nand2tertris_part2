@@ -2,10 +2,14 @@ class Controller {
     field Gun gun;
     field int direction; // the gun's current direction:
                          // 0=none, 1=up, 2=down
+    field int counter;
+    field Array enemies;
 
     constructor Controller new() {
         let gun = Gun.new(0, false);
         let direction = 0;
+        let counter = 0;
+        let enemies = Array.new(16);
         return this;
     }
 
@@ -27,44 +31,90 @@ class Controller {
         return;
     }
 
-    method void moveEnemy() {
-
-        do Sys.wait(10);
-        return;
-    }
 
     method void run() {
         var char key;
         var boolean exit;
-        var int counter;
         var Enemy enemy;
+        var int bornInterval;
         let exit = false;
-        let counter = 0;
-        let enemy = Enemy.new(10, 0);
+        let bornInterval = 60;
 
         while(~exit) {
             while (key = 0) {
                 let key = Keyboard.keyPressed();
-                do enemy.moveDown();
+
                 do moveGun();
+                do updateEnemies();
+
+                let counter = counter+1;
+                if (counter > bornInterval) {
+                    let counter = 0;
+                }
+
+                if (counter = bornInterval) {
+                    do createEnemy();
+                }
+
             }
             if (key = 81) { let exit = true; } // Q key
             if (key = 113) { let exit = true; } // q key
             if (key = 131) { let direction = 1; } // up arrow
             if (key = 133) { let direction = 2; } // down arrow
             if (key = 32) { // space bar
-                    do gun.fire();                
+                do gun.fire();                
             }
 
             // waits for the key to be released
             while (~(key = 0)) {
                 let key = Keyboard.keyPressed();
-                do enemy.moveDown();
                 do moveGun();
+                do updateEnemies();
+                // do Sys.wait(5);
+
+                let counter = counter+1;
+                if (counter > bornInterval) {
+                    let counter = 0;
+                }
+
+                if (counter = bornInterval) {
+                    do createEnemy();
+                }
             }
 
             let direction = 0;
-            do enemy.moveDown();
+        }
+        return;
+    }
+
+    method void createEnemy() {
+        var int posX;
+        var int i;
+        var Enemy enemy;
+        let posX = 1 + Random.randRange(30); // rand 1-31
+
+        let i = 0;
+        while (~(enemies[i] = null)) {
+            let i = i + 1;
+            if (i = 16) {
+                return;
+            }
+        }
+        let enemy = Enemy.new(posX, 0);
+        let enemies[i] = enemy;
+        return;
+    }
+
+    method void updateEnemies() {
+        var int i;
+        var Enemy e;
+        let i = 0;
+        while (i < 16) {
+            if (~(enemies[i] = null)) {
+                let e = enemies[i];
+                do e.moveDown();
+            }
+            let i = i + 1;
         }
         return;
     }

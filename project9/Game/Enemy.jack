@@ -1,6 +1,6 @@
 class Enemy {
-    field int x;
-    field int y;
+    field int x; // 0-31
+    field int y; // 0-255
      
     constructor Controller new(int newX, int newY) {
         let x = newX;
@@ -58,7 +58,7 @@ class Enemy {
     }
 
     method void moveDown() {
-        if (y < 230) { // 246
+        if (y < 239) { // enemy is 16x16 px
             do erase();
             let y = y + 1;
             do draw();

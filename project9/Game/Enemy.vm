@@ -234,7 +234,7 @@ function Enemy.moveDown 0
     push argument 0
     pop pointer 0
     push this 1
-    push constant 230
+    push constant 239
     lt
     not
     if-goto Enemy_1

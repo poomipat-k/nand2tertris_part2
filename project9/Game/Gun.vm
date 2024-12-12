@@ -1,11 +1,9 @@
 function Gun.new 0
-    push constant 2
+    push constant 1
     call Memory.alloc 1
     pop pointer 0
     push argument 0
     pop this 0
-    push argument 1
-    pop this 1
     push pointer 0
     call Gun.draw 1
     pop temp 0
@@ -147,7 +145,7 @@ function Gun.moveUp 0
     call Gun.erase 1
     pop temp 0
     push this 0
-    push constant 2
+    push constant 4
     sub
     pop this 0
     push pointer 0
@@ -162,7 +160,7 @@ function Gun.moveDown 0
     push argument 0
     pop pointer 0
     push this 0
-    push constant 246
+    push constant 244
     lt
     not
     if-goto Gun_3
@@ -170,7 +168,7 @@ function Gun.moveDown 0
     call Gun.erase 1
     pop temp 0
     push this 0
-    push constant 2
+    push constant 4
     add
     pop this 0
     push pointer 0
@@ -184,14 +182,9 @@ label Gun_2
 function Gun.fire 0
     push argument 0
     pop pointer 0
-    push constant 1
-    neg
-    pop this 1
     push pointer 0
     call Gun.drawLaser 1
     pop temp 0
-    push constant 0
-    pop this 1
     push constant 0
     return
 function Gun.drawLaser 4

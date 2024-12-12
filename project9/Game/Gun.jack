@@ -1,11 +1,10 @@
 class Gun {
     field int y; 
-    field boolean reloading;
+    // field boolean reloading;
 
     /** Constructs a new gun  0 <= y <= 247*/
     constructor Gun new(int posY, boolean reload) {
         let y = posY;
-        let reloading = reload;
         do draw();
         return this;
     }
@@ -48,16 +47,16 @@ class Gun {
     method void moveUp() {
         if (y > 0) {
             do erase();
-            let y = y - 2;
+            let y = y - 4;
             do draw();
         }
         return;
     }
 
     method void moveDown() {
-        if (y < 246) {
+        if (y < 244) {
             do erase();
-            let y = y + 2;
+            let y = y + 4;
             do draw();
         }
         return;
@@ -65,11 +64,9 @@ class Gun {
 
     /** fires a gun by scanning enemy  */
     method void fire() {
-        let reloading = true;
         do drawLaser();
         // do Sys.wait(5);
         // do eraseFire();
-        let reloading = false;
         return;
     }
 

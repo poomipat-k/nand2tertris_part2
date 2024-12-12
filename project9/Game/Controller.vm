@@ -1,5 +1,5 @@
 function Controller.new 0
-    push constant 2
+    push constant 4
     call Memory.alloc 1
     pop pointer 0
     push constant 0
@@ -8,6 +8,11 @@ function Controller.new 0
     pop this 0
     push constant 0
     pop this 1
+    push constant 0
+    pop this 2
+    push constant 16
+    call Array.new 1
+    pop this 3
     push pointer 0
     return
 function Controller.dispose 0
@@ -51,24 +56,12 @@ label Controller_2
     pop temp 0
     push constant 0
     return
-function Controller.moveEnemy 0
-    push argument 0
-    pop pointer 0
-    push constant 10
-    call Sys.wait 1
-    pop temp 0
-    push constant 0
-    return
 function Controller.run 4
     push argument 0
     pop pointer 0
     push constant 0
     pop local 1
-    push constant 0
-    pop local 2
-    push constant 10
-    push constant 0
-    call Enemy.new 2
+    push constant 60
     pop local 3
 label Controller_4
     push local 1
@@ -83,90 +76,229 @@ label Controller_6
     if-goto Controller_7
     call Keyboard.keyPressed 0
     pop local 0
-    push local 3
-    call Enemy.moveDown 1
-    pop temp 0
     push pointer 0
     call Controller.moveGun 1
     pop temp 0
+    push pointer 0
+    call Controller.updateEnemies 1
+    pop temp 0
+    push this 2
+    push constant 1
+    add
+    pop this 2
+    push this 2
+    push local 3
+    gt
+    not
+    if-goto Controller_9
+    push constant 0
+    pop this 2
+    goto Controller_8
+label Controller_9
+label Controller_8
+    push this 2
+    push local 3
+    eq
+    not
+    if-goto Controller_11
+    push pointer 0
+    call Controller.createEnemy 1
+    pop temp 0
+    goto Controller_10
+label Controller_11
+label Controller_10
     goto Controller_6
 label Controller_7
     push local 0
     push constant 81
     eq
     not
-    if-goto Controller_9
-    push constant 1
-    neg
-    pop local 1
-    goto Controller_8
-label Controller_9
-label Controller_8
-    push local 0
-    push constant 113
-    eq
-    not
-    if-goto Controller_11
-    push constant 1
-    neg
-    pop local 1
-    goto Controller_10
-label Controller_11
-label Controller_10
-    push local 0
-    push constant 131
-    eq
-    not
     if-goto Controller_13
     push constant 1
-    pop this 1
+    neg
+    pop local 1
     goto Controller_12
 label Controller_13
 label Controller_12
     push local 0
-    push constant 133
+    push constant 113
     eq
     not
     if-goto Controller_15
-    push constant 2
-    pop this 1
+    push constant 1
+    neg
+    pop local 1
     goto Controller_14
 label Controller_15
 label Controller_14
     push local 0
-    push constant 32
+    push constant 131
     eq
     not
     if-goto Controller_17
-    push this 0
-    call Gun.fire 1
-    pop temp 0
+    push constant 1
+    pop this 1
     goto Controller_16
 label Controller_17
 label Controller_16
+    push local 0
+    push constant 133
+    eq
+    not
+    if-goto Controller_19
+    push constant 2
+    pop this 1
+    goto Controller_18
+label Controller_19
 label Controller_18
+    push local 0
+    push constant 32
+    eq
+    not
+    if-goto Controller_21
+    push this 0
+    call Gun.fire 1
+    pop temp 0
+    goto Controller_20
+label Controller_21
+label Controller_20
+label Controller_22
     push local 0
     push constant 0
     eq
     not
     not
-    if-goto Controller_19
+    if-goto Controller_23
     call Keyboard.keyPressed 0
     pop local 0
-    push local 3
-    call Enemy.moveDown 1
-    pop temp 0
     push pointer 0
     call Controller.moveGun 1
     pop temp 0
-    goto Controller_18
-label Controller_19
+    push pointer 0
+    call Controller.updateEnemies 1
+    pop temp 0
+    push this 2
+    push constant 1
+    add
+    pop this 2
+    push this 2
+    push local 3
+    gt
+    not
+    if-goto Controller_25
+    push constant 0
+    pop this 2
+    goto Controller_24
+label Controller_25
+label Controller_24
+    push this 2
+    push local 3
+    eq
+    not
+    if-goto Controller_27
+    push pointer 0
+    call Controller.createEnemy 1
+    pop temp 0
+    goto Controller_26
+label Controller_27
+label Controller_26
+    goto Controller_22
+label Controller_23
     push constant 0
     pop this 1
-    push local 3
-    call Enemy.moveDown 1
-    pop temp 0
     goto Controller_4
 label Controller_5
+    push constant 0
+    return
+function Controller.createEnemy 3
+    push argument 0
+    pop pointer 0
+    push constant 1
+    push constant 30
+    call Random.randRange 1
+    add
+    pop local 0
+    push constant 0
+    pop local 1
+label Controller_28
+    push local 1
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    eq
+    not
+    not
+    if-goto Controller_29
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    push local 1
+    push constant 16
+    eq
+    not
+    if-goto Controller_31
+    push constant 0
+    return
+    goto Controller_30
+label Controller_31
+label Controller_30
+    goto Controller_28
+label Controller_29
+    push local 0
+    push constant 0
+    call Enemy.new 2
+    pop local 2
+    push local 1
+    push this 3
+    add
+    push local 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 0
+    return
+function Controller.updateEnemies 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Controller_32
+    push local 0
+    push constant 16
+    lt
+    not
+    if-goto Controller_33
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    eq
+    not
+    not
+    if-goto Controller_35
+    push local 0
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.moveDown 1
+    pop temp 0
+    goto Controller_34
+label Controller_35
+label Controller_34
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Controller_32
+label Controller_33
     push constant 0
     return

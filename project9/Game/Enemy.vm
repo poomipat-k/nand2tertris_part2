@@ -19,6 +19,11 @@ function Enemy.dispose 0
     pop temp 0
     push constant 0
     return
+function Enemy.getY 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
 function Enemy.isHit 0
     push argument 0
     pop pointer 0

@@ -57,7 +57,9 @@ class Controller {
                 let key = Keyboard.keyPressed();
 
                 do moveGun();
-                do updateEnemies();
+                if (updateEnemiesAndCheckGameOver()) {
+                    let exit = true;
+                }
 
                 let counter = counter+1;
                 if (counter > bornInterval) {
@@ -75,14 +77,16 @@ class Controller {
             if (key = 133) { let direction = 2; } // down arrow
             if (key = 32) { // space bar
                 let firingAtY = gun.getFiringY();
-                do gun.fire();           
+                do gun.fire();
             }
 
             // waits for the key to be released
             while (~(key = 0)) {
                 let key = Keyboard.keyPressed();
                 do moveGun();
-                do updateEnemies();
+                if (updateEnemiesAndCheckGameOver()) {
+                    let exit = true;
+                }
 
                 let counter = counter+1;
                 if (counter > bornInterval) {
@@ -117,7 +121,7 @@ class Controller {
         return;
     }
 
-    method void updateEnemies() {
+    method boolean updateEnemiesAndCheckGameOver() {
         var int i;
         var Enemy e;
         let i = 0;
@@ -130,7 +134,10 @@ class Controller {
                     let enemies[i] = null;
                 } else {
                     do e.moveDown();
-                    
+                    if (e.getY() = 239) {
+                        // return true for GAME OVER
+                        return true;
+                    }
                 }
 
             }
@@ -138,6 +145,6 @@ class Controller {
         }
         do gun.eraseFire(firingAtY-3);
         let firingAtY = -100;
-        return;
+        return false;
     }
 }

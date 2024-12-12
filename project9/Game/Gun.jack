@@ -79,7 +79,7 @@ class Gun {
         var int curY;
         var int value;
         let curY = y;
-        let memAddress = 16384 + (curY*32) + 96; // 96 is skip 3 rows, 1 col is 16px 
+        let memAddress = 16384 + (curY*32) + 96; // 96 is skip 3 rows
         let i = 0 ;
         while (i < 64) {
             if (i = 0) {

@@ -6,6 +6,8 @@ class Main {
         let game = Controller.new();
         do game.run();
         do game.dispose();
+        do Output.println();
+        do Output.printString("    Game Over");
         return;
     }
 }

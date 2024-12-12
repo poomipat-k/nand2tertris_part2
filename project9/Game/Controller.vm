@@ -46,16 +46,30 @@ label Controller_0
     goto Controller_2
 label Controller_3
 label Controller_2
-    push constant 100
+    push constant 10
     call Sys.wait 1
     pop temp 0
     push constant 0
     return
-function Controller.run 2
+function Controller.moveEnemy 0
+    push argument 0
+    pop pointer 0
+    push constant 10
+    call Sys.wait 1
+    pop temp 0
+    push constant 0
+    return
+function Controller.run 4
     push argument 0
     pop pointer 0
     push constant 0
     pop local 1
+    push constant 0
+    pop local 2
+    push constant 10
+    push constant 0
+    call Enemy.new 2
+    pop local 3
 label Controller_4
     push local 1
     not
@@ -69,6 +83,9 @@ label Controller_6
     if-goto Controller_7
     call Keyboard.keyPressed 0
     pop local 0
+    push local 3
+    call Enemy.moveDown 1
+    pop temp 0
     push pointer 0
     call Controller.moveGun 1
     pop temp 0
@@ -86,52 +103,69 @@ label Controller_7
 label Controller_9
 label Controller_8
     push local 0
-    push constant 131
+    push constant 113
     eq
     not
     if-goto Controller_11
     push constant 1
-    pop this 1
+    neg
+    pop local 1
     goto Controller_10
 label Controller_11
 label Controller_10
     push local 0
-    push constant 133
+    push constant 131
     eq
     not
     if-goto Controller_13
-    push constant 2
+    push constant 1
     pop this 1
     goto Controller_12
 label Controller_13
 label Controller_12
     push local 0
-    push constant 32
+    push constant 133
     eq
     not
     if-goto Controller_15
-    push this 0
-    call Gun.fire 1
-    pop temp 0
+    push constant 2
+    pop this 1
     goto Controller_14
 label Controller_15
 label Controller_14
+    push local 0
+    push constant 32
+    eq
+    not
+    if-goto Controller_17
+    push this 0
+    call Gun.fire 1
+    pop temp 0
+    goto Controller_16
+label Controller_17
 label Controller_16
+label Controller_18
     push local 0
     push constant 0
     eq
     not
     not
-    if-goto Controller_17
+    if-goto Controller_19
     call Keyboard.keyPressed 0
     pop local 0
+    push local 3
+    call Enemy.moveDown 1
+    pop temp 0
     push pointer 0
     call Controller.moveGun 1
     pop temp 0
-    goto Controller_16
-label Controller_17
+    goto Controller_18
+label Controller_19
     push constant 0
     pop this 1
+    push local 3
+    call Enemy.moveDown 1
+    pop temp 0
     goto Controller_4
 label Controller_5
     push constant 0

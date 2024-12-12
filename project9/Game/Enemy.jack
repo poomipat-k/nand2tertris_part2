@@ -1,0 +1,68 @@
+class Enemy {
+    field int x;
+    field int y;
+     
+    constructor Controller new(int newX, int newY) {
+        let x = newX;
+        let y = newY;
+        do draw();
+        return this;
+    }
+
+    method void draw() {
+        var int memAddress; 
+        var int location;
+        let location = (32*y) + x;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress, 8184);
+        do Memory.poke(memAddress +32, 12300);
+        do Memory.poke(memAddress +64, 28686);
+        do Memory.poke(memAddress +96, -1);
+        do Memory.poke(memAddress +128, 24582);
+        do Memory.poke(memAddress +160, 12300);
+        do Memory.poke(memAddress +192, 6168);
+        do Memory.poke(memAddress +224, 3120);
+        do Memory.poke(memAddress +256, 1632);
+        do Memory.poke(memAddress +288, 2016);
+        do Memory.poke(memAddress +320, 960);
+        do Memory.poke(memAddress +352, 960);
+        do Memory.poke(memAddress +384, 960);
+        do Memory.poke(memAddress +416, 384);
+        do Memory.poke(memAddress +448, 384);
+        do Memory.poke(memAddress +480, 384);
+        return;
+    }
+
+    method void erase() {
+        var int memAddress; 
+        var int location;
+        let location = (32*y) + x;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress, 0);
+        do Memory.poke(memAddress +32, 0);
+        do Memory.poke(memAddress +64, 0);
+        do Memory.poke(memAddress +96, 0);
+        do Memory.poke(memAddress +128, 0);
+        do Memory.poke(memAddress +160, 0);
+        do Memory.poke(memAddress +192, 0);
+        do Memory.poke(memAddress +224, 0);
+        do Memory.poke(memAddress +256, 0);
+        do Memory.poke(memAddress +288, 0);
+        do Memory.poke(memAddress +320, 0);
+        do Memory.poke(memAddress +352, 0);
+        do Memory.poke(memAddress +384, 0);
+        do Memory.poke(memAddress +416, 0);
+        do Memory.poke(memAddress +448, 0);
+        do Memory.poke(memAddress +480, 0);
+        return;
+    }
+
+    method void moveDown() {
+        if (y < 230) { // 246
+            do erase();
+            let y = y + 1;
+            do draw();
+        }
+        return;
+    }
+}

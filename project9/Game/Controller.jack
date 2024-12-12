@@ -23,34 +23,48 @@ class Controller {
             do gun.moveDown();
         }
 
-        do Sys.wait(100);
+        do Sys.wait(10);
+        return;
+    }
+
+    method void moveEnemy() {
+
+        do Sys.wait(10);
         return;
     }
 
     method void run() {
         var char key;
         var boolean exit;
+        var int counter;
+        var Enemy enemy;
         let exit = false;
+        let counter = 0;
+        let enemy = Enemy.new(10, 0);
 
         while(~exit) {
             while (key = 0) {
                 let key = Keyboard.keyPressed();
+                do enemy.moveDown();
                 do moveGun();
             }
-            if (key = 81) { let exit = true; } // q key
+            if (key = 81) { let exit = true; } // Q key
+            if (key = 113) { let exit = true; } // q key
             if (key = 131) { let direction = 1; } // up arrow
             if (key = 133) { let direction = 2; } // down arrow
             if (key = 32) { // space bar
-                    do gun.fire();                     
+                    do gun.fire();                
             }
 
             // waits for the key to be released
             while (~(key = 0)) {
                 let key = Keyboard.keyPressed();
+                do enemy.moveDown();
                 do moveGun();
             }
 
             let direction = 0;
+            do enemy.moveDown();
         }
         return;
     }

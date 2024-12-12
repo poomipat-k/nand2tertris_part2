@@ -1,6 +1,5 @@
 class Gun {
     field int y; 
-    // field boolean reloading;
 
     /** Constructs a new gun  0 <= y <= 247*/
     constructor Gun new(int posY, boolean reload) {

@@ -11,6 +11,19 @@ function Enemy.new 0
     pop temp 0
     push pointer 0
     return
+function Enemy.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function Enemy.isHit 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    return
 function Enemy.draw 2
     push argument 0
     pop pointer 0

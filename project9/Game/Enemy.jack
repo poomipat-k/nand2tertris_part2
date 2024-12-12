@@ -9,6 +9,15 @@ class Enemy {
         return this;
     }
 
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method boolean isHit(int weaponY) {
+        return false;
+    }
+
     method void draw() {
         var int memAddress; 
         var int location;

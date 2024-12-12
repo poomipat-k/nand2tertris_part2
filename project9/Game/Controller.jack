@@ -14,7 +14,17 @@ class Controller {
     }
 
     method void dispose() {
+        var int i;
+        var Enemy e;
         do gun.dispose();
+        while (i < 16) {
+            if (~(enemies[i] = null)) {
+                let e = enemies[i];
+                do e.dispose();
+            }
+            let i = i + 1;
+        }
+        do enemies.dispose();
         do Memory.deAlloc(this);
         return;
     }
@@ -70,7 +80,6 @@ class Controller {
                 let key = Keyboard.keyPressed();
                 do moveGun();
                 do updateEnemies();
-                // do Sys.wait(5);
 
                 let counter = counter+1;
                 if (counter > bornInterval) {

@@ -4,12 +4,14 @@ class Controller {
                          // 0=none, 1=up, 2=down
     field int counter;
     field Array enemies;
+    field int firingAtY;
 
     constructor Controller new() {
         let gun = Gun.new(0, false);
         let direction = 0;
         let counter = 0;
         let enemies = Array.new(16);
+        let firingAtY = -100;
         return this;
     }
 
@@ -72,7 +74,8 @@ class Controller {
             if (key = 131) { let direction = 1; } // up arrow
             if (key = 133) { let direction = 2; } // down arrow
             if (key = 32) { // space bar
-                do gun.fire();                
+                let firingAtY = gun.getFiringY();
+                do gun.fire();           
             }
 
             // waits for the key to be released
@@ -121,10 +124,20 @@ class Controller {
         while (i < 16) {
             if (~(enemies[i] = null)) {
                 let e = enemies[i];
-                do e.moveDown();
+                // check if is hit else move enemy down 1px
+                if (e.isHit(firingAtY)) {
+                    do e.erase();
+                    let enemies[i] = null;
+                } else {
+                    do e.moveDown();
+                    
+                }
+
             }
             let i = i + 1;
         }
+        do gun.eraseFire(firingAtY-3);
+        let firingAtY = -100;
         return;
     }
 }

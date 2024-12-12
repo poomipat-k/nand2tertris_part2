@@ -22,7 +22,32 @@ function Enemy.dispose 0
 function Enemy.isHit 0
     push argument 0
     pop pointer 0
+    push argument 1
+    push constant 1
+    add
+    push this 1
+    lt
+    not
+    if-goto Enemy_1
     push constant 0
+    return
+    goto Enemy_0
+label Enemy_1
+label Enemy_0
+    push argument 1
+    push this 1
+    push constant 15
+    add
+    gt
+    not
+    if-goto Enemy_3
+    push constant 0
+    return
+    goto Enemy_2
+label Enemy_3
+label Enemy_2
+    push constant 1
+    neg
     return
 function Enemy.draw 2
     push argument 0
@@ -250,7 +275,7 @@ function Enemy.moveDown 0
     push constant 239
     lt
     not
-    if-goto Enemy_1
+    if-goto Enemy_5
     push pointer 0
     call Enemy.erase 1
     pop temp 0
@@ -261,8 +286,8 @@ function Enemy.moveDown 0
     push pointer 0
     call Enemy.draw 1
     pop temp 0
-    goto Enemy_0
-label Enemy_1
-label Enemy_0
+    goto Enemy_4
+label Enemy_5
+label Enemy_4
     push constant 0
     return

@@ -17,6 +17,13 @@ function Gun.dispose 0
     pop temp 0
     push constant 0
     return
+function Gun.getFiringY 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    push constant 3
+    add
+    return
 function Gun.draw 1
     push argument 0
     pop pointer 0
@@ -213,13 +220,6 @@ label Gun_4
     eq
     not
     if-goto Gun_7
-    push local 0
-    push local 1
-    add
-    push constant 4079
-    neg
-    call Memory.poke 2
-    pop temp 0
     goto Gun_6
 label Gun_7
     push local 1
@@ -227,13 +227,6 @@ label Gun_7
     eq
     not
     if-goto Gun_9
-    push local 0
-    push local 1
-    add
-    push constant 4079
-    neg
-    call Memory.poke 2
-    pop temp 0
     goto Gun_8
 label Gun_9
     push local 0
@@ -251,5 +244,54 @@ label Gun_6
     pop local 1
     goto Gun_4
 label Gun_5
+    push constant 0
+    return
+function Gun.eraseFire 2
+    push argument 0
+    pop pointer 0
+    push constant 16384
+    push argument 1
+    push constant 32
+    call Math.multiply 2
+    add
+    push constant 96
+    add
+    pop local 0
+    push constant 0
+    pop local 1
+label Gun_10
+    push local 1
+    push constant 64
+    lt
+    not
+    if-goto Gun_11
+    push local 1
+    push constant 0
+    eq
+    not
+    if-goto Gun_13
+    goto Gun_12
+label Gun_13
+    push local 1
+    push constant 32
+    eq
+    not
+    if-goto Gun_15
+    goto Gun_14
+label Gun_15
+    push local 0
+    push local 1
+    add
+    push constant 0
+    call Memory.poke 2
+    pop temp 0
+label Gun_14
+label Gun_12
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Gun_10
+label Gun_11
     push constant 0
     return

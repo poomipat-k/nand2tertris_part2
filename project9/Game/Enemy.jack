@@ -14,8 +14,14 @@ class Enemy {
         return;
     }
 
-    method boolean isHit(int weaponY) {
-        return false;
+    method boolean isHit(int beamY) {
+        if (beamY+1 < y) {
+            return false;
+        }
+        if (beamY > (y+15)) {
+            return false;
+        }
+        return true;
     }
 
     method void draw() {

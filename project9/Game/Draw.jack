@@ -21,4 +21,5 @@ class Draw {
         do Memory.poke(memAddress +480, 384);
         return;
     }
+
 }

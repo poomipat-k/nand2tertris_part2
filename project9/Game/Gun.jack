@@ -14,6 +14,10 @@ class Gun {
         return;
     }
 
+    method int getFiringY() {
+        return y+3;
+    }
+
     /** Draw the gun on the screen. */
     method void draw() {
         var int memAddress; 
@@ -64,8 +68,6 @@ class Gun {
     /** fires a gun by scanning enemy  */
     method void fire() {
         do drawLaser();
-        // do Sys.wait(5);
-        // do eraseFire();
         return;
     }
 
@@ -79,30 +81,36 @@ class Gun {
         let i = 0 ;
         while (i < 64) {
             if (i = 0) {
-                do Memory.poke(memAddress + i, -4079);
+                // do Memory.poke(memAddress + i, -4079);
             } else {
                 if (i = 32) {
-                    do Memory.poke(memAddress +i, -4079);
+                    // do Memory.poke(memAddress +i, -4079);
                 } else {
                     do Memory.poke(memAddress + i, -1);
                 }
             }
             let i = i + 1;
         }
-
-        // let i = 0;
-        // while (i < 64) {
-        //     if (i = 0) {
-        //         do Memory.poke(memAddress +i, -4079);
-        //     } else {
-        //         if (i = 32) {
-        //             do Memory.poke(memAddress +i, -4079);
-        //         } else {
-        //             do Memory.poke(memAddress + i, 0);
-        //         }
-        //     }
-        //     let i = i + 1;
-        // }
         return;
+    }
+
+    method void eraseFire(int posY) {
+        var int memAddress; 
+        var int i;
+        let memAddress = 16384 + (posY*32) + 96; // 96 is skip 3 rows
+        let i = 0;
+        while (i < 64) {
+            if (i = 0) {
+                // do Memory.poke(memAddress +i, -4079);
+            } else {
+                if (i = 32) {
+                    // do Memory.poke(memAddress +i, -4079);
+                } else {
+                    do Memory.poke(memAddress + i, 0);
+                }
+            }
+            let i = i + 1;
+        }
+        return; 
     }
 }

@@ -1,5 +1,5 @@
 function Controller.new 0
-    push constant 4
+    push constant 5
     call Memory.alloc 1
     pop pointer 0
     push constant 0
@@ -13,6 +13,9 @@ function Controller.new 0
     push constant 16
     call Array.new 1
     pop this 3
+    push constant 100
+    neg
+    pop this 4
     push pointer 0
     return
 function Controller.dispose 2
@@ -194,6 +197,9 @@ label Controller_22
     not
     if-goto Controller_25
     push this 0
+    call Gun.getFiringY 1
+    pop this 4
+    push this 0
     call Gun.fire 1
     pop temp 0
     goto Controller_24
@@ -326,8 +332,27 @@ label Controller_36
     push that 0
     pop local 1
     push local 1
+    push this 4
+    call Enemy.isHit 2
+    not
+    if-goto Controller_41
+    push local 1
+    call Enemy.erase 1
+    pop temp 0
+    push local 0
+    push this 3
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Controller_40
+label Controller_41
+    push local 1
     call Enemy.moveDown 1
     pop temp 0
+label Controller_40
     goto Controller_38
 label Controller_39
 label Controller_38
@@ -337,5 +362,14 @@ label Controller_38
     pop local 0
     goto Controller_36
 label Controller_37
+    push this 0
+    push this 4
+    push constant 3
+    sub
+    call Gun.eraseFire 2
+    pop temp 0
+    push constant 100
+    neg
+    pop this 4
     push constant 0
     return

@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg"
 )
 
 func main() {
@@ -17,9 +19,32 @@ func main() {
 	for i := 0; i < len(paths); i++ {
 		fmt.Println(paths[i])
 		fmt.Println(outPaths[i])
+		tokenAnalyzer(paths[i])
 		fmt.Println("============")
 	}
+}
 
+// V.0 for unit testing tokenAnalyzer function
+func tokenAnalyzer(filePath string) {
+	tokenizer, err := jackTokenizer.NewTokenizer(filePath)
+	check(err)
+	err = tokenizer.Advance() // get the first token
+	check(err)
+
+	for tokenizer.HasMoreTokens() {
+		/*
+			tokenType = type of the current token
+			print "<" + tokenType + ">"
+			print the current token
+			print "</" + tokenType + ">"
+			print newLine
+			tokenizer.Advance()
+		*/
+		fmt.Println("line:", tokenizer.GetLine())
+		fmt.Println("cursor:", tokenizer.GetLineCursor())
+		err = tokenizer.Advance()
+		check(err)
+	}
 }
 
 // return []path, []outfilePaths
@@ -48,4 +73,10 @@ func processInputPath(path string) ([]string, []string) {
 		}
 	}
 	return jackFilePaths, outFilePaths
+}
+
+func check(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
 }

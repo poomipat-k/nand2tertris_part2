@@ -1,1 +1,5 @@
 go run main.go ExpressionLessSquare
+
+go run main.go ExpressionLessSquare/Main.jack
+
+go run main.go ExpressionLessSquare/MyMain.jack

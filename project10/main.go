@@ -49,9 +49,11 @@ func tokenAnalyzer(filePath string, outFilePath string) {
 			print newLine
 			tokenizer.Advance()
 		*/
+		tokenType := strings.ToLower(tokenizer.TokenType())
+		engine.WriteString(fmt.Sprintf("<%s> %s </%s>\n", tokenType, tokenizer.Token(), tokenType))
 		tokenizer.Advance()
 	}
-	engine.WriteString("</tokens>")
+	engine.WriteString("</tokens>\n")
 }
 
 // return []path, []outfilePaths

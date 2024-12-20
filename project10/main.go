@@ -6,7 +6,8 @@ import (
 	"os"
 	"strings"
 
-	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg"
+	compilationEngine "github.com/poomipat-k/nand2tetris/project10/pkg/compilation-engine"
+	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
 
 func main() {
@@ -19,19 +20,26 @@ func main() {
 	for i := 0; i < len(paths); i++ {
 		fmt.Println(paths[i])
 		fmt.Println(outPaths[i])
-		tokenAnalyzer(paths[i])
+		tokenAnalyzer(paths[i], outPaths[i])
 		fmt.Println("============")
 	}
 }
 
 // V.0 for unit testing tokenAnalyzer function
-func tokenAnalyzer(filePath string) {
+func tokenAnalyzer(filePath string, outFilePath string) {
 	tokenizer, err := jackTokenizer.NewTokenizer(filePath)
 	check(err)
-	err = tokenizer.Advance() // get the first token
-	check(err)
+	defer tokenizer.File.Close()
 
-	for tokenizer.HasMoreTokens() {
+	engine, err := compilationEngine.NewEngine(outFilePath)
+	check(err)
+	defer engine.File.Close()
+
+	engine.WriteString("<tokens>\n")
+
+	tokenizer.Advance() // get the first token
+
+	for !tokenizer.HasMoreTokens() {
 		/*
 			tokenType = type of the current token
 			print "<" + tokenType + ">"
@@ -40,11 +48,12 @@ func tokenAnalyzer(filePath string) {
 			print newLine
 			tokenizer.Advance()
 		*/
-		fmt.Println("line:", tokenizer.GetLine())
-		fmt.Println("cursor:", tokenizer.GetLineCursor())
-		err = tokenizer.Advance()
-		check(err)
+
+		// fmt.Println("line:", tokenizer.GetLine())
+		// fmt.Println("cursor:", tokenizer.GetLineCursor())
+		tokenizer.Advance()
 	}
+	engine.WriteString("</tokens>")
 }
 
 // return []path, []outfilePaths
@@ -55,7 +64,7 @@ func processInputPath(path string) ([]string, []string) {
 	// one .jack file
 	if len(splitFileOrDirName) == 2 {
 		fileName := splitFileOrDirName[0]
-		return []string{path}, []string{fmt.Sprintf("%s/%s.xml", strings.Join(splitsSlash[:len(splitsSlash)-1], "/"), fileName)}
+		return []string{path}, []string{fmt.Sprintf("%s/%s_generated.xml", strings.Join(splitsSlash[:len(splitsSlash)-1], "/"), fileName)}
 	}
 	// directory
 	fileInfo, err := os.ReadDir(path)

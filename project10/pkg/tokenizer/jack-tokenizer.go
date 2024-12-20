@@ -9,6 +9,13 @@ import (
 	"unicode"
 )
 
+// tokenType = [KEYWORD, SYMBOL, IDENTIFIER, INT_CONST, STRING_CONST]
+const KEYWORD = "KEYWORD"
+const SYMBOL = "SYMBOL"
+const IDENTIFIER = "IDENTIFIER"
+const INT_CONST = "INT_CONST"
+const STRING_CONST = "STRING_CONST"
+
 type Tokenizer struct {
 	scanner     *bufio.Scanner
 	File        *os.File
@@ -69,7 +76,8 @@ func (t *Tokenizer) Advance() {
 	var line string
 	multipleLnCmtOn := false
 	insideDoubleQuote := false
-	// t.token = ""
+	t.token = ""
+	t.tokenType = ""
 
 	for t.token == "" {
 		hasMoreLine := t.scanner.Scan()
@@ -86,7 +94,7 @@ func (t *Tokenizer) Advance() {
 		t.currentLine = line
 		t.lineCursor = 0
 		lineLn := len(line)
-		i := 0
+		i := t.lineCursor
 		startTokenIndex := -1
 
 		for i < lineLn {
@@ -97,17 +105,20 @@ func (t *Tokenizer) Advance() {
 				if slidingTwoChars == "*/" {
 					multipleLnCmtOn = false
 					i += 2 // set cursor to the next char to process
-					t.lineCursor = i
 				} else {
 					i++
 				}
+				t.lineCursor = i
 				continue
 			}
 			if insideDoubleQuote {
 				if line[i] == '"' {
 					t.token = line[startTokenIndex:i]
+					t.tokenType = "STRING_CONST"
 					insideDoubleQuote = false
-					startTokenIndex = -1
+					i++
+					t.lineCursor = i
+					return
 				}
 				i++
 				t.lineCursor = i
@@ -126,6 +137,8 @@ func (t *Tokenizer) Advance() {
 				continue
 			}
 
+			fmt.Println("===Start processing token")
+
 			t.lineCursor = i
 			// find token
 			fmt.Println(line)
@@ -138,15 +151,16 @@ func (t *Tokenizer) Advance() {
 			if line[i] == '"' {
 				startTokenIndex = i + 1
 				insideDoubleQuote = true
+			} else if isSymbol(rune(line[i])) {
+				t.token = string(line[i])
+				t.tokenType = "SYMBOL"
+				t.symbol = t.token
+				return
 			} else if isSpace(rune(nextChar)) || isSymbol(rune(nextChar)) {
-				fmt.Println("HERE")
-				fmt.Println(startTokenIndex, i)
-				fmt.Println(line[startTokenIndex:i])
+				t.token = "TBD"
+				return
 			}
-
-			// // set token
-			// t.token = "xxx"
-			return
+			i++
 		}
 	}
 }

@@ -23,6 +23,7 @@ type Tokenizer struct {
 	lineCursor             int
 	insideMultilineComment bool
 	insideDoubleQuote      bool
+	startTokenIndex        int
 	// essential fields
 	token      string
 	tokenType  string
@@ -97,6 +98,7 @@ func (t *Tokenizer) resetTokenStates() {
 	t.identifier = ""
 	t.intVal = 0
 	t.stringVal = ""
+	t.startTokenIndex = -1
 }
 
 func (t *Tokenizer) Advance() {
@@ -123,7 +125,7 @@ func (t *Tokenizer) Advance() {
 				continue
 			}
 		}
-		startTokenIndex := -1
+		// reset startTokenIndex
 
 		for t.lineCursor < len(t.currentLine) {
 			upperBoundInd := min(t.lineCursor+2, len(t.currentLine))
@@ -141,7 +143,7 @@ func (t *Tokenizer) Advance() {
 			}
 			if t.insideDoubleQuote {
 				if t.currentLine[t.lineCursor] == '"' {
-					t.token = t.currentLine[startTokenIndex:t.lineCursor]
+					t.token = t.currentLine[t.startTokenIndex:t.lineCursor]
 					t.tokenType = STRING_CONST
 					t.insideDoubleQuote = false
 					t.lineCursor++
@@ -166,26 +168,32 @@ func (t *Tokenizer) Advance() {
 			}
 
 			fmt.Println("===Start processing token", string(t.currentLine[t.lineCursor]))
-			// // find token
-			// if startTokenIndex == -1 {
-			// 	startTokenIndex = i
-			// }
+			// find token
+			if t.startTokenIndex == -1 {
+				t.startTokenIndex = t.lineCursor
+			}
 
-			// nextChar := line[t.lineCursor+1]
-			// if line[t.lineCursor] == '"' {
-			// 	startTokenIndex = i + 1
-			// 	t.insideDoubleQuote = true
-			// } else if isSymbol(rune(line[i])) {
-			// 	t.token = string(line[i])
-			// 	t.tokenType = "SYMBOL"
-			// 	t.symbol = t.token
-			// 	return
-			// } else if isSpace(rune(nextChar)) || isSymbol(rune(nextChar)) {
-			// 	t.token = "TBD"
-			// 	return
-			// }
+			nextChar := t.currentLine[t.lineCursor+1]
+			if t.currentLine[t.lineCursor] == '"' {
+				t.startTokenIndex = t.lineCursor + 1
+				t.insideDoubleQuote = true
+				t.lineCursor++
+				continue
+			} else if isSymbol(rune(t.currentLine[t.lineCursor])) {
+				t.token = string(t.currentLine[t.lineCursor])
+				t.tokenType = SYMBOL
+				t.symbol = t.token
+				t.lineCursor++
+				return
+			} else if isSpace(rune(nextChar)) || isSymbol(rune(nextChar)) {
+				// find tokenType [keyword, identifier, intVal]
+				fmt.Println("word:", t.currentLine[t.startTokenIndex:t.lineCursor+1], "start: ", t.startTokenIndex, " len:", len(t.currentLine[t.startTokenIndex:t.lineCursor+1]))
+				t.token = "TBD"
+				t.lineCursor++
+				return
+			}
 			t.lineCursor++
-			return
+			// return
 		}
 	}
 }

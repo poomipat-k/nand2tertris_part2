@@ -49,9 +49,6 @@ func tokenAnalyzer(filePath string, outFilePath string) {
 			print newLine
 			tokenizer.Advance()
 		*/
-
-		// fmt.Println("line:", tokenizer.GetLine())
-		// fmt.Println("cursor:", tokenizer.GetLineCursor())
 		tokenizer.Advance()
 	}
 	engine.WriteString("</tokens>")

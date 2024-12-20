@@ -3,7 +3,6 @@ package jackTokenizer
 import (
 	"bufio"
 	"fmt"
-	"math"
 	"os"
 	"strings"
 	"unicode"
@@ -17,18 +16,21 @@ const INT_CONST = "INT_CONST"
 const STRING_CONST = "STRING_CONST"
 
 type Tokenizer struct {
-	scanner     *bufio.Scanner
-	File        *os.File
-	endOfFile   bool
-	token       string
-	currentLine string
-	lineCursor  int
-	tokenType   string
-	keyWord     string
-	symbol      string
-	identifier  string
-	intVal      int
-	stringVal   string
+	scanner                *bufio.Scanner
+	File                   *os.File
+	endOfFile              bool
+	currentLine            string
+	lineCursor             int
+	insideMultilineComment bool
+	insideDoubleQuote      bool
+	// essential fields
+	token      string
+	tokenType  string
+	keyword    string
+	symbol     string
+	identifier string
+	intVal     int
+	stringVal  string
 }
 
 var symbolSet = map[rune]bool{
@@ -66,6 +68,37 @@ func NewTokenizer(filePath string) (*Tokenizer, error) {
 	return tk, nil
 }
 
+func (t *Tokenizer) Advance2() {
+	// scan until found non-comment/whitespace
+
+	// reset previous token states
+	t.resetTokenStates()
+	// scan new line and skip empty lines
+	for {
+		if !t.scanner.Scan() {
+			t.endOfFile = true
+			return
+		}
+		line := strings.TrimSpace(t.scanner.Text())
+		// skip empty line
+		if line == "" {
+			continue
+		}
+		t.currentLine = line
+		t.lineCursor = 0
+	}
+	// scan new line until reach the beginning of the new token
+}
+
+func (t *Tokenizer) resetTokenStates() {
+	t.token = ""
+	t.tokenType = ""
+	t.symbol = ""
+	t.identifier = ""
+	t.intVal = 0
+	t.stringVal = ""
+}
+
 func (t *Tokenizer) Advance() {
 	/*
 		ignore the following
@@ -73,96 +106,95 @@ func (t *Tokenizer) Advance() {
 		- inline comment
 		- multiple lines comment
 	*/
-	var line string
-	multipleLnCmtOn := false
-	insideDoubleQuote := false
-	t.token = ""
-	t.tokenType = ""
-
-	for t.token == "" {
-		hasMoreLine := t.scanner.Scan()
-		if !hasMoreLine {
-			t.endOfFile = true
-			return
+	t.resetTokenStates()
+	for {
+		if t.currentLine == "" || t.lineCursor >= len(t.currentLine) {
+			hasMoreLine := t.scanner.Scan()
+			if !hasMoreLine {
+				t.endOfFile = true
+				return
+			}
+			line := strings.TrimSpace(t.scanner.Text()) // trim left and right white space
+			fmt.Println("line:", line)
+			t.currentLine = line
+			t.lineCursor = 0
+			// skip empty line
+			if t.currentLine == "" {
+				continue
+			}
 		}
-
-		line = strings.TrimSpace(t.scanner.Text()) // trim left and right white space
-		// skip empty line
-		if line == "" {
-			continue
-		}
-		t.currentLine = line
-		t.lineCursor = 0
-		lineLn := len(line)
-		i := t.lineCursor
 		startTokenIndex := -1
 
-		for i < lineLn {
-			upperBoundInd := int(math.Min(float64(i+2), float64(lineLn)))
-			slidingTwoChars := line[i:upperBoundInd]
+		for t.lineCursor < len(t.currentLine) {
+			upperBoundInd := min(t.lineCursor+2, len(t.currentLine))
 
-			if multipleLnCmtOn {
+			slidingTwoChars := t.currentLine[t.lineCursor:upperBoundInd]
+
+			if t.insideMultilineComment {
 				if slidingTwoChars == "*/" {
-					multipleLnCmtOn = false
-					i += 2 // set cursor to the next char to process
+					t.insideMultilineComment = false
+					t.lineCursor += 2 // set cursor to the next char to process
 				} else {
-					i++
+					t.lineCursor++
 				}
-				t.lineCursor = i
 				continue
 			}
-			if insideDoubleQuote {
-				if line[i] == '"' {
-					t.token = line[startTokenIndex:i]
-					t.tokenType = "STRING_CONST"
-					insideDoubleQuote = false
-					i++
-					t.lineCursor = i
+			if t.insideDoubleQuote {
+				if t.currentLine[t.lineCursor] == '"' {
+					t.token = t.currentLine[startTokenIndex:t.lineCursor]
+					t.tokenType = STRING_CONST
+					t.insideDoubleQuote = false
+					t.lineCursor++
 					return
 				}
-				i++
-				t.lineCursor = i
+				t.lineCursor++
 				continue
 			}
-			if slidingTwoChars == "//" { // discard the remaining of this line
+			if slidingTwoChars == "//" { // discard the remaining of this line and go scan a new line
+				t.currentLine = ""
+				t.lineCursor = 0
 				break
 			}
 			if slidingTwoChars == "/*" {
-				multipleLnCmtOn = true
-				i += 2 // set cursor to the next char to process
+				t.insideMultilineComment = true
+				t.lineCursor += 2 // set cursor to the next char to process
 				continue
 			}
-			if isSpace(rune(line[i])) {
-				i++
+			if isSpace(rune(t.currentLine[t.lineCursor])) {
+				t.lineCursor++
 				continue
 			}
 
-			fmt.Println("===Start processing token")
+			fmt.Println("===Start processing token", string(t.currentLine[t.lineCursor]))
+			// // find token
+			// if startTokenIndex == -1 {
+			// 	startTokenIndex = i
+			// }
 
-			t.lineCursor = i
-			// find token
-			fmt.Println(line)
-			fmt.Println("i: ", i, ", line[i]:", string(line[i]))
-			if startTokenIndex == -1 {
-				startTokenIndex = i
-			}
-
-			nextChar := line[i+1]
-			if line[i] == '"' {
-				startTokenIndex = i + 1
-				insideDoubleQuote = true
-			} else if isSymbol(rune(line[i])) {
-				t.token = string(line[i])
-				t.tokenType = "SYMBOL"
-				t.symbol = t.token
-				return
-			} else if isSpace(rune(nextChar)) || isSymbol(rune(nextChar)) {
-				t.token = "TBD"
-				return
-			}
-			i++
+			// nextChar := line[t.lineCursor+1]
+			// if line[t.lineCursor] == '"' {
+			// 	startTokenIndex = i + 1
+			// 	t.insideDoubleQuote = true
+			// } else if isSymbol(rune(line[i])) {
+			// 	t.token = string(line[i])
+			// 	t.tokenType = "SYMBOL"
+			// 	t.symbol = t.token
+			// 	return
+			// } else if isSpace(rune(nextChar)) || isSymbol(rune(nextChar)) {
+			// 	t.token = "TBD"
+			// 	return
+			// }
+			t.lineCursor++
+			return
 		}
 	}
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 func (t *Tokenizer) GetLineCursor() int {

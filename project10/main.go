@@ -40,6 +40,7 @@ func tokenAnalyzer(filePath string, outFilePath string) {
 	tokenizer.Advance() // get the first token
 
 	for !tokenizer.HasMoreTokens() {
+
 		/*
 			tokenType = type of the current token
 			print "<" + tokenType + ">"

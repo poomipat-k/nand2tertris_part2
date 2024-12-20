@@ -69,28 +69,6 @@ func NewTokenizer(filePath string) (*Tokenizer, error) {
 	return tk, nil
 }
 
-func (t *Tokenizer) Advance2() {
-	// scan until found non-comment/whitespace
-
-	// reset previous token states
-	t.resetTokenStates()
-	// scan new line and skip empty lines
-	for {
-		if !t.scanner.Scan() {
-			t.endOfFile = true
-			return
-		}
-		line := strings.TrimSpace(t.scanner.Text())
-		// skip empty line
-		if line == "" {
-			continue
-		}
-		t.currentLine = line
-		t.lineCursor = 0
-	}
-	// scan new line until reach the beginning of the new token
-}
-
 func (t *Tokenizer) resetTokenStates() {
 	t.token = ""
 	t.tokenType = ""
@@ -125,6 +103,7 @@ func (t *Tokenizer) Advance() {
 				continue
 			}
 		}
+		// proceed char by char
 		for t.lineCursor < len(t.currentLine) {
 			upperBoundInd := min(t.lineCursor+2, len(t.currentLine))
 
@@ -195,7 +174,6 @@ func (t *Tokenizer) Advance() {
 				return
 			}
 			t.lineCursor++
-			// return
 		}
 	}
 }
@@ -205,14 +183,6 @@ func min(a, b int) int {
 		return a
 	}
 	return b
-}
-
-func (t *Tokenizer) GetLineCursor() int {
-	return t.lineCursor
-}
-
-func (t *Tokenizer) GetLine() string {
-	return t.currentLine
 }
 
 func (t *Tokenizer) HasMoreTokens() bool {

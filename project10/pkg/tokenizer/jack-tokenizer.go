@@ -117,7 +117,7 @@ func (t *Tokenizer) Advance() {
 				return
 			}
 			line := strings.TrimSpace(t.scanner.Text()) // trim left and right white space
-			fmt.Println("line:", line)
+			// fmt.Println("line:", line, "len:", len(line))
 			t.currentLine = line
 			t.lineCursor = 0
 			// skip empty line
@@ -125,8 +125,6 @@ func (t *Tokenizer) Advance() {
 				continue
 			}
 		}
-		// reset startTokenIndex
-
 		for t.lineCursor < len(t.currentLine) {
 			upperBoundInd := min(t.lineCursor+2, len(t.currentLine))
 
@@ -167,28 +165,32 @@ func (t *Tokenizer) Advance() {
 				continue
 			}
 
-			fmt.Println("===Start processing token", string(t.currentLine[t.lineCursor]))
+			// fmt.Println("===Start processing token", string(t.currentLine[t.lineCursor]))
 			// find token
 			if t.startTokenIndex == -1 {
 				t.startTokenIndex = t.lineCursor
 			}
 
-			nextChar := t.currentLine[t.lineCursor+1]
 			if t.currentLine[t.lineCursor] == '"' {
 				t.startTokenIndex = t.lineCursor + 1
 				t.insideDoubleQuote = true
 				t.lineCursor++
 				continue
-			} else if isSymbol(rune(t.currentLine[t.lineCursor])) {
+			}
+			if isSymbol(rune(t.currentLine[t.lineCursor])) {
 				t.token = string(t.currentLine[t.lineCursor])
 				t.tokenType = SYMBOL
 				t.symbol = t.token
 				t.lineCursor++
+				fmt.Println("	symbol:", t.token)
 				return
-			} else if isSpace(rune(nextChar)) || isSymbol(rune(nextChar)) {
-				// find tokenType [keyword, identifier, intVal]
-				fmt.Println("word:", t.currentLine[t.startTokenIndex:t.lineCursor+1], "start: ", t.startTokenIndex, " len:", len(t.currentLine[t.startTokenIndex:t.lineCursor+1]))
-				t.token = "TBD"
+			}
+			nextChar := t.currentLine[t.lineCursor+1]
+			if isSpace(rune(nextChar)) || isSymbol(rune(nextChar)) {
+				// find tokenType between [keyword, identifier, intVal]
+				word := t.currentLine[t.startTokenIndex : t.lineCursor+1]
+				t.token = word
+				fmt.Println("	word:", t.token)
 				t.lineCursor++
 				return
 			}

@@ -3,7 +3,9 @@ package jackTokenizer
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -54,6 +56,96 @@ var symbolSet = map[rune]bool{
 	'>': true,
 	'=': true,
 	'~': true,
+}
+
+var keywordSet = map[string]bool{
+	"class":       true,
+	"constructor": true,
+	"function":    true,
+	"method":      true,
+	"field":       true,
+	"static":      true,
+	"var":         true,
+	"int":         true,
+	"char":        true,
+	"boolean":     true,
+	"void":        true,
+	"true":        true,
+	"false":       true,
+	"null":        true,
+	"this":        true,
+	"let":         true,
+	"do":          true,
+	"if":          true,
+	"else":        true,
+	"while":       true,
+	"return":      true,
+}
+
+var identifierCharSet = map[rune]bool{
+	'a': true,
+	'b': true,
+	'c': true,
+	'd': true,
+	'e': true,
+	'f': true,
+	'g': true,
+	'h': true,
+	'i': true,
+	'j': true,
+	'k': true,
+	'l': true,
+	'm': true,
+	'n': true,
+	'o': true,
+	'p': true,
+	'q': true,
+	'r': true,
+	's': true,
+	't': true,
+	'u': true,
+	'v': true,
+	'w': true,
+	'x': true,
+	'y': true,
+	'z': true,
+	'A': true,
+	'B': true,
+	'C': true,
+	'D': true,
+	'E': true,
+	'F': true,
+	'G': true,
+	'H': true,
+	'I': true,
+	'J': true,
+	'K': true,
+	'L': true,
+	'M': true,
+	'N': true,
+	'O': true,
+	'P': true,
+	'Q': true,
+	'R': true,
+	'S': true,
+	'T': true,
+	'U': true,
+	'V': true,
+	'W': true,
+	'X': true,
+	'Y': true,
+	'Z': true,
+	'0': true,
+	'1': true,
+	'2': true,
+	'3': true,
+	'4': true,
+	'5': true,
+	'6': true,
+	'7': true,
+	'8': true,
+	'9': true,
+	'_': true,
 }
 
 func NewTokenizer(filePath string) (*Tokenizer, error) {
@@ -169,7 +261,24 @@ func (t *Tokenizer) Advance() {
 				// find tokenType between [keyword, identifier, intVal]
 				word := t.currentLine[t.startTokenIndex : t.lineCursor+1]
 				t.token = word
-				fmt.Println("	word:", t.token)
+				// fmt.Println("	word:", t.token)
+				if isKeyword(t.token) {
+					t.tokenType = KEYWORD
+					t.keyword = t.token
+					fmt.Println("	keyword:", t.token)
+				} else if isNum, val := isInt(word); isNum {
+					t.token = word
+					t.tokenType = INT_CONST
+					t.intVal = val
+					fmt.Println("	intVal:", t.token)
+				} else if isIdentifier(word) {
+					t.token = word
+					t.tokenType = IDENTIFIER
+					t.identifier = t.token
+					fmt.Println("	identifier:", t.token)
+				} else {
+					log.Fatal("unsupported char:", string(t.currentLine[t.lineCursor]))
+				}
 				t.lineCursor++
 				return
 			}
@@ -195,4 +304,44 @@ func isSymbol(c rune) bool {
 
 func isSpace(char rune) bool {
 	return unicode.IsSpace(char)
+}
+
+func isKeyword(word string) bool {
+	return keywordSet[word]
+}
+
+func isInt(word string) (bool, int) {
+	if word == "" {
+		return false, -1
+	}
+	for _, x := range word {
+		char := string(x)
+		_, err := strconv.Atoi(char)
+		if err != nil {
+			return false, -1
+		}
+	}
+	v, err := strconv.Atoi(word)
+	return err == nil, v
+}
+
+func charIsInt(char string) bool {
+	_, err := strconv.Atoi(char)
+	return err == nil
+}
+
+func isIdentifier(word string) bool {
+	// letter, digits, _ and not starting with a digit
+	if word == "" {
+		return false
+	}
+	if charIsInt(string(word[0])) {
+		return false
+	}
+	for _, c := range word {
+		if !identifierCharSet[c] {
+			return false
+		}
+	}
+	return true
 }

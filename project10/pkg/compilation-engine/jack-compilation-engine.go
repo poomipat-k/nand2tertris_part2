@@ -3,19 +3,22 @@ package compilationEngine
 import (
 	"log"
 	"os"
+
+	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
 
 type Engine struct {
-	File *os.File
+	tk      *jackTokenizer.Tokenizer
+	OutFile *os.File
 }
 
-func NewEngine(filePath string) (*Engine, error) {
-	writeFile, err := os.Create(filePath)
-	return &Engine{File: writeFile}, err
+func NewEngine(tokenizer *jackTokenizer.Tokenizer, outputPath string) (*Engine, error) {
+	writeFile, err := os.Create(outputPath)
+	return &Engine{tk: tokenizer, OutFile: writeFile}, err
 }
 
 func (e *Engine) WriteString(s string) {
-	_, err := e.File.WriteString(s)
+	_, err := e.OutFile.WriteString(s)
 	check(err)
 }
 

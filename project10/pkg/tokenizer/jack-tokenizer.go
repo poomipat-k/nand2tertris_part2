@@ -52,7 +52,7 @@ func (t *Tokenizer) Advance() {
 	for {
 		if t.currentLine == "" || t.lineCursor >= len(t.currentLine) {
 			if t.insideDoubleQuote {
-				log.Fatal("Need a \n to close string before go to a new line")
+				log.Fatal("Need a \" to close string before go to a new line")
 			}
 			hasMoreLine := t.scanner.Scan()
 			if !hasMoreLine {
@@ -147,6 +147,9 @@ func (t *Tokenizer) Advance() {
 					t.keyword = t.token
 					// fmt.Println("	keyword:", t.token)
 				} else if isNum, val := isInt(word); isNum {
+					if val > 32767 {
+						log.Fatal("int exceed max value: 32767, got:", val)
+					}
 					t.token = word
 					t.tokenType = INT_CONST
 					t.intVal = val

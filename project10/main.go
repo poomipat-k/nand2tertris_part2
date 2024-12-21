@@ -5,9 +5,6 @@ import (
 	"log"
 	"os"
 	"strings"
-
-	compilationEngine "github.com/poomipat-k/nand2tetris/project10/pkg/compilation-engine"
-	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
 
 func main() {
@@ -20,46 +17,37 @@ func main() {
 	for i := 0; i < len(paths); i++ {
 		fmt.Println(paths[i])
 		fmt.Println(outPaths[i])
-		tokenAnalyzer(paths[i], outPaths[i])
+		// tokenAnalyzer(paths[i], outPaths[i])
 		fmt.Println("============")
 	}
 }
 
-// V.0 for unit testing tokenAnalyzer function
-func tokenAnalyzer(filePath string, outFilePath string) {
-	tokenizer, err := jackTokenizer.NewTokenizer(filePath)
-	check(err)
-	defer tokenizer.File.Close()
+// // V.0 for unit testing tokenAnalyzer function
+// func tokenAnalyzer(srcFilePath string, tokenOutPath string) {
+// 	tokenizer, err := jackTokenizer.NewTokenizer(srcFilePath)
+// 	check(err)
+// 	defer tokenizer.File.Close()
 
-	engine, err := compilationEngine.NewEngine(outFilePath)
-	check(err)
-	defer engine.File.Close()
+// 	engine, err := compilationEngine.NewEngine(tokenOutPath, "")
+// 	check(err)
+// 	defer engine.OutFile.Close()
 
-	engine.WriteString("<tokens>\n")
+// 	engine.WriteString("<tokens>\n")
 
-	tokenizer.Advance() // get the first token
+// 	tokenizer.Advance() // get the first token
 
-	for !tokenizer.HasMoreTokens() {
-
-		/*
-			tokenType = type of the current token
-			print "<" + tokenType + ">"
-			print the current token
-			print "</" + tokenType + ">"
-			print newLine
-			tokenizer.Advance()
-		*/
-		tokenType := strings.ToLower(tokenizer.TokenType())
-		if tokenType == "string_const" {
-			tokenType = "stringConstant"
-		} else if tokenType == "int_const" {
-			tokenType = "integerConstant"
-		}
-		engine.WriteString(fmt.Sprintf("<%s> %s </%s>\n", tokenType, tokenizer.Token(), tokenType))
-		tokenizer.Advance()
-	}
-	engine.WriteString("</tokens>\n")
-}
+// 	for !tokenizer.HasMoreTokens() {
+// 		tokenType := strings.ToLower(tokenizer.TokenType())
+// 		if tokenType == "string_const" {
+// 			tokenType = "stringConstant"
+// 		} else if tokenType == "int_const" {
+// 			tokenType = "integerConstant"
+// 		}
+// 		engine.WriteString(fmt.Sprintf("<%s> %s </%s>\n", tokenType, tokenizer.Token(), tokenType))
+// 		tokenizer.Advance()
+// 	}
+// 	engine.WriteString("</tokens>\n")
+// }
 
 // return []path, []outfilePaths
 func processInputPath(path string) ([]string, []string) {

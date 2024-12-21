@@ -3,3 +3,7 @@ go run main.go ExpressionLessSquare
 go run main.go ExpressionLessSquare/Main.jack
 
 go run main.go ExpressionLessSquare/MyMain.jack
+
+
+Square
+go run main.go Square/Main.jack

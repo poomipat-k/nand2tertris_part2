@@ -119,7 +119,17 @@ func (t *Tokenizer) Advance() {
 				continue
 			}
 			if isSymbol(rune(t.currentLine[t.lineCursor])) {
-				t.token = string(t.currentLine[t.lineCursor])
+				token := string(t.currentLine[t.lineCursor])
+				if token == "<" {
+					token = "&lt;"
+				} else if token == ">" {
+					token = "&gt;"
+				} else if token == "\"" {
+					token = "&quot;"
+				} else if token == "&" {
+					token = "&amp;"
+				}
+				t.token = token
 				t.tokenType = SYMBOL
 				t.symbol = t.token
 				t.lineCursor++

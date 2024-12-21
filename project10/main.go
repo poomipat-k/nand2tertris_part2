@@ -50,6 +50,11 @@ func tokenAnalyzer(filePath string, outFilePath string) {
 			tokenizer.Advance()
 		*/
 		tokenType := strings.ToLower(tokenizer.TokenType())
+		if tokenType == "string_const" {
+			tokenType = "stringConstant"
+		} else if tokenType == "int_const" {
+			tokenType = "integerConstant"
+		}
 		engine.WriteString(fmt.Sprintf("<%s> %s </%s>\n", tokenType, tokenizer.Token(), tokenType))
 		tokenizer.Advance()
 	}

@@ -51,13 +51,15 @@ func (t *Tokenizer) Advance() {
 	t.resetTokenStates()
 	for {
 		if t.currentLine == "" || t.lineCursor >= len(t.currentLine) {
+			if t.insideDoubleQuote {
+				log.Fatal("Need a \n to close string before go to a new line")
+			}
 			hasMoreLine := t.scanner.Scan()
 			if !hasMoreLine {
 				t.endOfFile = true
 				return
 			}
 			line := strings.TrimSpace(t.scanner.Text()) // trim left and right white space
-			// fmt.Println("line:", line, "len:", len(line))
 			t.currentLine = line
 			t.lineCursor = 0
 			// skip empty line
@@ -106,7 +108,6 @@ func (t *Tokenizer) Advance() {
 				continue
 			}
 
-			// fmt.Println("===Start processing token", string(t.currentLine[t.lineCursor]))
 			// find token
 			if t.startTokenIndex == -1 {
 				t.startTokenIndex = t.lineCursor

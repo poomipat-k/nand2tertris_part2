@@ -5,6 +5,9 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	compilationEngine "github.com/poomipat-k/nand2tetris/project10/pkg/compilation-engine"
+	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
 
 func main() {
@@ -13,13 +16,32 @@ func main() {
 		log.Fatal("filePath or dirPath is required")
 	}
 
-	paths, outPaths := processInputPath(inputPath)
-	for i := 0; i < len(paths); i++ {
-		fmt.Println(paths[i])
+	srcPaths, outPaths := processInputPath(inputPath)
+
+	for i := 0; i < len(srcPaths); i++ {
+		fmt.Println(srcPaths[i])
 		fmt.Println(outPaths[i])
 		// tokenAnalyzer(paths[i], outPaths[i])
+		compile(srcPaths[i], outPaths[i])
+
 		fmt.Println("============")
 	}
+}
+
+func compile(srcFilePath string, outputPath string) {
+	tknz, err := jackTokenizer.NewTokenizer(srcFilePath)
+	check(err)
+	defer tknz.File.Close()
+
+	engine, err := compilationEngine.NewEngine(tknz, outputPath)
+	check(err)
+	defer engine.OutFile.Close()
+
+	tknz.Advance()
+	if tknz.Token() != "class" {
+		log.Fatal("First token should be a 'class' keyword")
+	}
+	engine.CompileClass()
 }
 
 // // V.0 for unit testing tokenAnalyzer function

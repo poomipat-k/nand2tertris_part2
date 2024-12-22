@@ -114,6 +114,7 @@ var identifierCharSet = map[rune]bool{
 
 // tokenType = [KEYWORD, SYMBOL, IDENTIFIER, INT_CONST, STRING_CONST]
 const KEYWORD = "KEYWORD"
+
 const SYMBOL = "SYMBOL"
 const IDENTIFIER = "IDENTIFIER"
 const INT_CONST = "INT_CONST"

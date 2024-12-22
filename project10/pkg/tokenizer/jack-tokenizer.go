@@ -132,9 +132,9 @@ func (t *Tokenizer) Advance() {
 				}
 				t.token = token
 				t.tokenType = SYMBOL
-				t.symbol = t.token
+				t.symbol = token
 				t.lineCursor++
-				// fmt.Println("	symbol:", t.token)
+				// fmt.Println("	symbol:", token)
 				return
 			}
 			nextChar := t.currentLine[t.lineCursor+1]

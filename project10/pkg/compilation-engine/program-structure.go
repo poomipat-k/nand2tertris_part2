@@ -3,9 +3,11 @@ package compilationEngine
 import (
 	"fmt"
 	"log"
+
+	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
 
-// class: 'class' className '{' classVarDec* subroutineDec* '}'
+/** class: 'class' className '{' classVarDec* subroutineDec* '}' */
 func (e *Engine) CompileClass() {
 	fmt.Println("---- compile class ----")
 	if e.tk.Keyword() != "class" {
@@ -13,34 +15,144 @@ func (e *Engine) CompileClass() {
 	}
 
 	e.WriteString("<class>\n")
-	e.WriteString(fmt.Sprintf("<keyword> %s </keyword>\n", e.tk.Keyword()))
+	e.writeKeyword()
 
 	e.tk.Advance()
 	if e.tk.Identifier() == "" {
 		log.Fatal("expect an identifier (className)")
 	}
-	e.WriteString(fmt.Sprintf("<identifier> %s </identifier>", e.tk.Identifier()))
+	e.writeIdentifier()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "{" {
 		log.Fatal("expect an '{'")
 	}
-	e.WriteString(fmt.Sprintf("<symbol> %s </symbol>", e.tk.Symbol()))
+
+	e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileClassVarDec() // classVarDec*
+	e.CompileSubroutine()  // subRoutine*
+
+	if e.tk.Symbol() != "}" {
+		log.Fatal("expect a '}' at the end of a class")
+	}
+	e.writeSymbol()
 
 	e.WriteString("</class>\n")
 }
 
-// ('static' | 'field') type varName (',' varName)* ';'
+/** (('static' | 'field') type varName (',' varName)* ';')* */
 func (e *Engine) CompileClassVarDec() {
 	fmt.Println("---- compile classVarDec ----")
-	if e.tk.Keyword() != "static" && e.tk.Keyword() != "field" {
+	if !classVarScope[e.tk.Keyword()] {
 		return
 	}
 
-	e.WriteString("<classVarDec>\n")
+	// at least one classVarDec exist
+	for {
+		if e.tk.Symbol() == "}" || subroutineDec[e.tk.Keyword()] {
+			break
+		}
+		e.WriteString("<classVarDec>\n")
+		e.compileOneClassVarDec()
+		e.WriteString("</classVarDec>\n")
+		e.tk.Advance()
+	}
+}
 
-	e.WriteString("</classVarDec>\n")
+// ('static' | 'field') type varName (',' varName)* ';'
+func (e *Engine) compileOneClassVarDec() {
+	if !classVarScope[e.tk.Keyword()] {
+		log.Fatal("expect static or field")
+	}
+	// static | field
+	e.writeKeyword()
+
+	e.tk.Advance()
+	// type
+	if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
+		e.writeKeyword()
+	} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
+		e.writeIdentifier()
+	} else {
+		log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
+	}
+
+	e.tk.Advance()
+	// varName
+	if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+		log.Fatal("expect identifier")
+	}
+	e.writeIdentifier()
+
+	e.tk.Advance()
+	if e.tk.TokenType() != jackTokenizer.SYMBOL || (e.tk.Symbol() != "," && e.tk.Symbol() != ";") {
+		log.Fatal("expect ',' or ';'")
+	}
+
+	// has more than one variable
+	for e.tk.Symbol() != ";" {
+		if e.tk.Symbol() == "," {
+			e.writeSymbol()
+		} else if e.tk.Identifier() != "" {
+			e.writeIdentifier()
+		} else {
+			log.Fatal("expect ',' or identifier or ';'")
+		}
+		e.tk.Advance()
+	}
+
+	// write ;
+	e.writeSymbol()
+}
+
+func (e *Engine) CompileSubroutine() {
+	if !subroutineDec[e.tk.Keyword()] {
+		return
+	}
+	// at least 1 subroutine exists
+
+	for {
+		e.WriteString("<subroutineDec>\n")
+		e.writeKeyword()
+
+		e.tk.Advance()
+		// subroutine return type
+		if e.tk.TokenType() == jackTokenizer.KEYWORD && (jackType[e.tk.Keyword()] || e.tk.Keyword() == "void") {
+			e.writeKeyword()
+		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
+			e.writeIdentifier()
+		} else {
+			log.Fatal("subroutine return type, expect 'void' | 'int' | 'char' | 'boolean' | className(identifier)")
+		}
+
+		e.tk.Advance()
+		if e.tk.Identifier() == "" {
+			log.Fatal("expect an identifier (subRoutineName)")
+		}
+		e.writeIdentifier()
+
+		e.tk.Advance()
+		if e.tk.Symbol() != "(" {
+			log.Fatal("expect a '('")
+		}
+		e.writeSymbol()
+
+		// parameterList
+
+		e.tk.Advance()
+		if e.tk.Symbol() != ")" {
+			log.Fatal("expect a ')'")
+		}
+		e.writeSymbol()
+
+		// subroutineBody
+
+		e.WriteString("</subroutineDec>\n")
+	}
+}
+
+func (e *Engine) CompileParameterList() {
+
 }

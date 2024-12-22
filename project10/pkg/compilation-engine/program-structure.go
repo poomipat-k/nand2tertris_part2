@@ -142,17 +142,16 @@ func (e *Engine) CompileSubroutine() {
 		// parameterList
 		e.tk.Advance()
 		e.CompileParameterList()
-
 		// end parameterList
 
-		// e.tk.Advance()
 		if e.tk.Symbol() != ")" {
 			log.Fatal("expect a ')'")
 		}
 		e.writeSymbol()
 
+		e.tk.Advance()
 		// subroutineBody
-
+		e.CompileSubroutineBody()
 		// end subroutineBody
 
 		e.WriteString("</subroutineDec>\n")
@@ -160,6 +159,7 @@ func (e *Engine) CompileSubroutine() {
 }
 
 func (e *Engine) CompileParameterList() {
+	fmt.Println("--- CompileParameterList ---")
 	e.WriteString("<parameterList>\n")
 
 	for e.tk.Symbol() != ")" {
@@ -188,4 +188,84 @@ func (e *Engine) CompileParameterList() {
 	}
 
 	e.WriteString("</parameterList>\n")
+}
+
+func (e *Engine) CompileSubroutineBody() {
+	fmt.Println("--- CompileSubroutineBody ---")
+
+	e.WriteString("<subroutineBody>\n")
+	if e.tk.Symbol() != "{" {
+		log.Fatal("CompileSubroutineBody expect a '{'")
+	}
+	e.writeSymbol()
+
+	// varDec*
+	e.tk.Advance()
+	e.CompileVarDec()
+	// end varDec*
+
+	// statements
+	e.tk.Advance()
+	e.CompileStatements()
+
+	// end statements
+
+	e.WriteString("</subroutineBody>\n")
+
+}
+
+/** varDec: 'var' type varName (',' varName)* ';' */
+func (e *Engine) CompileVarDec() {
+	fmt.Println("--- CompileVarDec ---")
+	// if e.tk.Keyword() != "var" {
+	// 	return
+	// }
+	i := 0
+	for e.tk.Keyword() == "var" {
+		// open tag <varDec>
+		e.WriteString("<varDec>\n")
+		for e.tk.Symbol() != ";" {
+			// 'var'
+			e.writeKeyword()
+
+			e.tk.Advance()
+			// type
+			if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
+				e.writeKeyword()
+			} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
+				e.writeIdentifier()
+			} else {
+				log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
+			}
+
+			e.tk.Advance()
+			// varName
+			if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+				log.Fatal("varDec varName: expect an identifier")
+			}
+			e.writeIdentifier()
+
+			e.tk.Advance()
+			// optional ","
+			if e.tk.Symbol() == "," {
+				e.writeSymbol()
+				e.tk.Advance()
+			}
+		}
+		// write ';'
+		e.writeSymbol()
+
+		// closing tag </varDec>
+		e.WriteString("</varDec>\n")
+
+		e.tk.Advance()
+
+		i++
+		if i >= 4 {
+			fmt.Println("current: ", e.tk.Token())
+			fmt.Println("exceed 4")
+			return
+		}
+	}
+
 }

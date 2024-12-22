@@ -16,3 +16,11 @@ var jackType = map[string]bool{
 	"char":    true,
 	"boolean": true,
 }
+
+var statementKeywords = map[string]bool{
+	"let":    true,
+	"if":     true,
+	"while":  true,
+	"do":     true,
+	"return": true,
+}

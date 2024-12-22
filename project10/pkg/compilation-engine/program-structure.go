@@ -140,8 +140,12 @@ func (e *Engine) CompileSubroutine() {
 		e.writeSymbol()
 
 		// parameterList
-
 		e.tk.Advance()
+		e.CompileParameterList()
+
+		// end parameterList
+
+		// e.tk.Advance()
 		if e.tk.Symbol() != ")" {
 			log.Fatal("expect a ')'")
 		}
@@ -149,10 +153,39 @@ func (e *Engine) CompileSubroutine() {
 
 		// subroutineBody
 
+		// end subroutineBody
+
 		e.WriteString("</subroutineDec>\n")
 	}
 }
 
 func (e *Engine) CompileParameterList() {
+	e.WriteString("<parameterList>\n")
 
+	for e.tk.Symbol() != ")" {
+		// type
+		if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
+			e.writeKeyword()
+		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
+			e.writeIdentifier()
+		} else {
+			log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
+		}
+
+		e.tk.Advance()
+		// varName
+		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+			log.Fatal("parameterList varName: expect an identifier")
+		}
+		e.writeIdentifier()
+
+		e.tk.Advance()
+		// optional ","
+		if e.tk.Symbol() == "," {
+			e.writeSymbol()
+			e.tk.Advance()
+		}
+	}
+
+	e.WriteString("</parameterList>\n")
 }

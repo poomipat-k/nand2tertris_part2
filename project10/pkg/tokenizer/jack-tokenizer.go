@@ -19,13 +19,14 @@ type Tokenizer struct {
 	insideDoubleQuote      bool
 	startTokenIndex        int
 	// essential fields
-	token      string
-	tokenType  string
-	keyword    string
-	symbol     string
-	identifier string
-	intVal     int
-	stringVal  string
+	token       string
+	tokenType   string
+	keyword     string
+	symbol      string
+	identifier  string
+	intVal      int
+	stringVal   string
+	skipAdvance bool
 }
 
 func NewTokenizer(filePath string) (*Tokenizer, error) {
@@ -192,6 +193,14 @@ func (t *Tokenizer) StringVal() string {
 	return t.stringVal
 }
 
+func (t *Tokenizer) SkipAdvance() bool {
+	return t.skipAdvance
+}
+
+func (t *Tokenizer) SetSkipAdvance(skip bool) {
+	t.skipAdvance = skip
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a
@@ -260,4 +269,5 @@ func (t *Tokenizer) resetTokenStates() {
 	t.intVal = 0
 	t.stringVal = ""
 	t.startTokenIndex = -1
+	t.skipAdvance = false
 }

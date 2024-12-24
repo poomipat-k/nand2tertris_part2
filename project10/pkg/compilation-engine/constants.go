@@ -43,3 +43,8 @@ var opSymbol = map[string]bool{
 	">": true,
 	"=": true,
 }
+
+var unaryOp = map[string]bool{
+	"-": true,
+	"~": true,
+}

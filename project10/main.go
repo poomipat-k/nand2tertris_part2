@@ -41,6 +41,7 @@ func compile(srcFilePath string, outputPath string) {
 	if tknz.Token() != "class" {
 		log.Fatal("First token should be a 'class' keyword")
 	}
+
 	engine.CompileClass()
 }
 

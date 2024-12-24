@@ -13,7 +13,10 @@ func (e *Engine) CompileExpression() {
 	e.WriteString("<expression>\n")
 
 	// term
-	e.CompileTerm()
+
+	if !e.tk.SkipAdvance() {
+		e.CompileTerm()
+	}
 	// end term
 
 	e.tk.Advance()
@@ -24,7 +27,9 @@ func (e *Engine) CompileExpression() {
 		e.tk.Advance()
 		e.CompileTerm()
 
-		e.tk.Advance()
+		if !e.tk.SkipAdvance() {
+			e.CompileTerm()
+		}
 	}
 
 	e.WriteString("</expression>\n")
@@ -39,41 +44,94 @@ term:
 func (e *Engine) CompileTerm() {
 	fmt.Println("--- CompileTerm ---")
 
-	if !e.isTerm() {
-		log.Fatal("CompileTerm, expect a term, got:", e.tk.Token())
-	}
-	fmt.Println("== isTerm")
 	e.WriteString("<term>\n")
 	tokenType := e.tk.TokenType()
+
 	if tokenType == jackTokenizer.INT_CONST {
 		e.writeIntegerConst()
 	} else if tokenType == jackTokenizer.STRING_CONST {
 		e.writeStringConst()
 	} else if keywordConstant[e.tk.Keyword()] {
 		e.writeKeyword()
+	} else if e.tk.Symbol() == "(" {
+		fmt.Println("==(expression)")
+		e.writeSymbol()
+
+		e.tk.Advance()
+		e.CompileExpression()
+
+		if e.tk.Symbol() != ")" {
+			log.Fatal("CompileTerm, expect a closing ), got", e.tk.Token())
+		}
+		e.writeSymbol()
+	} else if unaryOp[e.tk.Symbol()] {
+		fmt.Println("==unaryOp")
+		e.writeSymbol()
+		e.tk.Advance()
+		e.CompileTerm()
 	} else if tokenType == jackTokenizer.IDENTIFIER {
 		e.writeIdentifier()
+
+		e.tk.Advance()
+		if e.tk.Symbol() == "[" {
+			e.writeSymbol()
+
+			e.tk.Advance()
+			e.CompileExpression()
+
+			e.tk.Advance()
+			if e.tk.Symbol() != "]" {
+				log.Fatal("CompileTerm, expect a ']'")
+			}
+			e.writeSymbol()
+		} else if e.tk.Symbol() == "(" {
+			e.writeSymbol()
+
+			e.tk.Advance()
+			e.CompileExpressionList()
+
+			if e.tk.Symbol() != ")" {
+				log.Fatal("CompileTerm, expect a ')'")
+			}
+			e.writeSymbol()
+
+		} else if e.tk.Symbol() == "." {
+			// className or varName
+			e.writeSymbol()
+
+			e.tk.Advance()
+			if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+				log.Fatal("CompileTerm className|varName (identifier) (expect identifier), got:", e.tk.Token())
+			}
+			e.writeIdentifier()
+
+			e.tk.Advance()
+			if e.tk.Symbol() != "(" {
+				log.Fatal("CompileTerm expect '('")
+			}
+			e.writeSymbol()
+
+			e.tk.Advance()
+			e.CompileExpressionList()
+
+			if e.tk.Symbol() != ")" {
+				log.Fatal("CompileTerm, expect a ')'")
+			}
+			e.writeSymbol()
+		} else {
+			// varName do nothing
+			fmt.Println("===varName, then set skipAdvance because it is advanced already")
+			e.tk.SetSkipAdvance(true)
+		}
+
 	} else {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
-
 	e.WriteString("</term>\n")
-
 }
 
 /* expressionList: (expression(',' expression)*)? */
 func (e *Engine) CompileExpressionList() {
 	fmt.Println("--- CompileExpressionList ---")
 
-}
-
-func (e *Engine) isTerm() bool {
-	tokenType := e.tk.TokenType()
-	if tokenType == jackTokenizer.INT_CONST ||
-		tokenType == jackTokenizer.STRING_CONST ||
-		keywordConstant[e.tk.Keyword()] ||
-		e.tk.Identifier() != "" {
-		return true
-	}
-	return false
 }

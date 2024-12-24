@@ -98,7 +98,58 @@ func (e *Engine) CompileLet() {
 /* 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')? */
 func (e *Engine) CompileIf() {
 	fmt.Println("--- CompileIf ---")
+	// if
 	e.writeKeyword()
+
+	e.tk.Advance()
+	if e.tk.Symbol() != "(" {
+		log.Fatal("CompileIf, expect a '('")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	e.CompileExpression()
+
+	if e.tk.Symbol() != ")" {
+		log.Fatal("CompileIf, expect a ')'")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	if e.tk.Symbol() != "{" {
+		log.Fatal("CompileIf, expect a '{'")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	e.CompileStatements()
+
+	if e.tk.Symbol() != "}" {
+		log.Fatal("CompileIf, expect a '}'")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	// check if there is an else clause
+	if e.tk.Keyword() != "else" {
+		return
+	}
+	e.writeKeyword()
+
+	e.tk.Advance()
+	if e.tk.Symbol() != "{" {
+		log.Fatal("CompileIf, expect a '{'")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	e.CompileStatements()
+
+	if e.tk.Symbol() != "}" {
+		log.Fatal("CompileIf, expect a '}'")
+	}
+	e.writeSymbol()
+
 }
 
 /* 'while' '(' expression ')' '{' expressions '}' */
@@ -111,6 +162,9 @@ func (e *Engine) CompileWhile() {
 func (e *Engine) CompileDo() {
 	fmt.Println("--- CompileDo ---")
 	e.writeKeyword()
+
+	e.tk.Advance()
+	e.CompileExpression()
 }
 
 /* 'return' expression? ';' */

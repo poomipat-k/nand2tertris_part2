@@ -20,7 +20,6 @@ func (e *Engine) CompileStatements() {
 	}
 
 	// TODO: need a for loop
-
 	e.WriteString("<statements>\n")
 
 	if e.tk.Keyword() == "let" {

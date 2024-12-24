@@ -13,13 +13,12 @@ func (e *Engine) CompileExpression() {
 	e.WriteString("<expression>\n")
 
 	// term
-
-	if !e.tk.SkipAdvance() {
-		e.CompileTerm()
-	}
+	e.CompileTerm()
 	// end term
 
-	e.tk.Advance()
+	if !e.tk.SkipAdvance() {
+		e.tk.Advance()
+	}
 	// (op term)*
 	for opSymbol[e.tk.Symbol()] {
 		e.writeSymbol()
@@ -28,7 +27,7 @@ func (e *Engine) CompileExpression() {
 		e.CompileTerm()
 
 		if !e.tk.SkipAdvance() {
-			e.CompileTerm()
+			e.tk.Advance()
 		}
 	}
 
@@ -123,15 +122,35 @@ func (e *Engine) CompileTerm() {
 			fmt.Println("===varName, then set skipAdvance because it is advanced already")
 			e.tk.SetSkipAdvance(true)
 		}
-
 	} else {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
 	e.WriteString("</term>\n")
 }
 
+func (e *Engine) isTerm() bool {
+	tokenType := e.tk.TokenType()
+	return tokenType == jackTokenizer.INT_CONST ||
+		tokenType == jackTokenizer.STRING_CONST ||
+		keywordConstant[e.tk.Keyword()] ||
+		e.tk.Symbol() == "(" ||
+		unaryOp[e.tk.Symbol()] ||
+		tokenType == jackTokenizer.IDENTIFIER
+}
+
 /* expressionList: (expression(',' expression)*)? */
 func (e *Engine) CompileExpressionList() {
 	fmt.Println("--- CompileExpressionList ---")
+	if !e.isTerm() {
+		fmt.Println("===empty expressionList")
+		return
+	}
+	e.CompileExpression()
 
+	for e.tk.Symbol() == "," {
+		e.writeSymbol()
+
+		e.tk.Advance()
+		e.CompileExpression()
+	}
 }

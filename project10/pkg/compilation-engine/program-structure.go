@@ -7,7 +7,7 @@ import (
 	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
 
-/** class: 'class' className '{' classVarDec* subroutineDec* '}' */
+/* class: 'class' className '{' classVarDec* subroutineDec* '}' */
 func (e *Engine) CompileClass() {
 	fmt.Println("---- compile class ----")
 	if e.tk.Keyword() != "class" {
@@ -42,7 +42,7 @@ func (e *Engine) CompileClass() {
 	e.WriteString("</class>\n")
 }
 
-/** (('static' | 'field') type varName (',' varName)* ';')* */
+/* (('static' | 'field') type varName (',' varName)* ';')* */
 func (e *Engine) CompileClassVarDec() {
 	fmt.Println("---- compile classVarDec ----")
 	if !classVarScope[e.tk.Keyword()] {
@@ -107,7 +107,7 @@ func (e *Engine) compileOneClassVarDec() {
 	e.writeSymbol()
 }
 
-/** ('constructor' | 'function' | 'method') ('void' | type) subroutineName '(' parameterList ')' subroutineBody  */
+/* ('constructor' | 'function' | 'method') ('void' | type) subroutineName '(' parameterList ')' subroutineBody  */
 func (e *Engine) CompileSubroutineDec() {
 	if !subroutineDec[e.tk.Keyword()] {
 		return
@@ -191,7 +191,7 @@ func (e *Engine) CompileParameterList() {
 	e.WriteString("</parameterList>\n")
 }
 
-/** '{' varDec* statements '}' */
+/* '{' varDec* statements '}' */
 func (e *Engine) CompileSubroutineBody() {
 	fmt.Println("--- CompileSubroutineBody ---")
 
@@ -215,7 +215,7 @@ func (e *Engine) CompileSubroutineBody() {
 
 }
 
-/** varDec: 'var' type varName (',' varName)* ';' */
+/* varDec: 'var' type varName (',' varName)* ';' */
 func (e *Engine) CompileVarDec() {
 	fmt.Println("--- CompileVarDec ---")
 	i := 0

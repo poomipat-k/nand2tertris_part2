@@ -24,3 +24,10 @@ var statementKeywords = map[string]bool{
 	"do":     true,
 	"return": true,
 }
+
+var keywordConstant = map[string]bool{
+	"true":  true,
+	"false": true,
+	"null":  true,
+	"this":  true,
+}

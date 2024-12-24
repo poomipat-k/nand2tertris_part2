@@ -41,7 +41,7 @@ func (e *Engine) CompileStatements() {
 
 }
 
-/** 'let' varName('['expression']')? '=' expression ';' */
+/* 'let' varName('['expression']')? '=' expression ';' */
 func (e *Engine) CompileLet() {
 	fmt.Println("--- CompileLet ---")
 
@@ -95,25 +95,25 @@ func (e *Engine) CompileLet() {
 	e.WriteString("</letStatement>\n")
 }
 
-/** 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')? */
+/* 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')? */
 func (e *Engine) CompileIf() {
 	fmt.Println("--- CompileIf ---")
 	e.writeKeyword()
 }
 
-/** 'while' '(' expression ')' '{' expressions '}' */
+/* 'while' '(' expression ')' '{' expressions '}' */
 func (e *Engine) CompileWhile() {
 	fmt.Println("--- CompileWhile ---")
 	e.writeKeyword()
 }
 
-/** 'do' subroutineCall ';' */
+/* 'do' subroutineCall ';' */
 func (e *Engine) CompileDo() {
 	fmt.Println("--- CompileDo ---")
 	e.writeKeyword()
 }
 
-/** 'return' expression? ';' */
+/* 'return' expression? ';' */
 func (e *Engine) CompileReturn() {
 	fmt.Println("--- CompileReturn ---")
 	e.writeKeyword()

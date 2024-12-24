@@ -254,6 +254,7 @@ func isIdentifier(word string) bool {
 func (t *Tokenizer) resetTokenStates() {
 	t.token = ""
 	t.tokenType = ""
+	t.keyword = ""
 	t.symbol = ""
 	t.identifier = ""
 	t.intVal = 0

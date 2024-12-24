@@ -11,52 +11,88 @@ statement: letStatement | ifStatement | whileStatement | doStatement | returnSta
 */
 func (e *Engine) CompileStatements() {
 	fmt.Println("--- CompileStatements ---")
+	fmt.Println("type: ", e.tk.TokenType())
+	fmt.Println("token: ", e.tk.Token())
 
 	// no statements
 	if !statementKeywords[e.tk.Keyword()] {
 		return
 	}
 
-	keyword := e.tk.Keyword()
 	// TODO: need a for loop
-	if keyword == "let" {
+
+	e.WriteString("<statements>\n")
+
+	if e.tk.Keyword() == "let" {
 		e.CompileLet()
-	} else if keyword == "if" {
+	} else if e.tk.Keyword() == "if" {
 		e.CompileIf()
-	} else if keyword == "while" {
+	} else if e.tk.Keyword() == "while" {
 		e.CompileWhile()
-	} else if keyword == "do" {
+	} else if e.tk.Keyword() == "do" {
 		e.CompileDo()
-	} else if keyword == "return" {
+	} else if e.tk.Keyword() == "return" {
 		e.CompileReturn()
 	} else {
 		log.Fatal("CompileStatements, expect a statement keyword (let | if | while | do | return)")
 	}
+
+	e.WriteString("</statements>\n")
+
 }
 
 /** 'let' varName('['expression']')? '=' expression ';' */
 func (e *Engine) CompileLet() {
 	fmt.Println("--- CompileLet ---")
+
+	e.WriteString("<letStatement>\n")
 	// let
 	e.writeKeyword()
 
 	e.tk.Advance()
 	// varName
 	if e.tk.Identifier() == "" {
-		log.Fatal("CompileLet, expect a varName(identifier)")
+		log.Fatal("CompileLet, expect a varName(identifier), got:", e.tk.Token(), " ", e.tk.TokenType())
 	}
 	e.writeIdentifier()
 
 	e.tk.Advance()
-	// '[' or '='
-	if e.tk.Symbol() == "=" {
+	// '['
+	if e.tk.Symbol() == "[" {
+		e.writeSymbol()
 
-	} else if e.tk.Symbol() == "[" {
+		e.tk.Advance()
+		// expression
+		e.CompileExpression()
+		// end expression
 
-	} else {
-		log.Fatal("CompileLet, expect = or [")
+		if e.tk.Symbol() != "]" {
+			log.Fatal("CompileLet, expect a ]")
+		}
+		// ']'
+		e.writeSymbol()
+		e.tk.Advance()
 	}
 
+	if e.tk.Symbol() != "=" {
+		log.Fatal("CompileLet, expect = or [")
+
+	}
+
+	// '='
+	e.writeSymbol()
+
+	e.tk.Advance()
+	// expression
+	e.CompileExpression()
+	// end expression
+
+	if e.tk.Symbol() != ";" {
+		log.Fatal("CompileLet, expect a ';'")
+	}
+	// ';'
+	e.writeSymbol()
+	e.WriteString("</letStatement>\n")
 }
 
 /** 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')? */

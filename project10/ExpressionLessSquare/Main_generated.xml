@@ -9,22 +9,23 @@
     <symbol> ; </symbol>
 </classVarDec>
 <subroutineDec>
-    <keyword> function </keyword>
-    <keyword> void </keyword>
-    <identifier> main </identifier>
-    <symbol> ( </symbol>
-    <parameterList>
+<keyword> function </keyword>
+<keyword> void </keyword>
+<identifier> main </identifier>
+<symbol> ( </symbol>
+<parameterList>
 </parameterList>
-    <symbol> ) </symbol>
-    <subroutineBody>
-        <symbol> { </symbol>
-        <varDec>
-            <keyword> var </keyword>
-            <identifier> SquareGame </identifier>
-            <identifier> game </identifier>
-            <symbol> ; </symbol>
-        </varDec>
-    </subroutineBody>
-</subroutineDec>
-<subroutineDec>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<varDec>
+    <keyword> var </keyword>
+    <identifier> SquareGame </identifier>
+    <identifier> game </identifier>
+    <symbol> ; </symbol>
+</varDec>
+<statements>
+<letStatement>
 <keyword> let </keyword>
+<identifier> game </identifier>
+<symbol> = </symbol>

@@ -207,7 +207,6 @@ func (e *Engine) CompileSubroutineBody() {
 	// end varDec*
 
 	// statements
-	e.tk.Advance()
 	e.CompileStatements()
 
 	// end statements

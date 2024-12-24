@@ -2,6 +2,7 @@ package compilationEngine
 
 import (
 	"fmt"
+	"log"
 
 	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
@@ -11,8 +12,22 @@ func (e *Engine) CompileExpression() {
 	fmt.Println("--- CompileExpression ---")
 	e.WriteString("<expression>\n")
 
-	e.WriteString("</expression>\n")
+	// term
+	e.CompileTerm()
+	// end term
 
+	e.tk.Advance()
+	// (op term)*
+	for opSymbol[e.tk.Symbol()] {
+		e.writeSymbol()
+
+		e.tk.Advance()
+		e.CompileTerm()
+
+		e.tk.Advance()
+	}
+
+	e.WriteString("</expression>\n")
 }
 
 /*
@@ -24,12 +39,25 @@ term:
 func (e *Engine) CompileTerm() {
 	fmt.Println("--- CompileTerm ---")
 
-	if e.isTerm() {
-		fmt.Println("== isTerm")
-		e.WriteString("<term>\n")
-
-		e.WriteString("</term>\n")
+	if !e.isTerm() {
+		log.Fatal("CompileTerm, expect a term, got:", e.tk.Token())
 	}
+	fmt.Println("== isTerm")
+	e.WriteString("<term>\n")
+	tokenType := e.tk.TokenType()
+	if tokenType == jackTokenizer.INT_CONST {
+		e.writeIntegerConst()
+	} else if tokenType == jackTokenizer.STRING_CONST {
+		e.writeStringConst()
+	} else if keywordConstant[e.tk.Keyword()] {
+		e.writeKeyword()
+	} else if tokenType == jackTokenizer.IDENTIFIER {
+		e.writeIdentifier()
+	} else {
+		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
+	}
+
+	e.WriteString("</term>\n")
 
 }
 

@@ -31,3 +31,15 @@ var keywordConstant = map[string]bool{
 	"null":  true,
 	"this":  true,
 }
+
+var opSymbol = map[string]bool{
+	"+": true,
+	"-": true,
+	"*": true,
+	"/": true,
+	"&": true,
+	"|": true,
+	"<": true,
+	">": true,
+	"=": true,
+}

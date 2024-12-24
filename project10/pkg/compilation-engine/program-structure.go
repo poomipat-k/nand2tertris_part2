@@ -31,8 +31,8 @@ func (e *Engine) CompileClass() {
 	e.writeSymbol()
 
 	e.tk.Advance()
-	e.CompileClassVarDec() // classVarDec*
-	e.CompileSubroutine()  // subRoutine*
+	e.CompileClassVarDec()   // classVarDec*
+	e.CompileSubroutineDec() // subRoutine*
 
 	if e.tk.Symbol() != "}" {
 		log.Fatal("expect a '}' at the end of a class")
@@ -107,7 +107,8 @@ func (e *Engine) compileOneClassVarDec() {
 	e.writeSymbol()
 }
 
-func (e *Engine) CompileSubroutine() {
+/** ('constructor' | 'function' | 'method') ('void' | type) subroutineName '(' parameterList ')' subroutineBody  */
+func (e *Engine) CompileSubroutineDec() {
 	if !subroutineDec[e.tk.Keyword()] {
 		return
 	}
@@ -190,6 +191,7 @@ func (e *Engine) CompileParameterList() {
 	e.WriteString("</parameterList>\n")
 }
 
+/** '{' varDec* statements '}' */
 func (e *Engine) CompileSubroutineBody() {
 	fmt.Println("--- CompileSubroutineBody ---")
 
@@ -217,9 +219,6 @@ func (e *Engine) CompileSubroutineBody() {
 /** varDec: 'var' type varName (',' varName)* ';' */
 func (e *Engine) CompileVarDec() {
 	fmt.Println("--- CompileVarDec ---")
-	// if e.tk.Keyword() != "var" {
-	// 	return
-	// }
 	i := 0
 	for e.tk.Keyword() == "var" {
 		// open tag <varDec>

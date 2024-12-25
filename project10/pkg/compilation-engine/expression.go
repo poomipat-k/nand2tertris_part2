@@ -64,11 +64,16 @@ func (e *Engine) CompileTerm() {
 			log.Fatal("CompileTerm, expect a closing ), got", e.tk.Token())
 		}
 		e.writeSymbol()
+		fmt.Println("==end (expression) token: ", e.tk.Token())
+
+		// TODO: remove?
+		e.tk.Advance()
 	} else if unaryOp[e.tk.Symbol()] {
 		fmt.Println("==unaryOp")
 		e.writeSymbol()
 		e.tk.Advance()
 		e.CompileTerm()
+		fmt.Println("==end unaryOp, token: ", e.tk.Token())
 	} else if tokenType == jackTokenizer.IDENTIFIER {
 		e.writeIdentifier()
 
@@ -79,9 +84,8 @@ func (e *Engine) CompileTerm() {
 			e.tk.Advance()
 			e.CompileExpression()
 
-			e.tk.Advance()
 			if e.tk.Symbol() != "]" {
-				log.Fatal("CompileTerm, expect a ']'")
+				log.Fatal("CompileTerm, expect a ']', got: ", e.tk.Token())
 			}
 			e.writeSymbol()
 		} else if e.tk.Symbol() == "(" {
@@ -119,6 +123,7 @@ func (e *Engine) CompileTerm() {
 			}
 			e.writeSymbol()
 		} else {
+			// skip advance if the current is varName
 			e.tk.SetSkipAdvance(true)
 		}
 	} else {

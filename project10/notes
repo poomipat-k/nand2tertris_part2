@@ -11,6 +11,10 @@ Square
 
 go run main.go Square/Main.jack
 
+go run main.go Square/SquareGame.jack
+
+go run main.go Square/Square.jack
+
 
 go run main.go Square
 

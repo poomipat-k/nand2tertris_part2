@@ -40,7 +40,6 @@ func (e *Engine) CompileStatements() {
 			e.tk.Advance()
 		} else {
 			// log.Fatal("CompileStatements, expect a statement keyword (let | if | while | do | return)")
-			fmt.Println("==break of statements loop, token", e.tk.Token())
 			break
 		}
 

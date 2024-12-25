@@ -258,7 +258,6 @@ func (e *Engine) CompileVarDec() {
 			e.writeIdentifier()
 			e.tk.Advance()
 		}
-		fmt.Println("--- END OF LINE varDec")
 		// write ';'
 		e.writeSymbol()
 		e.WriteString("</varDec>\n")

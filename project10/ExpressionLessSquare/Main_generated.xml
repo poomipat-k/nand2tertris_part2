@@ -102,7 +102,13 @@
 </statements>
 <symbol> } </symbol>
 </ifStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
 </statements>
 <symbol> } </symbol>
 </subroutineBody>
 </subroutineDec>
+<symbol> } </symbol>
+</class>

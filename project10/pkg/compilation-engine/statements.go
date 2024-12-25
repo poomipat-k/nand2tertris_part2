@@ -28,6 +28,7 @@ func (e *Engine) CompileStatements() {
 			e.tk.Advance()
 		} else if e.tk.Keyword() == "if" {
 			e.CompileIf()
+			fmt.Println("----- after if ends, token: ", e.tk.Token())
 		} else if e.tk.Keyword() == "while" {
 			e.CompileWhile()
 			e.tk.Advance()
@@ -138,7 +139,7 @@ func (e *Engine) CompileIf() {
 	e.writeSymbol()
 
 	e.tk.Advance()
-	// check if there is an else clause
+	// else
 	if e.tk.Keyword() == "else" {
 		e.writeKeyword()
 
@@ -155,6 +156,7 @@ func (e *Engine) CompileIf() {
 			log.Fatal("CompileIf, expect a '}'")
 		}
 		e.writeSymbol()
+		e.tk.Advance()
 	}
 	e.WriteString("</ifStatement>\n")
 

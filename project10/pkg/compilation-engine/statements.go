@@ -3,6 +3,8 @@ package compilationEngine
 import (
 	"fmt"
 	"log"
+
+	jackTokenizer "github.com/poomipat-k/nand2tetris/project10/pkg/tokenizer"
 )
 
 /*
@@ -202,13 +204,55 @@ func (e *Engine) CompileDo() {
 	e.WriteString("<doStatement>\n")
 	e.writeKeyword()
 
-	e.skipTermTag = true
+	e.tk.Advance()
+	if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+		log.Fatal("CompileDo, expect an identifier")
+	}
+	e.writeIdentifier()
 
 	e.tk.Advance()
-	// e.CompileExpression()
-	e.CompileTerm()
+	if e.tk.Symbol() == "(" {
+		e.writeSymbol()
 
-	e.skipTermTag = false
+		e.tk.Advance()
+		e.CompileExpressionList()
+
+		if e.tk.Symbol() != ")" {
+			log.Fatal("CompileDo, expect a ')'")
+		}
+		e.writeSymbol()
+
+	} else if e.tk.Symbol() == "." {
+		// className or varName
+		e.writeSymbol()
+
+		e.tk.Advance()
+		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+			log.Fatal("CompileDo className|varName (identifier) (expect identifier), got:", e.tk.Token())
+		}
+		e.writeIdentifier()
+
+		e.tk.Advance()
+		if e.tk.Symbol() != "(" {
+			log.Fatal("CompileDo expect '('")
+		}
+		e.writeSymbol()
+
+		e.tk.Advance()
+		e.CompileExpressionList()
+
+		if e.tk.Symbol() != ")" {
+			log.Fatal("CompileDo, expect a ')'")
+		}
+		e.writeSymbol()
+	} else {
+		log.Fatal("CompileDo not supported token, got: ", e.tk.Token())
+	}
+
+	// e.skipTermTag = true
+	// e.tk.Advance()
+	// e.CompileTerm()
+	// e.skipTermTag = false
 
 	e.tk.Advance()
 	if e.tk.Symbol() != ";" {

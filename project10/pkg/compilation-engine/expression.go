@@ -43,9 +43,10 @@ term:
 func (e *Engine) CompileTerm() {
 	fmt.Println("--- CompileTerm ---")
 
-	if !e.skipTermTag {
-		e.WriteString("<term>\n")
-	}
+	// if !e.skipTermTag {
+	// 	e.WriteString("<term>\n")
+	// }
+	e.WriteString("<term>\n")
 
 	tokenType := e.tk.TokenType()
 
@@ -128,9 +129,10 @@ func (e *Engine) CompileTerm() {
 	} else {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
-	if !e.skipTermTag {
-		e.WriteString("</term>\n")
-	}
+	// if !e.skipTermTag {
+	// 	e.WriteString("</term>\n")
+	// }
+	e.WriteString("</term>\n")
 }
 
 func (e *Engine) isTerm() bool {

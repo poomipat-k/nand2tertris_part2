@@ -221,42 +221,47 @@ func (e *Engine) CompileVarDec() {
 	fmt.Println("--- CompileVarDec ---")
 	i := 0
 	for e.tk.Keyword() == "var" {
-		// open tag <varDec>
 		e.WriteString("<varDec>\n")
-		for e.tk.Symbol() != ";" {
-			// 'var'
-			e.writeKeyword()
+		// 'var'
+		e.writeKeyword()
+		e.tk.Advance()
 
-			e.tk.Advance()
-			// type
-			if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
-				e.writeKeyword()
-			} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-				e.writeIdentifier()
-			} else {
-				log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
+		// type
+		if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
+			e.writeKeyword()
+		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
+			e.writeIdentifier()
+		} else {
+			log.Fatal("CompileVarDec, expect 'int' | 'char' | 'boolean' | className(identifier), got: ", e.tk.Token(), " i: ", i)
+		}
+		e.tk.Advance()
+
+		// varName
+		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+			log.Fatal("CompileVarDec, varName: expect an identifier")
+		}
+		e.writeIdentifier()
+
+		e.tk.Advance()
+		for e.tk.Symbol() != ";" {
+			// optional ","
+			if e.tk.Symbol() != "," {
+				log.Fatal("CompileVarDec, expect a ','")
 			}
+			e.writeSymbol()
 
 			e.tk.Advance()
 			// varName
 			if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
-				log.Fatal("varDec varName: expect an identifier")
+				log.Fatal("CompileVarDec, varName: expect an identifier after ,")
 			}
 			e.writeIdentifier()
-
 			e.tk.Advance()
-			// optional ","
-			if e.tk.Symbol() == "," {
-				e.writeSymbol()
-				e.tk.Advance()
-			}
 		}
+		fmt.Println("--- END OF LINE varDec")
 		// write ';'
 		e.writeSymbol()
-
-		// closing tag </varDec>
 		e.WriteString("</varDec>\n")
-
 		e.tk.Advance()
 
 		i++

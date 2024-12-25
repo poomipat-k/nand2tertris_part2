@@ -8,9 +8,8 @@ import (
 )
 
 type Engine struct {
-	tk          *jackTokenizer.Tokenizer
-	OutFile     *os.File
-	skipTermTag bool
+	tk      *jackTokenizer.Tokenizer
+	OutFile *os.File
 }
 
 func NewEngine(tokenizer *jackTokenizer.Tokenizer, outputPath string) (*Engine, error) {

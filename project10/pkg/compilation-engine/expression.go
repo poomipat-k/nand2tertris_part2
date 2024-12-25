@@ -43,9 +43,6 @@ term:
 func (e *Engine) CompileTerm() {
 	fmt.Println("--- CompileTerm ---")
 
-	// if !e.skipTermTag {
-	// 	e.WriteString("<term>\n")
-	// }
 	e.WriteString("<term>\n")
 
 	tokenType := e.tk.TokenType()
@@ -122,16 +119,12 @@ func (e *Engine) CompileTerm() {
 			}
 			e.writeSymbol()
 		} else {
-			// varName do nothing
-			// fmt.Println("===varName, then set skipAdvance because it is advanced already")
 			e.tk.SetSkipAdvance(true)
 		}
 	} else {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
-	// if !e.skipTermTag {
-	// 	e.WriteString("</term>\n")
-	// }
+
 	e.WriteString("</term>\n")
 }
 

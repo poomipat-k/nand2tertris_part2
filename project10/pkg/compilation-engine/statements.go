@@ -251,11 +251,6 @@ func (e *Engine) CompileDo() {
 		log.Fatal("CompileDo not supported token, got: ", e.tk.Token())
 	}
 
-	// e.skipTermTag = true
-	// e.tk.Advance()
-	// e.CompileTerm()
-	// e.skipTermTag = false
-
 	e.tk.Advance()
 	if e.tk.Symbol() != ";" {
 		log.Fatal("CompileLet, expect a ';'")

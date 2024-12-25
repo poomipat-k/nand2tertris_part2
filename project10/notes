@@ -8,4 +8,12 @@ go run main.go ExpressionLessSquare/Square.jack
 
 
 Square
+
 go run main.go Square/Main.jack
+
+
+go run main.go Square
+
+ArrayTest
+
+go run main.go ArrayTest

@@ -50,6 +50,7 @@ func (e *Engine) CompileTerm() {
 	if tokenType == jackTokenizer.INT_CONST {
 		e.writeIntegerConst()
 	} else if tokenType == jackTokenizer.STRING_CONST {
+		log.Println("XXXX=== stringConst: ", e.tk.StringVal(), " token: ", e.tk.Token())
 		e.writeStringConst()
 	} else if keywordConstant[e.tk.Keyword()] {
 		e.writeKeyword()
@@ -66,8 +67,6 @@ func (e *Engine) CompileTerm() {
 		e.writeSymbol()
 		fmt.Println("==end (expression) token: ", e.tk.Token())
 
-		// TODO: remove?
-		e.tk.Advance()
 	} else if unaryOp[e.tk.Symbol()] {
 		fmt.Println("==unaryOp")
 		e.writeSymbol()

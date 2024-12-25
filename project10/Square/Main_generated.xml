@@ -120,7 +120,7 @@
 <symbol> = </symbol>
 <expression>
 <term>
-<stringConstant>  </stringConstant>
+<stringConstant> string constant </stringConstant>
 </term>
 </expression>
 <symbol> ; </symbol>

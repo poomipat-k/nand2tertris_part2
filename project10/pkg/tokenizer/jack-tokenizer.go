@@ -86,6 +86,7 @@ func (t *Tokenizer) Advance() {
 			if t.insideDoubleQuote {
 				if t.currentLine[t.lineCursor] == '"' {
 					t.token = t.currentLine[t.startTokenIndex:t.lineCursor]
+					t.stringVal = t.token
 					t.tokenType = STRING_CONST
 					t.insideDoubleQuote = false
 					t.lineCursor++

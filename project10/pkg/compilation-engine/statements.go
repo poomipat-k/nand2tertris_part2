@@ -11,33 +11,33 @@ statement: letStatement | ifStatement | whileStatement | doStatement | returnSta
 */
 func (e *Engine) CompileStatements() {
 	fmt.Println("--- CompileStatements ---")
-	fmt.Println("type: ", e.tk.TokenType())
-	fmt.Println("token: ", e.tk.Token())
 
 	// no statements
 	if !statementKeywords[e.tk.Keyword()] {
 		return
 	}
 
-	// TODO: need a for loop
+	stop := false
 	e.WriteString("<statements>\n")
-
-	if e.tk.Keyword() == "let" {
-		e.CompileLet()
-	} else if e.tk.Keyword() == "if" {
-		e.CompileIf()
-	} else if e.tk.Keyword() == "while" {
-		e.CompileWhile()
-	} else if e.tk.Keyword() == "do" {
-		e.CompileDo()
-	} else if e.tk.Keyword() == "return" {
-		e.CompileReturn()
-	} else {
-		log.Fatal("CompileStatements, expect a statement keyword (let | if | while | do | return)")
+	for !stop {
+		if e.tk.Keyword() == "let" {
+			e.CompileLet()
+		} else if e.tk.Keyword() == "if" {
+			e.CompileIf()
+		} else if e.tk.Keyword() == "while" {
+			e.CompileWhile()
+		} else if e.tk.Keyword() == "do" {
+			e.CompileDo()
+		} else if e.tk.Keyword() == "return" {
+			e.CompileReturn()
+		} else {
+			// log.Fatal("CompileStatements, expect a statement keyword (let | if | while | do | return)")
+			fmt.Println("==break of statements loop, token", e.tk.Token())
+			stop = true
+		}
+		e.tk.Advance()
 	}
-
 	e.WriteString("</statements>\n")
-
 }
 
 /* 'let' varName('['expression']')? '=' expression ';' */
@@ -98,6 +98,8 @@ func (e *Engine) CompileLet() {
 func (e *Engine) CompileIf() {
 	fmt.Println("--- CompileIf ---")
 	// if
+	e.WriteString("<ifStatement>\n")
+
 	e.writeKeyword()
 
 	e.tk.Advance()
@@ -149,25 +151,87 @@ func (e *Engine) CompileIf() {
 	}
 	e.writeSymbol()
 
+	e.WriteString("</ifStatement>\n")
+
 }
 
 /* 'while' '(' expression ')' '{' expressions '}' */
 func (e *Engine) CompileWhile() {
 	fmt.Println("--- CompileWhile ---")
+
+	e.WriteString("<whileStatement>\n")
 	e.writeKeyword()
+
+	e.tk.Advance()
+	if e.tk.Symbol() != "(" {
+		log.Fatal("CompileIf, expect a '('")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	e.CompileExpression()
+
+	if e.tk.Symbol() != ")" {
+		log.Fatal("CompileIf, expect a ')'")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	if e.tk.Symbol() != "{" {
+		log.Fatal("CompileIf, expect a '{'")
+	}
+	e.writeSymbol()
+
+	e.tk.Advance()
+	e.CompileStatements()
+
+	if e.tk.Symbol() != "}" {
+		log.Fatal("CompileIf, expect a '}'")
+	}
+	e.writeSymbol()
+	e.WriteString("<whileStatement>\n")
+
 }
 
 /* 'do' subroutineCall ';' */
 func (e *Engine) CompileDo() {
 	fmt.Println("--- CompileDo ---")
+	e.WriteString("<doStatement>\n")
 	e.writeKeyword()
 
+	e.skipTermTag = true
+
 	e.tk.Advance()
-	e.CompileExpression()
+	// e.CompileExpression()
+	e.CompileTerm()
+
+	e.skipTermTag = false
+
+	e.tk.Advance()
+	if e.tk.Symbol() != ";" {
+		log.Fatal("CompileLet, expect a ';'")
+	}
+	e.writeSymbol()
+	e.WriteString("</doStatement>\n")
 }
 
 /* 'return' expression? ';' */
 func (e *Engine) CompileReturn() {
 	fmt.Println("--- CompileReturn ---")
+	e.WriteString("<returnStatement>\n")
+
 	e.writeKeyword()
+
+	if e.tk.Symbol() != ";" {
+		e.tk.Advance()
+		e.CompileExpression()
+	}
+
+	if e.tk.Symbol() != ";" {
+		log.Fatal("CompileLet, expect a ';'")
+	}
+	e.writeSymbol()
+
+	e.WriteString("<returnStatement>\n")
+
 }

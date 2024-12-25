@@ -43,7 +43,10 @@ term:
 func (e *Engine) CompileTerm() {
 	fmt.Println("--- CompileTerm ---")
 
-	e.WriteString("<term>\n")
+	if !e.skipTermTag {
+		e.WriteString("<term>\n")
+	}
+
 	tokenType := e.tk.TokenType()
 
 	if tokenType == jackTokenizer.INT_CONST {
@@ -125,7 +128,9 @@ func (e *Engine) CompileTerm() {
 	} else {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
-	e.WriteString("</term>\n")
+	if !e.skipTermTag {
+		e.WriteString("</term>\n")
+	}
 }
 
 func (e *Engine) isTerm() bool {
@@ -141,8 +146,10 @@ func (e *Engine) isTerm() bool {
 /* expressionList: (expression(',' expression)*)? */
 func (e *Engine) CompileExpressionList() {
 	fmt.Println("--- CompileExpressionList ---")
+	e.WriteString("<expressionList>\n")
 	if !e.isTerm() {
 		fmt.Println("===empty expressionList")
+		e.WriteString("</expressionList>\n")
 		return
 	}
 	e.CompileExpression()
@@ -153,4 +160,5 @@ func (e *Engine) CompileExpressionList() {
 		e.tk.Advance()
 		e.CompileExpression()
 	}
+	e.WriteString("</expressionList>\n")
 }

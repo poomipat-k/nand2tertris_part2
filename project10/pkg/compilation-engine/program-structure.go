@@ -35,7 +35,7 @@ func (e *Engine) CompileClass() {
 	e.CompileSubroutineDec() // subRoutine*
 
 	if e.tk.Symbol() != "}" {
-		log.Fatal("expect a '}' at the end of a class")
+		log.Fatal("expect a '}' at the end of a class, got: ", e.tk.Token())
 	}
 	e.writeSymbol()
 

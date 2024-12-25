@@ -23,20 +23,24 @@ func (e *Engine) CompileStatements() {
 	for {
 		if e.tk.Keyword() == "let" {
 			e.CompileLet()
+			e.tk.Advance()
 		} else if e.tk.Keyword() == "if" {
 			e.CompileIf()
 		} else if e.tk.Keyword() == "while" {
 			e.CompileWhile()
+			e.tk.Advance()
 		} else if e.tk.Keyword() == "do" {
 			e.CompileDo()
+			e.tk.Advance()
 		} else if e.tk.Keyword() == "return" {
 			e.CompileReturn()
+			e.tk.Advance()
 		} else {
 			// log.Fatal("CompileStatements, expect a statement keyword (let | if | while | do | return)")
 			fmt.Println("==break of statements loop, token", e.tk.Token())
 			break
 		}
-		e.tk.Advance()
+
 	}
 	e.WriteString("</statements>\n")
 }
@@ -133,25 +137,23 @@ func (e *Engine) CompileIf() {
 
 	e.tk.Advance()
 	// check if there is an else clause
-	if e.tk.Keyword() != "else" {
-		return
+	if e.tk.Keyword() == "else" {
+		e.writeKeyword()
+
+		e.tk.Advance()
+		if e.tk.Symbol() != "{" {
+			log.Fatal("CompileIf, expect a '{'")
+		}
+		e.writeSymbol()
+
+		e.tk.Advance()
+		e.CompileStatements()
+
+		if e.tk.Symbol() != "}" {
+			log.Fatal("CompileIf, expect a '}'")
+		}
+		e.writeSymbol()
 	}
-	e.writeKeyword()
-
-	e.tk.Advance()
-	if e.tk.Symbol() != "{" {
-		log.Fatal("CompileIf, expect a '{'")
-	}
-	e.writeSymbol()
-
-	e.tk.Advance()
-	e.CompileStatements()
-
-	if e.tk.Symbol() != "}" {
-		log.Fatal("CompileIf, expect a '}'")
-	}
-	e.writeSymbol()
-
 	e.WriteString("</ifStatement>\n")
 
 }
@@ -190,7 +192,7 @@ func (e *Engine) CompileWhile() {
 		log.Fatal("CompileIf, expect a '}'")
 	}
 	e.writeSymbol()
-	e.WriteString("<whileStatement>\n")
+	e.WriteString("</whileStatement>\n")
 
 }
 
@@ -225,7 +227,6 @@ func (e *Engine) CompileReturn() {
 
 	e.tk.Advance()
 	if e.tk.Symbol() != ";" {
-		e.tk.Advance()
 		e.CompileExpression()
 	}
 

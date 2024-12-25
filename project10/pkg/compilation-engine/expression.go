@@ -122,7 +122,7 @@ func (e *Engine) CompileTerm() {
 			e.writeSymbol()
 		} else {
 			// varName do nothing
-			fmt.Println("===varName, then set skipAdvance because it is advanced already")
+			// fmt.Println("===varName, then set skipAdvance because it is advanced already")
 			e.tk.SetSkipAdvance(true)
 		}
 	} else {
@@ -148,7 +148,6 @@ func (e *Engine) CompileExpressionList() {
 	fmt.Println("--- CompileExpressionList ---")
 	e.WriteString("<expressionList>\n")
 	if !e.isTerm() {
-		fmt.Println("===empty expressionList")
 		e.WriteString("</expressionList>\n")
 		return
 	}

@@ -14,12 +14,13 @@ func (e *Engine) CompileStatements() {
 
 	// no statements
 	if !statementKeywords[e.tk.Keyword()] {
+		e.WriteString("<statements>\n")
+		e.WriteString("</statements>\n")
 		return
 	}
 
-	stop := false
 	e.WriteString("<statements>\n")
-	for !stop {
+	for {
 		if e.tk.Keyword() == "let" {
 			e.CompileLet()
 		} else if e.tk.Keyword() == "if" {
@@ -33,7 +34,7 @@ func (e *Engine) CompileStatements() {
 		} else {
 			// log.Fatal("CompileStatements, expect a statement keyword (let | if | while | do | return)")
 			fmt.Println("==break of statements loop, token", e.tk.Token())
-			stop = true
+			break
 		}
 		e.tk.Advance()
 	}
@@ -222,6 +223,7 @@ func (e *Engine) CompileReturn() {
 
 	e.writeKeyword()
 
+	e.tk.Advance()
 	if e.tk.Symbol() != ";" {
 		e.tk.Advance()
 		e.CompileExpression()
@@ -232,6 +234,6 @@ func (e *Engine) CompileReturn() {
 	}
 	e.writeSymbol()
 
-	e.WriteString("<returnStatement>\n")
+	e.WriteString("</returnStatement>\n")
 
 }

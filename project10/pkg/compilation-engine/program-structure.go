@@ -109,12 +109,8 @@ func (e *Engine) compileOneClassVarDec() {
 
 /* ('constructor' | 'function' | 'method') ('void' | type) subroutineName '(' parameterList ')' subroutineBody  */
 func (e *Engine) CompileSubroutineDec() {
-	if !subroutineDec[e.tk.Keyword()] {
-		return
-	}
-	// at least 1 subroutine exists
 
-	for {
+	for subroutineDec[e.tk.Keyword()] {
 		e.WriteString("<subroutineDec>\n")
 		e.writeKeyword()
 
@@ -125,7 +121,7 @@ func (e *Engine) CompileSubroutineDec() {
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
 			e.writeIdentifier()
 		} else {
-			log.Fatal("subroutine return type, expect 'void' | 'int' | 'char' | 'boolean' | className(identifier)")
+			log.Fatal("CompileSubroutineDec, expect to be one of 'void' | 'int' | 'char' | 'boolean' | className(identifier)", " got: ", e.tk.Token(), " type: ", e.tk.TokenType())
 		}
 
 		e.tk.Advance()
@@ -156,6 +152,7 @@ func (e *Engine) CompileSubroutineDec() {
 		// end subroutineBody
 
 		e.WriteString("</subroutineDec>\n")
+		e.tk.Advance()
 	}
 }
 
@@ -208,8 +205,12 @@ func (e *Engine) CompileSubroutineBody() {
 
 	// statements
 	e.CompileStatements()
-
 	// end statements
+
+	if e.tk.Symbol() != "}" {
+		log.Fatal("CompileSubroutineBody, expect a '}', got: ", e.tk.Token())
+	}
+	e.writeSymbol()
 
 	e.WriteString("</subroutineBody>\n")
 

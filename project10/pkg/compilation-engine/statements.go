@@ -93,7 +93,7 @@ func (e *Engine) CompileLet() {
 	e.CompileExpression()
 	// end expression
 
-	fmt.Println("before This line, token: ", e.tk.Token(), " type:", e.tk.TokenType(), " skipAdvance: ", e.tk.SkipAdvance())
+	fmt.Println("	Let before ;, token: ", e.tk.Token(), " type:", e.tk.TokenType(), " skipAdvance: ", e.tk.SkipAdvance())
 	if e.tk.Symbol() != ";" {
 		log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
 	}

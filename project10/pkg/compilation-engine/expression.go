@@ -30,6 +30,7 @@ func (e *Engine) CompileExpression() {
 	}
 
 	e.WriteString("</expression>\n")
+	fmt.Println("	END CompileExpression")
 }
 
 /* expressionList: (expression(',' expression)*)? */
@@ -49,4 +50,6 @@ func (e *Engine) CompileExpressionList() {
 		e.CompileExpression()
 	}
 	e.WriteString("</expressionList>\n")
+	e.tk.SetSkipAdvance(false)
+	fmt.Println("	END CompileExpressionList")
 }

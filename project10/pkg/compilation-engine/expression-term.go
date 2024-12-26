@@ -106,6 +106,7 @@ func (e *Engine) CompileTerm() {
 	}
 
 	e.WriteString("</term>\n")
+	fmt.Println("		END CompileTerm")
 }
 
 func (e *Engine) isTerm() bool {

@@ -34,7 +34,7 @@ func (e *Engine) CompileTerm() {
 		e.CompileExpression()
 
 		if e.tk.Symbol() != ")" {
-			log.Fatal("CompileTerm, expect a closing ), got", e.tk.Token())
+			log.Fatal("CompileTerm, (expression) expect a closing ), got", e.tk.Token())
 		}
 		e.writeSymbol()
 

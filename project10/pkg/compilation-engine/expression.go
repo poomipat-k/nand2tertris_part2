@@ -24,10 +24,8 @@ func (e *Engine) CompileExpression() {
 		e.tk.Advance()
 		e.CompileTerm()
 
-		fmt.Println("===THIS skipAdvance: ", e.tk.SkipAdvance())
 		if !e.tk.SkipAdvance() {
 			e.tk.Advance()
-			fmt.Println("====THIS afterAdvance skipAdvance: ", e.tk.SkipAdvance())
 		}
 	}
 

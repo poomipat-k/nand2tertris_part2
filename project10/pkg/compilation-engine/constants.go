@@ -33,15 +33,15 @@ var keywordConstant = map[string]bool{
 }
 
 var opSymbol = map[string]bool{
-	"+": true,
-	"-": true,
-	"*": true,
-	"/": true,
-	"&": true,
-	"|": true,
-	"<": true,
-	">": true,
-	"=": true,
+	"+":     true,
+	"-":     true,
+	"*":     true,
+	"/":     true,
+	"&amp;": true,
+	"|":     true,
+	"&lt;":  true,
+	"&gt;":  true,
+	"=":     true,
 }
 
 var unaryOp = map[string]bool{

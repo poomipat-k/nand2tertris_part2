@@ -62,6 +62,9 @@ func (e *Engine) CompileTerm() {
 				log.Fatal("CompileTerm, expect a ']', got: ", e.tk.Token())
 			}
 			e.writeSymbol()
+
+			// let sum = sum + a[i];
+			e.tk.SetSkipAdvance(false)
 		} else if e.tk.Symbol() == "(" {
 			e.writeSymbol()
 

@@ -1,23 +1,23 @@
-go run main.go ExpressionLessSquare
+Test programs order
 
-go run main.go ExpressionLessSquare/Main.jack
+- Seven
+  1. simple program
+  2. Arithmetic expression involving constants only
+  3. do statement
+  4. return statement
+- ConvertToBin
+  1. expressions (without arrays, without method calls)
+  2. statements (if, while, do, let, return)
+- Square
+  1. constructors
+  2. methods
+  3. expressions that include method calls
+- Average
+  1. arrays
+  2. strings
+- Pong
+  1. complete object-oriented application, including the handling of objects and static variables
+- ComplexArrays
+  1. array manipulations using index expressions that include complex array references
 
-go run main.go ExpressionLessSquare/SquareGame.jack
-
-go run main.go ExpressionLessSquare/Square.jack
-
-
-Square
-
-go run main.go Square/Main.jack
-
-go run main.go Square/SquareGame.jack
-
-go run main.go Square/Square.jack
-
-
-go run main.go Square
-
-ArrayTest
-
-go run main.go ArrayTest
+go run main.go tests/Seven

@@ -14,6 +14,8 @@ func (e *Engine) CompileClass() {
 		log.Fatal("current token is not a 'class'")
 	}
 
+	e.classST.Reset()
+
 	e.WriteString("<class>\n")
 	e.writeKeyword()
 
@@ -111,6 +113,8 @@ func (e *Engine) compileOneClassVarDec() {
 func (e *Engine) CompileSubroutineDec() {
 
 	for subroutineDec[e.tk.Keyword()] {
+		e.subroutineST.Reset()
+
 		e.WriteString("<subroutineDec>\n")
 		e.writeKeyword()
 

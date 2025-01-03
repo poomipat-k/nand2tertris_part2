@@ -20,4 +20,5 @@ Test programs order
 - ComplexArrays
   1. array manipulations using index expressions that include complex array references
 
+Scripts
 go run main.go tests/Seven

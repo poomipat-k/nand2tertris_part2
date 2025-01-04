@@ -49,7 +49,7 @@ func (e *Engine) CompileTerm() {
 		e.CompileTerm()
 		fmt.Println("==end unaryOp, token: ", e.tk.Token())
 	} else if tokenType == jackTokenizer.IDENTIFIER {
-		e.writeIdentifier()
+		e.writeIdentifier("CompileTerm")
 
 		e.tk.Advance()
 		if e.tk.Symbol() == "[" {
@@ -84,7 +84,7 @@ func (e *Engine) CompileTerm() {
 			if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 				log.Fatal("CompileTerm className|varName (identifier) (expect identifier), got:", e.tk.Token())
 			}
-			e.writeIdentifier()
+			e.writeIdentifier("CompileTerm")
 
 			e.tk.Advance()
 			if e.tk.Symbol() != "(" {

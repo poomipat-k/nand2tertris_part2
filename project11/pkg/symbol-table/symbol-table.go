@@ -1,5 +1,7 @@
 package symbolTable
 
+import "log"
+
 type SymbolTable struct {
 	data            map[string]fields
 	varCounter      int
@@ -30,11 +32,25 @@ func (s *SymbolTable) Reset() {
 }
 
 func (s *SymbolTable) Define(name string, dataType string, kind string) {
-
+	if row, found := s.data[name]; found && row.kind == kind {
+		log.Fatal("SymbolTable: duplicate declaration, name: ", name)
+	}
+	vc := s.VarCount(kind)
+	s.data[name] = fields{dataType: dataType, kind: kind, number: vc}
+	if kind == "STATIC" {
+		s.staticCounter++
+	} else if kind == "FIELD" {
+		s.fieldCounter++
+	} else if kind == "ARG" {
+		s.argumentCounter++
+	} else if kind == "VAR" {
+		s.varCounter++
+	} else {
+		log.Fatal("SymbolTable, kind is not valid, got: ", kind)
+	}
 }
 
-func (s *SymbolTable) VarCount(name string) int {
-	kind := s.KindOf(name)
+func (s *SymbolTable) VarCount(kind string) int {
 	if kind == "STATIC" {
 		return s.staticCounter
 	}
@@ -51,13 +67,22 @@ func (s *SymbolTable) VarCount(name string) int {
 }
 
 func (s *SymbolTable) KindOf(name string) string {
+	if _, found := s.data[name]; !found {
+		return ""
+	}
 	return s.data[name].kind
 }
 
 func (s *SymbolTable) TypeOf(name string) string {
+	if _, found := s.data[name]; !found {
+		return ""
+	}
 	return s.data[name].dataType
 }
 
 func (s *SymbolTable) IndexOf(name string) int {
+	if _, found := s.data[name]; !found {
+		return -1
+	}
 	return s.data[name].number
 }

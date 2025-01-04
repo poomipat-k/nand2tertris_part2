@@ -1,0 +1,1211 @@
+<class>
+<keyword> class </keyword>
+<identifier_dec_class> Square </identifier_dec_class>
+<symbol> { </symbol>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier_dec_subroutine> x </identifier_dec_subroutine>
+<symbol> , </symbol>
+<identifier_dec_subroutine> y </identifier_dec_subroutine>
+<symbol> ; </symbol>
+</classVarDec>
+<classVarDec>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier_dec_subroutine> size </identifier_dec_subroutine>
+<symbol> ; </symbol>
+</classVarDec>
+<subroutineDec>
+<keyword> constructor </keyword>
+<identifier_dec_subroutine> Square </identifier_dec_subroutine>
+<identifier_dec_subroutine> new </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+<keyword> int </keyword>
+<identifier_used_subroutine> ax </identifier_used_subroutine>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier_used_subroutine> ay </identifier_used_subroutine>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier_used_subroutine> asize </identifier_used_subroutine>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> ax </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> ay </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> asize </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> draw </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<expression>
+<term>
+<keyword> this </keyword>
+</term>
+</expression>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> dispose </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Memory </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> deAlloc </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> this </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> draw </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> true </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> erase </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> false </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> incSize </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<integerConstant> 254 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> &amp; </symbol>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<integerConstant> 510 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> erase </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> draw </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> decSize </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+<symbol> &gt; </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> erase </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> draw </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> moveUp </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> &gt; </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> false </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> true </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> moveDown </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<integerConstant> 254 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> false </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> true </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> moveLeft </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> &gt; </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> false </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> true </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<subroutineDec>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier_dec_subroutine> moveRight </identifier_dec_subroutine>
+<symbol> ( </symbol>
+<parameterList>
+</parameterList>
+<symbol> ) </symbol>
+<subroutineBody>
+<symbol> { </symbol>
+<statements>
+<ifStatement>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> &lt; </symbol>
+<term>
+<integerConstant> 510 </integerConstant>
+</term>
+</expression>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<statements>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> false </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<letStatement>
+<keyword> let </keyword>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+<symbol> = </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<integerConstant> 2 </integerConstant>
+</term>
+</expression>
+<symbol> ; </symbol>
+</letStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> setColor </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<keyword> true </keyword>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+<doStatement>
+<keyword> do </keyword>
+<identifier_used_subroutine> Screen </identifier_used_subroutine>
+<symbol> . </symbol>
+<identifier_used_subroutine> drawRectangle </identifier_used_subroutine>
+<symbol> ( </symbol>
+<expressionList>
+<expression>
+<term>
+<symbol> ( </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> ) </symbol>
+</term>
+<symbol> - </symbol>
+<term>
+<integerConstant> 1 </integerConstant>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> x </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+<symbol> , </symbol>
+<expression>
+<term>
+<identifier_used_subroutine> y </identifier_used_subroutine>
+</term>
+<symbol> + </symbol>
+<term>
+<identifier_used_subroutine> size </identifier_used_subroutine>
+</term>
+</expression>
+</expressionList>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+</doStatement>
+</statements>
+<symbol> } </symbol>
+</ifStatement>
+<returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+</returnStatement>
+</statements>
+<symbol> } </symbol>
+</subroutineBody>
+</subroutineDec>
+<symbol> } </symbol>
+</class>

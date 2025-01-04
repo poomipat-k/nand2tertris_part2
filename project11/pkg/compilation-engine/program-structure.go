@@ -23,7 +23,7 @@ func (e *Engine) CompileClass() {
 	if e.tk.Identifier() == "" {
 		log.Fatal("expect an identifier (className)")
 	}
-	e.writeIdentifier()
+	e.writeIdentifier("CompileClass")
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "{" {
@@ -76,7 +76,7 @@ func (e *Engine) compileOneClassVarDec() {
 	if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
 		e.writeKeyword()
 	} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-		e.writeIdentifier()
+		e.writeIdentifier("CompileClassVarDec")
 	} else {
 		log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
 	}
@@ -86,7 +86,7 @@ func (e *Engine) compileOneClassVarDec() {
 	if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 		log.Fatal("expect identifier")
 	}
-	e.writeIdentifier()
+	e.writeIdentifier("CompileClassVarDec")
 
 	e.tk.Advance()
 	if e.tk.TokenType() != jackTokenizer.SYMBOL || (e.tk.Symbol() != "," && e.tk.Symbol() != ";") {
@@ -98,7 +98,7 @@ func (e *Engine) compileOneClassVarDec() {
 		if e.tk.Symbol() == "," {
 			e.writeSymbol()
 		} else if e.tk.Identifier() != "" {
-			e.writeIdentifier()
+			e.writeIdentifier("CompileClassVarDec")
 		} else {
 			log.Fatal("expect ',' or identifier or ';'")
 		}
@@ -123,7 +123,7 @@ func (e *Engine) CompileSubroutineDec() {
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && (jackType[e.tk.Keyword()] || e.tk.Keyword() == "void") {
 			e.writeKeyword()
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-			e.writeIdentifier()
+			e.writeIdentifier("CompileSubroutineDec")
 		} else {
 			log.Fatal("CompileSubroutineDec, expect to be one of 'void' | 'int' | 'char' | 'boolean' | className(identifier)", " got: ", e.tk.Token(), " type: ", e.tk.TokenType())
 		}
@@ -132,7 +132,7 @@ func (e *Engine) CompileSubroutineDec() {
 		if e.tk.Identifier() == "" {
 			log.Fatal("expect an identifier (subRoutineName)")
 		}
-		e.writeIdentifier()
+		e.writeIdentifier("CompileSubroutineDec")
 
 		e.tk.Advance()
 		if e.tk.Symbol() != "(" {
@@ -169,7 +169,7 @@ func (e *Engine) CompileParameterList() {
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
 			e.writeKeyword()
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-			e.writeIdentifier()
+			e.writeIdentifier("CompileParameterList")
 		} else {
 			log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
 		}
@@ -179,7 +179,7 @@ func (e *Engine) CompileParameterList() {
 		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 			log.Fatal("parameterList varName: expect an identifier")
 		}
-		e.writeIdentifier()
+		e.writeIdentifier("CompileParameterList")
 
 		e.tk.Advance()
 		// optional ","
@@ -234,7 +234,7 @@ func (e *Engine) CompileVarDec() {
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
 			e.writeKeyword()
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-			e.writeIdentifier()
+			e.writeIdentifier("CompileVarDec")
 		} else {
 			log.Fatal("CompileVarDec, expect 'int' | 'char' | 'boolean' | className(identifier), got: ", e.tk.Token(), " i: ", i)
 		}
@@ -244,7 +244,7 @@ func (e *Engine) CompileVarDec() {
 		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 			log.Fatal("CompileVarDec, varName: expect an identifier")
 		}
-		e.writeIdentifier()
+		e.writeIdentifier("CompileVarDec")
 
 		e.tk.Advance()
 		for e.tk.Symbol() != ";" {
@@ -259,7 +259,7 @@ func (e *Engine) CompileVarDec() {
 			if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 				log.Fatal("CompileVarDec, varName: expect an identifier after ,")
 			}
-			e.writeIdentifier()
+			e.writeIdentifier("CompileVarDec")
 			e.tk.Advance()
 		}
 		// write ';'

@@ -60,7 +60,7 @@ func (e *Engine) CompileLet() {
 	if e.tk.Identifier() == "" {
 		log.Fatal("CompileLet, expect a varName(identifier), got:", e.tk.Token(), " ", e.tk.TokenType())
 	}
-	e.writeIdentifier()
+	e.writeIdentifier("CompileLet")
 
 	e.tk.Advance()
 	// '['
@@ -210,7 +210,7 @@ func (e *Engine) CompileDo() {
 	if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 		log.Fatal("CompileDo, expect an identifier")
 	}
-	e.writeIdentifier()
+	e.writeIdentifier("CompileDo")
 
 	e.tk.Advance()
 	if e.tk.Symbol() == "(" {
@@ -232,7 +232,7 @@ func (e *Engine) CompileDo() {
 		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 			log.Fatal("CompileDo className|varName (identifier) (expect identifier), got:", e.tk.Token())
 		}
-		e.writeIdentifier()
+		e.writeIdentifier("CompileDo")
 
 		e.tk.Advance()
 		if e.tk.Symbol() != "(" {

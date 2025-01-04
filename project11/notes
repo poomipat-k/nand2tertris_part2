@@ -21,4 +21,7 @@ Test programs order
   1. array manipulations using index expressions that include complex array references
 
 Scripts
+
 go run main.go tests/Seven
+
+go run main.go tests/Square/Main.jack

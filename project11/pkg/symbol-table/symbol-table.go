@@ -31,19 +31,28 @@ func (s *SymbolTable) Reset() {
 	s.fieldCounter = 0
 }
 
+const (
+	VAR        = "VAR"
+	ARG        = "ARG"
+	STATIC     = "STATIC"
+	FIELD      = "FIELD"
+	CLASS      = "CLASS"
+	SUBROUTINE = "SUBROUTINE"
+)
+
 func (s *SymbolTable) Define(name string, dataType string, kind string) {
 	if row, found := s.data[name]; found && row.kind == kind {
 		log.Fatal("SymbolTable: duplicate declaration, name: ", name)
 	}
 	vc := s.VarCount(kind)
 	s.data[name] = fields{dataType: dataType, kind: kind, number: vc}
-	if kind == "STATIC" {
+	if kind == STATIC {
 		s.staticCounter++
-	} else if kind == "FIELD" {
+	} else if kind == FIELD {
 		s.fieldCounter++
-	} else if kind == "ARG" {
+	} else if kind == ARG {
 		s.argumentCounter++
-	} else if kind == "VAR" {
+	} else if kind == VAR {
 		s.varCounter++
 	} else {
 		log.Fatal("SymbolTable, kind is not valid, got: ", kind)
@@ -51,16 +60,16 @@ func (s *SymbolTable) Define(name string, dataType string, kind string) {
 }
 
 func (s *SymbolTable) VarCount(kind string) int {
-	if kind == "STATIC" {
+	if kind == STATIC {
 		return s.staticCounter
 	}
-	if kind == "FIELD" {
+	if kind == FIELD {
 		return s.fieldCounter
 	}
-	if kind == "ARG" {
+	if kind == ARG {
 		return s.argumentCounter
 	}
-	if kind == "VAR" {
+	if kind == VAR {
 		return s.varCounter
 	}
 	return -1

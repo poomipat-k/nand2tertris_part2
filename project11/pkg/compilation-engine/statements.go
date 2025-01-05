@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	symbolTable "github.com/poomipat-k/nand2tetris/project11/pkg/symbol-table"
 	jackTokenizer "github.com/poomipat-k/nand2tetris/project11/pkg/tokenizer"
 )
 
@@ -60,7 +61,9 @@ func (e *Engine) CompileLet() {
 	if e.tk.Identifier() == "" {
 		log.Fatal("CompileLet, expect a varName(identifier), got:", e.tk.Token(), " ", e.tk.TokenType())
 	}
-	e.writeIdentifier("CompileLet")
+
+	kind := e.getKindOfIdentifier(e.tk.Identifier())
+	e.writeIdentifier(e.tk.Identifier(), "used", kind)
 
 	e.tk.Advance()
 	// '['
@@ -93,7 +96,6 @@ func (e *Engine) CompileLet() {
 	e.CompileExpression()
 	// end expression
 
-	fmt.Println("	Let before ;, token: ", e.tk.Token(), " type:", e.tk.TokenType(), " skipAdvance: ", e.tk.SkipAdvance())
 	if e.tk.Symbol() != ";" {
 		log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
 	}
@@ -210,10 +212,16 @@ func (e *Engine) CompileDo() {
 	if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 		log.Fatal("CompileDo, expect an identifier")
 	}
-	e.writeIdentifier("CompileDo")
+
+	// could be [subroutineName, (className | varName).subroutineName]
+	prevId := e.tk.Identifier()
 
 	e.tk.Advance()
 	if e.tk.Symbol() == "(" {
+		// then "prevId" is a subroutine Name
+
+		e.writeIdentifier(prevId, "used", symbolTable.SUBROUTINE)
+
 		e.writeSymbol()
 
 		e.tk.Advance()
@@ -225,14 +233,23 @@ func (e *Engine) CompileDo() {
 		e.writeSymbol()
 
 	} else if e.tk.Symbol() == "." {
-		// className or varName
+		// "prevId" is either a className or a varName
+		if e.subroutineST.KindOf(prevId) != "" {
+			e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
+		} else if e.classST.KindOf(prevId) != "" {
+			e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
+		} else {
+			e.writeIdentifier(prevId, "used", symbolTable.CLASS)
+		}
+
+		// .
 		e.writeSymbol()
 
 		e.tk.Advance()
 		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 			log.Fatal("CompileDo className|varName (identifier) (expect identifier), got:", e.tk.Token())
 		}
-		e.writeIdentifier("CompileDo")
+		e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.SUBROUTINE)
 
 		e.tk.Advance()
 		if e.tk.Symbol() != "(" {
@@ -253,7 +270,7 @@ func (e *Engine) CompileDo() {
 
 	e.tk.Advance()
 	if e.tk.Symbol() != ";" {
-		log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
+		log.Fatal("CompileDo, expect a ';', got: ", e.tk.Token())
 	}
 	e.writeSymbol()
 	e.WriteString("</doStatement>\n")

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	symbolTable "github.com/poomipat-k/nand2tetris/project11/pkg/symbol-table"
 	jackTokenizer "github.com/poomipat-k/nand2tetris/project11/pkg/tokenizer"
 )
 
@@ -27,7 +28,6 @@ func (e *Engine) CompileTerm() {
 	} else if keywordConstant[e.tk.Keyword()] {
 		e.writeKeyword()
 	} else if e.tk.Symbol() == "(" {
-		fmt.Println("==(expression)")
 		e.writeSymbol()
 
 		e.tk.Advance()
@@ -40,19 +40,27 @@ func (e *Engine) CompileTerm() {
 
 		// eg. let i = i * (-j); we need to reset skipAdvance to false after j
 		e.tk.SetSkipAdvance(false)
-		fmt.Println("==end (expression) token: ", e.tk.Token(), " skipAdvance: ", e.tk.SkipAdvance())
 
 	} else if unaryOp[e.tk.Symbol()] {
-		fmt.Println("==unaryOp")
 		e.writeSymbol()
 		e.tk.Advance()
 		e.CompileTerm()
-		fmt.Println("==end unaryOp, token: ", e.tk.Token())
 	} else if tokenType == jackTokenizer.IDENTIFIER {
-		e.writeIdentifier("CompileTerm")
+		prevId := e.tk.Identifier()
 
 		e.tk.Advance()
 		if e.tk.Symbol() == "[" {
+			// "prevId" is either in subroutineST or classST
+			if e.subroutineST.KindOf(prevId) != "" {
+				e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
+			} else if e.classST.KindOf(prevId) != "" {
+				e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
+			} else {
+				log.Fatal("CompileTerm, this should be in one of symbol tables, token: ", prevId)
+			}
+
+			e.writeIdentifier(e.tk.Identifier(), "used", "")
+
 			e.writeSymbol()
 
 			e.tk.Advance()
@@ -66,6 +74,8 @@ func (e *Engine) CompileTerm() {
 			// let sum = sum + a[i];
 			e.tk.SetSkipAdvance(false)
 		} else if e.tk.Symbol() == "(" {
+			e.writeIdentifier(prevId, "used", symbolTable.SUBROUTINE)
+
 			e.writeSymbol()
 
 			e.tk.Advance()
@@ -77,14 +87,23 @@ func (e *Engine) CompileTerm() {
 			e.writeSymbol()
 
 		} else if e.tk.Symbol() == "." {
-			// className or varName
+			// "prevId" is either a className or a varName
+			if e.subroutineST.KindOf(prevId) != "" {
+				e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
+			} else if e.classST.KindOf(prevId) != "" {
+				e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
+			} else {
+				e.writeIdentifier(prevId, "used", symbolTable.CLASS)
+			}
+
+			// .
 			e.writeSymbol()
 
 			e.tk.Advance()
 			if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 				log.Fatal("CompileTerm className|varName (identifier) (expect identifier), got:", e.tk.Token())
 			}
-			e.writeIdentifier("CompileTerm")
+			e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.SUBROUTINE)
 
 			e.tk.Advance()
 			if e.tk.Symbol() != "(" {
@@ -101,8 +120,14 @@ func (e *Engine) CompileTerm() {
 			e.writeSymbol()
 		} else {
 			// skip advance if the current is varName
+			if e.subroutineST.KindOf(prevId) != "" {
+				e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
+			} else if e.classST.KindOf(prevId) != "" {
+				e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
+			} else {
+				log.Fatal("CompileTerm, this should be a var name")
+			}
 			e.tk.SetSkipAdvance(true)
-			fmt.Println("		set skipAdvance true, token: ", e.tk.Token())
 		}
 	} else {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())

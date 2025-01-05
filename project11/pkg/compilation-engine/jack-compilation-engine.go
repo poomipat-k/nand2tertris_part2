@@ -8,6 +8,15 @@ import (
 	jackTokenizer "github.com/poomipat-k/nand2tetris/project11/pkg/tokenizer"
 )
 
+// const (
+// 	VAR        = "VAR"
+// 	ARG        = "ARG"
+// 	STATIC     = "STATIC"
+// 	FIELD      = "FIELD"
+// 	CLASS      = "CLASS"
+// 	SUBROUTINE = "SUBROUTINE"
+// )
+
 type Engine struct {
 	OutFile      *os.File
 	tk           *jackTokenizer.Tokenizer
@@ -31,4 +40,16 @@ func check(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func (e *Engine) getKindOfIdentifier(name string) string {
+	var kind string
+	if e.subroutineST.KindOf(e.tk.Identifier()) != "" {
+		kind = e.subroutineST.KindOf(e.tk.Identifier())
+	} else if e.classST.KindOf(e.tk.Identifier()) != "" {
+		kind = e.classST.KindOf(e.tk.Identifier())
+	} else {
+		log.Fatal("getKindOfIdentifier, not found in symbol tables, name: ", e.tk.Identifier())
+	}
+	return kind
 }

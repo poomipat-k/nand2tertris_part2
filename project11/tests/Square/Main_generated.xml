@@ -14,18 +14,18 @@
 <symbol> { </symbol>
 <varDec>
 <keyword> var </keyword>
-<identifier_dec_subroutine> SquareGame </identifier_dec_subroutine>
-<identifier_dec_subroutine> game </identifier_dec_subroutine>
+<identifier_used_class> SquareGame </identifier_used_class>
+<identifier_dec_var_0> game </identifier_dec_var_0>
 <symbol> ; </symbol>
 </varDec>
 <statements>
 <letStatement>
 <keyword> let </keyword>
-<identifier_used_subroutine> game </identifier_used_subroutine>
+<identifier_used_var_0> game </identifier_used_var_0>
 <symbol> = </symbol>
 <expression>
 <term>
-<identifier_used_subroutine> SquareGame </identifier_used_subroutine>
+<identifier_used_class> SquareGame </identifier_used_class>
 <symbol> . </symbol>
 <identifier_used_subroutine> new </identifier_used_subroutine>
 <symbol> ( </symbol>
@@ -38,7 +38,7 @@
 </letStatement>
 <doStatement>
 <keyword> do </keyword>
-<identifier_used_subroutine> game </identifier_used_subroutine>
+<identifier_used_var_0> game </identifier_used_var_0>
 <symbol> . </symbol>
 <identifier_used_subroutine> run </identifier_used_subroutine>
 <symbol> ( </symbol>
@@ -49,7 +49,7 @@
 </doStatement>
 <doStatement>
 <keyword> do </keyword>
-<identifier_used_subroutine> game </identifier_used_subroutine>
+<identifier_used_var_0> game </identifier_used_var_0>
 <symbol> . </symbol>
 <identifier_used_subroutine> dispose </identifier_used_subroutine>
 <symbol> ( </symbol>

@@ -4,14 +4,9 @@ import (
 	"fmt"
 	"log"
 	"strings"
-)
 
-var declareFunctionCall = map[string]bool{
-	"CompileClass":         true,
-	"CompileSubroutineDec": true,
-	"CompileClassVarDec":   true,
-	"CompileVarDec":        true,
-}
+	symbolTable "github.com/poomipat-k/nand2tetris/project11/pkg/symbol-table"
+)
 
 func (e *Engine) writeSymbol() {
 	e.WriteString(fmt.Sprintf("<symbol> %s </symbol>\n", e.tk.Symbol()))
@@ -29,32 +24,30 @@ func (e *Engine) writeStringConst() {
 	e.WriteString(fmt.Sprintf("<stringConstant> %s </stringConstant>\n", e.tk.StringVal()))
 }
 
-func (e *Engine) writeIdentifier(calledFrom string) {
-	if e.tk.Identifier() == "" {
+/*
+role: [dec, used]
+kind: [VAR, ARGUMENT, STATIC, FIELD, CLASS, SUBROUTINE]
+*/
+func (e *Engine) writeIdentifier(identifier string, role string, kind string) {
+	if identifier == "" {
 		log.Fatal("writeIdentifier, identifier should not empty")
 	}
-	// tag format <identifier_(dec | used)_kind(_runningNumber)?>
-
-	role := "dec"
-	if !declareFunctionCall[calledFrom] {
-		role = "used"
-	}
-	var kind string
-	token := e.tk.Identifier()
-	kind = e.subroutineST.KindOf(token)
-	if kind == "" {
-		kind = e.classST.KindOf(token)
-	}
-	if kind == "" {
-		// either class or subroutine
-		if calledFrom == "CompileClass" {
-			kind = "CLASS"
-		} else {
-			kind = "SUBROUTINE"
-		}
-	}
-
 	tag := fmt.Sprintf("identifier_%s_%s", role, strings.ToLower(kind))
+	// append _runningNumber if kind is one of [VAR, ARGUMENT, STATIC, FIELD]
+	if kind == symbolTable.VAR ||
+		kind == symbolTable.ARG ||
+		kind == symbolTable.STATIC ||
+		kind == symbolTable.FIELD {
+		name := identifier
+		index := e.subroutineST.IndexOf(name)
+		if index == -1 {
+			index = e.classST.IndexOf(name)
+		}
+		if index == -1 {
+			log.Fatal("writeIdentifier, not found in symbol table, name: ", name)
+		}
+		tag += fmt.Sprintf("_%d", index)
+	}
 
-	e.WriteString(fmt.Sprintf("<%s> %s </%s>\n", tag, e.tk.Identifier(), tag))
+	e.WriteString(fmt.Sprintf("<%s> %s </%s>\n", tag, identifier, tag))
 }

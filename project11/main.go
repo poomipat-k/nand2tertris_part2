@@ -32,9 +32,8 @@ func compile(srcFilePath string, outputPath string) {
 	check(err)
 	defer tknz.File.Close()
 
-	engine, err := compilationEngine.NewEngine(tknz, outputPath)
-	check(err)
-	defer engine.OutFile.Close()
+	engine := compilationEngine.NewEngine(tknz, outputPath)
+	defer engine.Close()
 
 	tknz.Advance()
 	if tknz.Token() != "class" {

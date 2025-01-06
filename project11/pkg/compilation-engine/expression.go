@@ -6,8 +6,8 @@ import (
 
 /* expression: term (op term)* */
 func (e *Engine) CompileExpression() {
-	fmt.Println("--- CompileExpression ---")
-	e.WriteString("<expression>\n")
+	fmt.Println("--- CompileExpression ---, token: ", e.tk.Token())
+	// e.WriteString("<expression>\n")
 
 	// term
 	e.CompileTerm()
@@ -17,39 +17,53 @@ func (e *Engine) CompileExpression() {
 		e.tk.Advance()
 	}
 	// (op term)*
-	for opSymbol[e.tk.Symbol()] {
+	_, isOp := opSymbol[e.tk.Symbol()]
+	for isOp {
 		// op
-		e.writeSymbol()
+		op := e.tk.Symbol()
+		fmt.Println("==op: ", op)
+
+		// e.writeSymbol()
 
 		e.tk.Advance()
 		e.CompileTerm()
 
+		// write op
+		e.vmWriter.WriteArithmetic(opSymbol[op])
+
 		if !e.tk.SkipAdvance() {
 			e.tk.Advance()
 		}
+
+		fmt.Println("==last line of for (op term) , token: ", e.tk.Token())
+		_, isOp = opSymbol[e.tk.Symbol()]
 	}
 
-	e.WriteString("</expression>\n")
+	// e.WriteString("</expression>\n")
 	fmt.Println("	END CompileExpression")
 }
 
 /* expressionList: (expression(',' expression)*)? */
-func (e *Engine) CompileExpressionList() {
-	fmt.Println("--- CompileExpressionList ---")
-	e.WriteString("<expressionList>\n")
+func (e *Engine) CompileExpressionList() int {
+	fmt.Println("--- CompileExpressionList ---, token: ", e.tk.Token())
+	// e.WriteString("<expressionList>\n")
+	nArgs := 0
 	if !e.isTerm() {
-		e.WriteString("</expressionList>\n")
-		return
+		// e.WriteString("</expressionList>\n")
+		return nArgs
 	}
 	e.CompileExpression()
+	nArgs++
 
 	for e.tk.Symbol() == "," {
-		e.writeSymbol()
+		// e.writeSymbol()
 
 		e.tk.Advance()
 		e.CompileExpression()
+		nArgs++
 	}
-	e.WriteString("</expressionList>\n")
+	// e.WriteString("</expressionList>\n")
 	e.tk.SetSkipAdvance(false)
-	fmt.Println("	END CompileExpressionList")
+	fmt.Println("		END CompileExpressionList")
+	return nArgs
 }

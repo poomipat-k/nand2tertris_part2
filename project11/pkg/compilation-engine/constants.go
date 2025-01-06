@@ -25,26 +25,26 @@ var statementKeywords = map[string]bool{
 	"return": true,
 }
 
-var keywordConstant = map[string]bool{
-	"true":  true,
-	"false": true,
-	"null":  true,
-	"this":  true,
+var keywordConstant = map[string]int{
+	"true":  1,
+	"false": 0,
+	"null":  0,
+	"this":  0,
 }
 
-var opSymbol = map[string]bool{
-	"+":     true,
-	"-":     true,
-	"*":     true,
-	"/":     true,
-	"&amp;": true,
-	"|":     true,
-	"&lt;":  true,
-	"&gt;":  true,
-	"=":     true,
+var opSymbol = map[string]string{
+	"+":     "add",
+	"-":     "sub",
+	"*":     "call Math.multiply 2",
+	"/":     "call Math.divide 2",
+	"&amp;": "and",
+	"|":     "or",
+	"&lt;":  "lt",
+	"&gt;":  "gt",
+	"=":     "eq",
 }
 
-var unaryOp = map[string]bool{
-	"-": true,
-	"~": true,
+var unaryOp = map[string]string{
+	"-": "neg",
+	"~": "not",
 }

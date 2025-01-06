@@ -17,21 +17,23 @@ func (e *Engine) CompileClass() {
 
 	e.classST.Reset()
 
-	e.WriteString("<class>\n")
-	e.writeKeyword()
+	// e.WriteString("<class>\n")
+	// e.writeKeyword()
 
 	e.tk.Advance()
 	if e.tk.Identifier() == "" {
 		log.Fatal("expect an identifier (className)")
 	}
-	e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.CLASS)
+	e.className = e.tk.Identifier()
+
+	// e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.CLASS)
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "{" {
 		log.Fatal("expect an '{'")
 	}
 
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileClassVarDec()   // classVarDec*
@@ -40,9 +42,9 @@ func (e *Engine) CompileClass() {
 	if e.tk.Symbol() != "}" {
 		log.Fatal("expect a '}' at the end of a class, got: ", e.tk.Token())
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
-	e.WriteString("</class>\n")
+	// e.WriteString("</class>\n")
 }
 
 /*
@@ -59,9 +61,9 @@ func (e *Engine) CompileClassVarDec() {
 		if e.tk.Symbol() == "}" || subroutineDec[e.tk.Keyword()] {
 			break
 		}
-		e.WriteString("<classVarDec>\n")
+		// e.WriteString("<classVarDec>\n")
 		e.compileOneClassVarDec()
-		e.WriteString("</classVarDec>\n")
+		// e.WriteString("</classVarDec>\n")
 		e.tk.Advance()
 	}
 }
@@ -72,7 +74,7 @@ func (e *Engine) compileOneClassVarDec() {
 		log.Fatal("expect static or field")
 	}
 	// static | field
-	e.writeKeyword()
+	// e.writeKeyword()
 	isStatic := false
 	if e.tk.Keyword() == "static" {
 		isStatic = true
@@ -82,10 +84,10 @@ func (e *Engine) compileOneClassVarDec() {
 	// type
 	var dataType string
 	if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
-		e.writeKeyword()
+		// e.writeKeyword()
 		dataType = e.tk.Keyword()
 	} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-		e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
+		// e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
 		dataType = e.tk.Identifier()
 	} else {
 		log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
@@ -103,7 +105,7 @@ func (e *Engine) compileOneClassVarDec() {
 	}
 	// add variable to the class symbolTable
 	e.classST.Define(e.tk.Identifier(), dataType, varNameKind)
-	e.writeIdentifier(e.tk.Identifier(), "dec", varNameKind)
+	// e.writeIdentifier(e.tk.Identifier(), "dec", varNameKind)
 
 	e.tk.Advance()
 	if e.tk.TokenType() != jackTokenizer.SYMBOL || (e.tk.Symbol() != "," && e.tk.Symbol() != ";") {
@@ -113,10 +115,10 @@ func (e *Engine) compileOneClassVarDec() {
 	// has more than one variable
 	for e.tk.Symbol() != ";" {
 		if e.tk.Symbol() == "," {
-			e.writeSymbol()
+			// e.writeSymbol()
 		} else if e.tk.Identifier() != "" {
 			e.classST.Define(e.tk.Identifier(), dataType, varNameKind)
-			e.writeIdentifier(e.tk.Identifier(), "dec", varNameKind)
+			// e.writeIdentifier(e.tk.Identifier(), "dec", varNameKind)
 		} else {
 			log.Fatal("expect ',' or identifier or ';'")
 		}
@@ -124,7 +126,7 @@ func (e *Engine) compileOneClassVarDec() {
 	}
 
 	// write ;
-	e.writeSymbol()
+	// e.writeSymbol()
 }
 
 /* ('constructor' | 'function' | 'method') ('void' | type) subroutineName '(' parameterList ')' subroutineBody  */
@@ -133,15 +135,15 @@ func (e *Engine) CompileSubroutineDec() {
 	for subroutineDec[e.tk.Keyword()] {
 		e.subroutineST.Reset()
 
-		e.WriteString("<subroutineDec>\n")
-		e.writeKeyword()
+		// e.WriteString("<subroutineDec>\n")
+		// e.writeKeyword()
 
 		e.tk.Advance()
 		// subroutine return type
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && (jackType[e.tk.Keyword()] || e.tk.Keyword() == "void") {
-			e.writeKeyword()
+			// e.writeKeyword()
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-			e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
+			// e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
 		} else {
 			log.Fatal("CompileSubroutineDec, expect to be one of 'void' | 'int' | 'char' | 'boolean' | className(identifier)", " got: ", e.tk.Token(), " type: ", e.tk.TokenType())
 		}
@@ -151,46 +153,50 @@ func (e *Engine) CompileSubroutineDec() {
 		if e.tk.Identifier() == "" {
 			log.Fatal("expect an identifier (subRoutineName)")
 		}
-		e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.SUBROUTINE)
+		subroutineName := e.tk.Identifier()
+		// e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.SUBROUTINE)
 
 		e.tk.Advance()
 		if e.tk.Symbol() != "(" {
 			log.Fatal("expect a '('")
 		}
-		e.writeSymbol()
+		// e.writeSymbol()
 
 		// parameterList
 		e.tk.Advance()
-		e.CompileParameterList()
+		nVars := e.CompileParameterList()
 		// end parameterList
 
 		if e.tk.Symbol() != ")" {
 			log.Fatal("expect a ')'")
 		}
-		e.writeSymbol()
+		// e.writeSymbol()
+
+		e.vmWriter.WriteFunction(fmt.Sprintf("%s.%s", e.className, subroutineName), nVars)
 
 		e.tk.Advance()
 		// subroutineBody
 		e.CompileSubroutineBody()
 		// end subroutineBody
 
-		e.WriteString("</subroutineDec>\n")
+		// e.WriteString("</subroutineDec>\n")
 		e.tk.Advance()
 	}
 }
 
-func (e *Engine) CompileParameterList() {
+func (e *Engine) CompileParameterList() int {
 	fmt.Println("--- CompileParameterList ---")
-	e.WriteString("<parameterList>\n")
+	// e.WriteString("<parameterList>\n")
+	nVars := 0
 
 	for e.tk.Symbol() != ")" {
 		// type
 		var dataType string
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
-			e.writeKeyword()
+			// e.writeKeyword()
 			dataType = e.tk.Keyword()
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-			e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
+			// e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
 			dataType = e.tk.Identifier()
 		} else {
 			log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
@@ -202,28 +208,30 @@ func (e *Engine) CompileParameterList() {
 			log.Fatal("parameterList varName: expect an identifier")
 		}
 		e.subroutineST.Define(e.tk.Identifier(), dataType, symbolTable.ARG)
-		e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.ARG)
+		// e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.ARG)
 
 		e.tk.Advance()
 		// optional ","
 		if e.tk.Symbol() == "," {
-			e.writeSymbol()
+			// e.writeSymbol()
 			e.tk.Advance()
 		}
+		nVars++
 	}
 
-	e.WriteString("</parameterList>\n")
+	// e.WriteString("</parameterList>\n")
+	return nVars
 }
 
 /* '{' varDec* statements '}' */
 func (e *Engine) CompileSubroutineBody() {
 	fmt.Println("--- CompileSubroutineBody ---")
 
-	e.WriteString("<subroutineBody>\n")
+	// e.WriteString("<subroutineBody>\n")
 	if e.tk.Symbol() != "{" {
 		log.Fatal("CompileSubroutineBody expect a '{'")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	// varDec*
 	e.tk.Advance()
@@ -237,9 +245,9 @@ func (e *Engine) CompileSubroutineBody() {
 	if e.tk.Symbol() != "}" {
 		log.Fatal("CompileSubroutineBody, expect a '}', got: ", e.tk.Token())
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
-	e.WriteString("</subroutineBody>\n")
+	// e.WriteString("</subroutineBody>\n")
 
 }
 
@@ -248,18 +256,18 @@ func (e *Engine) CompileVarDec() {
 	fmt.Println("--- CompileVarDec ---")
 	// i := 0
 	for e.tk.Keyword() == "var" {
-		e.WriteString("<varDec>\n")
+		// e.WriteString("<varDec>\n")
 		// 'var'
-		e.writeKeyword()
+		// e.writeKeyword()
 		e.tk.Advance()
 
 		// type
 		var dataType string
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
-			e.writeKeyword()
+			// e.writeKeyword()
 			dataType = e.tk.Keyword()
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-			e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
+			// e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
 			dataType = e.tk.Identifier()
 		} else {
 			log.Fatal("CompileVarDec, expect 'int' | 'char' | 'boolean' | className(identifier), got: ", e.tk.Token())
@@ -271,7 +279,7 @@ func (e *Engine) CompileVarDec() {
 			log.Fatal("CompileVarDec, varName: expect an identifier")
 		}
 		e.subroutineST.Define(e.tk.Identifier(), dataType, symbolTable.VAR)
-		e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.VAR)
+		// e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.VAR)
 
 		e.tk.Advance()
 		for e.tk.Symbol() != ";" {
@@ -279,7 +287,7 @@ func (e *Engine) CompileVarDec() {
 			if e.tk.Symbol() != "," {
 				log.Fatal("CompileVarDec, expect a ','")
 			}
-			e.writeSymbol()
+			// e.writeSymbol()
 
 			e.tk.Advance()
 			// varName
@@ -287,13 +295,13 @@ func (e *Engine) CompileVarDec() {
 				log.Fatal("CompileVarDec, varName: expect an identifier after ,")
 			}
 			e.subroutineST.Define(e.tk.Identifier(), dataType, symbolTable.VAR)
-			e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.VAR)
+			// e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.VAR)
 
 			e.tk.Advance()
 		}
 		// write ';'
-		e.writeSymbol()
-		e.WriteString("</varDec>\n")
+		// e.writeSymbol()
+		// e.WriteString("</varDec>\n")
 		e.tk.Advance()
 
 		// i++

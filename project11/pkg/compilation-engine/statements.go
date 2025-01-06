@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	symbolTable "github.com/poomipat-k/nand2tetris/project11/pkg/symbol-table"
-	jackTokenizer "github.com/poomipat-k/nand2tetris/project11/pkg/tokenizer"
+	vmWriter "github.com/poomipat-k/nand2tetris/project11/pkg/vm-writer"
 )
 
 /*
@@ -17,12 +16,12 @@ func (e *Engine) CompileStatements() {
 
 	// no statements
 	if !statementKeywords[e.tk.Keyword()] {
-		e.WriteString("<statements>\n")
-		e.WriteString("</statements>\n")
+		// e.WriteString("<statements>\n")
+		// e.WriteString("</statements>\n")
 		return
 	}
 
-	e.WriteString("<statements>\n")
+	// e.WriteString("<statements>\n")
 	for {
 		if e.tk.Keyword() == "let" {
 			e.CompileLet()
@@ -45,16 +44,16 @@ func (e *Engine) CompileStatements() {
 		}
 
 	}
-	e.WriteString("</statements>\n")
+	// e.WriteString("</statements>\n")
 }
 
 /* 'let' varName('['expression']')? '=' expression ';' */
 func (e *Engine) CompileLet() {
 	fmt.Println("--- CompileLet ---")
 
-	e.WriteString("<letStatement>\n")
+	// e.WriteString("<letStatement>\n")
 	// let
-	e.writeKeyword()
+	// e.writeKeyword()
 
 	e.tk.Advance()
 	// varName
@@ -62,13 +61,13 @@ func (e *Engine) CompileLet() {
 		log.Fatal("CompileLet, expect a varName(identifier), got:", e.tk.Token(), " ", e.tk.TokenType())
 	}
 
-	kind := e.getKindOfIdentifier(e.tk.Identifier())
-	e.writeIdentifier(e.tk.Identifier(), "used", kind)
+	// kind := e.getKindOfIdentifier(e.tk.Identifier())
+	// e.writeIdentifier(e.tk.Identifier(), "used", kind)
 
 	e.tk.Advance()
 	// '['
 	if e.tk.Symbol() == "[" {
-		e.writeSymbol()
+		// e.writeSymbol()
 
 		e.tk.Advance()
 		// expression
@@ -79,7 +78,7 @@ func (e *Engine) CompileLet() {
 			log.Fatal("CompileLet, expect a ]")
 		}
 		// ']'
-		e.writeSymbol()
+		// e.writeSymbol()
 		e.tk.Advance()
 	}
 
@@ -89,7 +88,7 @@ func (e *Engine) CompileLet() {
 	}
 
 	// '='
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	// expression
@@ -100,23 +99,23 @@ func (e *Engine) CompileLet() {
 		log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
 	}
 	// ';'
-	e.writeSymbol()
-	e.WriteString("</letStatement>\n")
+	// e.writeSymbol()
+	// e.WriteString("</letStatement>\n")
 }
 
 /* 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')? */
 func (e *Engine) CompileIf() {
 	fmt.Println("--- CompileIf ---")
 	// if
-	e.WriteString("<ifStatement>\n")
+	// e.WriteString("<ifStatement>\n")
 
-	e.writeKeyword()
+	// e.writeKeyword()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "(" {
 		log.Fatal("CompileIf, expect a '('")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileExpression()
@@ -124,13 +123,13 @@ func (e *Engine) CompileIf() {
 	if e.tk.Symbol() != ")" {
 		log.Fatal("CompileIf, expect a ')'")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "{" {
 		log.Fatal("CompileIf, expect a '{'")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileStatements()
@@ -138,18 +137,18 @@ func (e *Engine) CompileIf() {
 	if e.tk.Symbol() != "}" {
 		log.Fatal("CompileIf, expect a '}'")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	// else
 	if e.tk.Keyword() == "else" {
-		e.writeKeyword()
+		// e.writeKeyword()
 
 		e.tk.Advance()
 		if e.tk.Symbol() != "{" {
 			log.Fatal("CompileIf, expect a '{'")
 		}
-		e.writeSymbol()
+		// e.writeSymbol()
 
 		e.tk.Advance()
 		e.CompileStatements()
@@ -157,10 +156,10 @@ func (e *Engine) CompileIf() {
 		if e.tk.Symbol() != "}" {
 			log.Fatal("CompileIf, expect a '}'")
 		}
-		e.writeSymbol()
+		// e.writeSymbol()
 		e.tk.Advance()
 	}
-	e.WriteString("</ifStatement>\n")
+	// e.WriteString("</ifStatement>\n")
 
 }
 
@@ -168,14 +167,14 @@ func (e *Engine) CompileIf() {
 func (e *Engine) CompileWhile() {
 	fmt.Println("--- CompileWhile ---")
 
-	e.WriteString("<whileStatement>\n")
-	e.writeKeyword()
+	// e.WriteString("<whileStatement>\n")
+	// e.writeKeyword()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "(" {
 		log.Fatal("CompileIf, expect a '('")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileExpression()
@@ -183,13 +182,13 @@ func (e *Engine) CompileWhile() {
 	if e.tk.Symbol() != ")" {
 		log.Fatal("CompileIf, expect a ')'")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "{" {
 		log.Fatal("CompileIf, expect a '{'")
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileStatements()
@@ -197,102 +196,117 @@ func (e *Engine) CompileWhile() {
 	if e.tk.Symbol() != "}" {
 		log.Fatal("CompileIf, expect a '}'")
 	}
-	e.writeSymbol()
-	e.WriteString("</whileStatement>\n")
+	// e.writeSymbol()
+	// e.WriteString("</whileStatement>\n")
 
 }
+
+// /* 'do' subroutineCall ';' */
+// func (e *Engine) CompileDo() {
+// 	fmt.Println("--- CompileDo ---")
+// 	// e.WriteString("<doStatement>\n")
+// 	// e.writeKeyword()
+
+// 	e.tk.Advance()
+// 	if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+// 		log.Fatal("CompileDo, expect an identifier")
+// 	}
+
+// 	// could be [subroutineName, (className | varName).subroutineName]
+// 	prevId := e.tk.Identifier()
+
+// 	e.tk.Advance()
+// 	if e.tk.Symbol() == "(" {
+// 		// then "prevId" is a subroutine Name
+
+// 		// e.writeIdentifier(prevId, "used", symbolTable.SUBROUTINE)
+
+// 		// e.writeSymbol()
+
+// 		e.tk.Advance()
+// 		e.CompileExpressionList()
+
+// 		if e.tk.Symbol() != ")" {
+// 			log.Fatal("CompileDo, expect a ')'")
+// 		}
+// 		// e.writeSymbol()
+
+// 	} else if e.tk.Symbol() == "." {
+// 		// "prevId" is either a className or a varName
+// 		if e.subroutineST.KindOf(prevId) != "" {
+// 			// e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
+// 		} else if e.classST.KindOf(prevId) != "" {
+// 			// e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
+// 		} else {
+// 			// e.writeIdentifier(prevId, "used", symbolTable.CLASS)
+// 		}
+
+// 		// .
+// 		// e.writeSymbol()
+
+// 		e.tk.Advance()
+// 		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
+// 			log.Fatal("CompileDo className|varName (identifier) (expect identifier), got:", e.tk.Token())
+// 		}
+// 		// e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.SUBROUTINE)
+
+// 		e.tk.Advance()
+// 		if e.tk.Symbol() != "(" {
+// 			log.Fatal("CompileDo expect '('")
+// 		}
+// 		// e.writeSymbol()
+
+// 		e.tk.Advance()
+// 		e.CompileExpressionList()
+
+// 		if e.tk.Symbol() != ")" {
+// 			log.Fatal("CompileDo, expect a ')'")
+// 		}
+// 		// e.writeSymbol()
+// 	} else {
+// 		log.Fatal("CompileDo not supported token, got: ", e.tk.Token())
+// 	}
+
+// 	e.tk.Advance()
+// 	if e.tk.Symbol() != ";" {
+// 		log.Fatal("CompileDo, expect a ';', got: ", e.tk.Token())
+// 	}
+// 	// e.writeSymbol()
+// 	// e.WriteString("</doStatement>\n")
+
+// 	e.vmWriter.WritePop("temp", 0)
+// }
 
 /* 'do' subroutineCall ';' */
 func (e *Engine) CompileDo() {
 	fmt.Println("--- CompileDo ---")
-	e.WriteString("<doStatement>\n")
-	e.writeKeyword()
-
 	e.tk.Advance()
-	if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
-		log.Fatal("CompileDo, expect an identifier")
-	}
 
-	// could be [subroutineName, (className | varName).subroutineName]
-	prevId := e.tk.Identifier()
-
-	e.tk.Advance()
-	if e.tk.Symbol() == "(" {
-		// then "prevId" is a subroutine Name
-
-		e.writeIdentifier(prevId, "used", symbolTable.SUBROUTINE)
-
-		e.writeSymbol()
-
-		e.tk.Advance()
-		e.CompileExpressionList()
-
-		if e.tk.Symbol() != ")" {
-			log.Fatal("CompileDo, expect a ')'")
-		}
-		e.writeSymbol()
-
-	} else if e.tk.Symbol() == "." {
-		// "prevId" is either a className or a varName
-		if e.subroutineST.KindOf(prevId) != "" {
-			e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
-		} else if e.classST.KindOf(prevId) != "" {
-			e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
-		} else {
-			e.writeIdentifier(prevId, "used", symbolTable.CLASS)
-		}
-
-		// .
-		e.writeSymbol()
-
-		e.tk.Advance()
-		if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
-			log.Fatal("CompileDo className|varName (identifier) (expect identifier), got:", e.tk.Token())
-		}
-		e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.SUBROUTINE)
-
-		e.tk.Advance()
-		if e.tk.Symbol() != "(" {
-			log.Fatal("CompileDo expect '('")
-		}
-		e.writeSymbol()
-
-		e.tk.Advance()
-		e.CompileExpressionList()
-
-		if e.tk.Symbol() != ")" {
-			log.Fatal("CompileDo, expect a ')'")
-		}
-		e.writeSymbol()
-	} else {
-		log.Fatal("CompileDo not supported token, got: ", e.tk.Token())
-	}
-
-	e.tk.Advance()
-	if e.tk.Symbol() != ";" {
-		log.Fatal("CompileDo, expect a ';', got: ", e.tk.Token())
-	}
-	e.writeSymbol()
-	e.WriteString("</doStatement>\n")
+	e.CompileExpression()
+	e.vmWriter.WritePop("temp", 0)
 }
 
 /* 'return' expression? ';' */
 func (e *Engine) CompileReturn() {
 	fmt.Println("--- CompileReturn ---")
-	e.WriteString("<returnStatement>\n")
+	// e.WriteString("<returnStatement>\n")
 
-	e.writeKeyword()
+	// e.writeKeyword()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != ";" {
 		e.CompileExpression()
+		e.vmWriter.WriteReturn()
+	} else {
+		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, 0)
+		e.vmWriter.WriteReturn()
 	}
 
 	if e.tk.Symbol() != ";" {
 		log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
 	}
-	e.writeSymbol()
+	// e.writeSymbol()
 
-	e.WriteString("</returnStatement>\n")
+	// e.WriteString("</returnStatement>\n")
 
 }

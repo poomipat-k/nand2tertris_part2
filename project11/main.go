@@ -21,9 +21,8 @@ func main() {
 	for i := 0; i < len(srcPaths); i++ {
 		fmt.Println(srcPaths[i])
 		fmt.Println(outPaths[i])
-		// tokenAnalyzer(paths[i], outPaths[i])
-		compile(srcPaths[i], outPaths[i])
 
+		compile(srcPaths[i], outPaths[i])
 		fmt.Println("============")
 	}
 }
@@ -45,33 +44,6 @@ func compile(srcFilePath string, outputPath string) {
 	engine.CompileClass()
 }
 
-// // V.0 for unit testing tokenAnalyzer function
-// func tokenAnalyzer(srcFilePath string, tokenOutPath string) {
-// 	tokenizer, err := jackTokenizer.NewTokenizer(srcFilePath)
-// 	check(err)
-// 	defer tokenizer.File.Close()
-
-// 	engine, err := compilationEngine.NewEngine(tokenOutPath, "")
-// 	check(err)
-// 	defer engine.OutFile.Close()
-
-// 	engine.WriteString("<tokens>\n")
-
-// 	tokenizer.Advance() // get the first token
-
-// 	for !tokenizer.HasMoreTokens() {
-// 		tokenType := strings.ToLower(tokenizer.TokenType())
-// 		if tokenType == "string_const" {
-// 			tokenType = "stringConstant"
-// 		} else if tokenType == "int_const" {
-// 			tokenType = "integerConstant"
-// 		}
-// 		engine.WriteString(fmt.Sprintf("<%s> %s </%s>\n", tokenType, tokenizer.Token(), tokenType))
-// 		tokenizer.Advance()
-// 	}
-// 	engine.WriteString("</tokens>\n")
-// }
-
 // return []path, []outfilePaths
 func processInputPath(path string) ([]string, []string) {
 	splitsSlash := strings.Split(path, "/")
@@ -80,7 +52,7 @@ func processInputPath(path string) ([]string, []string) {
 	// one .jack file
 	if len(splitFileOrDirName) == 2 {
 		fileName := splitFileOrDirName[0]
-		return []string{path}, []string{fmt.Sprintf("%s/%s_generated.xml", strings.Join(splitsSlash[:len(splitsSlash)-1], "/"), fileName)}
+		return []string{path}, []string{fmt.Sprintf("%s/%s_generated.vm", strings.Join(splitsSlash[:len(splitsSlash)-1], "/"), fileName)}
 	}
 	// directory
 	fileInfo, err := os.ReadDir(path)
@@ -94,7 +66,7 @@ func processInputPath(path string) ([]string, []string) {
 		sp := strings.Split(name, ".")
 		if len(sp) == 2 && sp[1] == "jack" {
 			jackFilePaths = append(jackFilePaths, fmt.Sprintf("%s/%s", path, name))
-			outFilePaths = append(outFilePaths, fmt.Sprintf("%s/%s_generated.xml", path, sp[0]))
+			outFilePaths = append(outFilePaths, fmt.Sprintf("%s/%s_generated.vm", path, sp[0]))
 		}
 	}
 	return jackFilePaths, outFilePaths

@@ -32,10 +32,9 @@ func (e *Engine) CompileTerm() {
 		// e.writeKeyword()
 		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, constVal)
 		if constVal == 1 {
-			e.vmWriter.WriteArithmetic("NEG")
+			e.vmWriter.WriteArithmetic("neg")
 		}
 	} else if e.tk.Symbol() == "(" {
-		fmt.Println("===(expression) start")
 		// e.writeSymbol()
 
 		e.tk.Advance()
@@ -48,7 +47,6 @@ func (e *Engine) CompileTerm() {
 
 		// eg. let i = i * (-j); we need to reset skipAdvance to false after j
 		e.tk.SetSkipAdvance(false)
-		fmt.Println("===(expression) end")
 
 	} else if _, isUnaryOp := unaryOp[e.tk.Symbol()]; isUnaryOp {
 		// e.writeSymbol()
@@ -58,9 +56,9 @@ func (e *Engine) CompileTerm() {
 
 		// ~ or -
 		if op == "~" {
-			e.vmWriter.WriteArithmetic("NOT")
+			e.vmWriter.WriteArithmetic("not")
 		} else if op == "-" {
-			e.vmWriter.WriteArithmetic("NEG")
+			e.vmWriter.WriteArithmetic("neg")
 		} else {
 			log.Fatal("CompileTerm expect unaryOp, got: ", op)
 		}
@@ -95,7 +93,6 @@ func (e *Engine) CompileTerm() {
 			// let sum = sum + a[i];
 			e.tk.SetSkipAdvance(false)
 		} else if e.tk.Symbol() == "(" {
-			fmt.Println("===CompileTerm, subroutine()")
 			// e.writeIdentifier(prevId, "used", symbolTable.SUBROUTINE)
 
 			// e.writeSymbol()
@@ -110,7 +107,6 @@ func (e *Engine) CompileTerm() {
 			e.vmWriter.WriteCall(prevId, nArgs)
 
 		} else if e.tk.Symbol() == "." {
-			fmt.Println("===CompileTerm, identifier '.' ")
 			// "prevId" is either a className or a varName
 			prevIsVarName := true
 			var classTypeOfVar string
@@ -157,13 +153,20 @@ func (e *Engine) CompileTerm() {
 			// e.writeSymbol()
 		} else {
 			// skip advance if the current is varName
+			var segment string
+			var index int
 			if e.subroutineST.KindOf(prevId) != "" {
 				// e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
+				segment = e.vmWriter.KindToSegment(e.subroutineST.KindOf(prevId))
+				index = e.subroutineST.IndexOf(prevId)
 			} else if e.classST.KindOf(prevId) != "" {
 				// e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
+				segment = e.vmWriter.KindToSegment(e.classST.KindOf(prevId))
+				index = e.classST.IndexOf(prevId)
 			} else {
 				log.Fatal("CompileTerm, this should be a var name")
 			}
+			e.vmWriter.WritePush(segment, index)
 			e.tk.SetSkipAdvance(true)
 		}
 	} else {

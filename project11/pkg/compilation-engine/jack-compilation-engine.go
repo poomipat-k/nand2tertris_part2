@@ -1,19 +1,23 @@
 package compilationEngine
 
 import (
+	"fmt"
 	"log"
+	"strings"
 
+	"github.com/google/uuid"
 	symbolTable "github.com/poomipat-k/nand2tetris/project11/pkg/symbol-table"
 	jackTokenizer "github.com/poomipat-k/nand2tetris/project11/pkg/tokenizer"
 	vmWriter "github.com/poomipat-k/nand2tetris/project11/pkg/vm-writer"
 )
 
 type Engine struct {
-	tk           *jackTokenizer.Tokenizer
-	classST      *symbolTable.SymbolTable
-	subroutineST *symbolTable.SymbolTable
-	vmWriter     *vmWriter.VMWriter
-	className    string
+	tk             *jackTokenizer.Tokenizer
+	classST        *symbolTable.SymbolTable
+	subroutineST   *symbolTable.SymbolTable
+	vmWriter       *vmWriter.VMWriter
+	className      string
+	subroutineName string
 }
 
 func NewEngine(tokenizer *jackTokenizer.Tokenizer, outputPath string) *Engine {
@@ -48,4 +52,10 @@ func (e *Engine) getKindOfIdentifier(name string) string {
 		log.Fatal("getKindOfIdentifier, not found in symbol tables, name: ", name)
 	}
 	return kind
+}
+
+func generateLabel(className string) string {
+	uqId := uuid.New()
+	idStr := strings.ReplaceAll(uqId.String(), "-", "_")
+	return fmt.Sprintf("%s_%s", className, idStr)
 }

@@ -1,0 +1,106 @@
+function Main.main 1
+push constant 8001
+push constant 16
+push constant 1
+neg
+call Main.fillMemory 3
+pop temp 0
+push constant 8000
+call Memory.peek 1
+pop local 0
+push local 0
+call Main.convert 1
+pop temp 0
+push constant 0
+return
+function Main.convert 3
+push constant 1
+neg
+pop local 2
+label Main_02581a35_1474_4b53_b1cc_eafddf5cf24c
+push local 2
+not
+if-goto Main_c6816172_a19c_4b43_b1cb_a5327862225d
+push local 1
+push constant 1
+add
+pop local 1
+push local 0
+call Main.nextMask 1
+pop local 0
+push local 1
+push constant 16
+gt
+not
+not
+if-goto Main_c52ba485_db13_4e13_958d_b0ce1a98fd97
+push argument 0
+push local 0
+and
+push constant 0
+eq
+not
+not
+if-goto Main_2b1c203b_7880_4d3d_a2cc_3c6bce28589a
+push constant 8000
+push local 1
+add
+push constant 1
+call Memory.poke 2
+pop temp 0
+goto Main_c8430c20_912f_4296_8029_514375726a7e
+label Main_2b1c203b_7880_4d3d_a2cc_3c6bce28589a
+push constant 8000
+push local 1
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+label Main_c8430c20_912f_4296_8029_514375726a7e
+goto Main_926d488b_5792_48df_99c4_ba1a38a1308a
+label Main_c52ba485_db13_4e13_958d_b0ce1a98fd97
+push constant 0
+pop local 2
+label Main_926d488b_5792_48df_99c4_ba1a38a1308a
+goto Main_02581a35_1474_4b53_b1cc_eafddf5cf24c
+label Main_c6816172_a19c_4b43_b1cb_a5327862225d
+push constant 0
+return
+function Main.nextMask 0
+push argument 0
+push constant 0
+eq
+not
+if-goto Main_47072df4_f90b_4134_8586_0be7bb64a5f7
+push constant 1
+return
+goto Main_616adfa6_842c_4fdb_994c_504297c9c52e
+label Main_47072df4_f90b_4134_8586_0be7bb64a5f7
+push argument 0
+push constant 2
+call Math.multiply 2
+return
+label Main_616adfa6_842c_4fdb_994c_504297c9c52e
+function Main.fillMemory 0
+label Main_d4f0b5e6_ca1a_438b_aef1_eb88de07303a
+push argument 1
+push constant 0
+gt
+not
+if-goto Main_52d5659a_8db2_45fb_bf9c_bcd902a8efb5
+push argument 0
+push argument 2
+call Memory.poke 2
+pop temp 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+push argument 0
+push constant 1
+add
+pop argument 0
+goto Main_d4f0b5e6_ca1a_438b_aef1_eb88de07303a
+label Main_52d5659a_8db2_45fb_bf9c_bcd902a8efb5
+push constant 0
+return

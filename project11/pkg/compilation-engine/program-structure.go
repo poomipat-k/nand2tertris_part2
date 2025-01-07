@@ -154,6 +154,7 @@ func (e *Engine) CompileSubroutineDec() {
 			log.Fatal("expect an identifier (subRoutineName)")
 		}
 		subroutineName := e.tk.Identifier()
+		e.subroutineName = subroutineName
 		// e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.SUBROUTINE)
 
 		e.tk.Advance()
@@ -164,15 +165,13 @@ func (e *Engine) CompileSubroutineDec() {
 
 		// parameterList
 		e.tk.Advance()
-		nVars := e.CompileParameterList()
+		e.CompileParameterList()
 		// end parameterList
 
 		if e.tk.Symbol() != ")" {
 			log.Fatal("expect a ')'")
 		}
 		// e.writeSymbol()
-
-		e.vmWriter.WriteFunction(fmt.Sprintf("%s.%s", e.className, subroutineName), nVars)
 
 		e.tk.Advance()
 		// subroutineBody
@@ -181,13 +180,14 @@ func (e *Engine) CompileSubroutineDec() {
 
 		// e.WriteString("</subroutineDec>\n")
 		e.tk.Advance()
+
+		fmt.Println(" @@@@ subroutine ", subroutineName, " ST: ", e.subroutineST)
 	}
 }
 
-func (e *Engine) CompileParameterList() int {
+func (e *Engine) CompileParameterList() {
 	fmt.Println("--- CompileParameterList ---")
 	// e.WriteString("<parameterList>\n")
-	nVars := 0
 
 	for e.tk.Symbol() != ")" {
 		// type
@@ -216,11 +216,9 @@ func (e *Engine) CompileParameterList() int {
 			// e.writeSymbol()
 			e.tk.Advance()
 		}
-		nVars++
 	}
 
 	// e.WriteString("</parameterList>\n")
-	return nVars
 }
 
 /* '{' varDec* statements '}' */
@@ -238,6 +236,8 @@ func (e *Engine) CompileSubroutineBody() {
 	e.CompileVarDec()
 	// end varDec*
 
+	e.vmWriter.WriteFunction(fmt.Sprintf("%s.%s", e.className, e.subroutineName), e.subroutineST.VarCount(symbolTable.VAR))
+
 	// statements
 	e.CompileStatements()
 	// end statements
@@ -254,7 +254,6 @@ func (e *Engine) CompileSubroutineBody() {
 /* varDec: 'var' type varName (',' varName)* ';' */
 func (e *Engine) CompileVarDec() {
 	fmt.Println("--- CompileVarDec ---")
-	// i := 0
 	for e.tk.Keyword() == "var" {
 		// e.WriteString("<varDec>\n")
 		// 'var'
@@ -304,12 +303,7 @@ func (e *Engine) CompileVarDec() {
 		// e.WriteString("</varDec>\n")
 		e.tk.Advance()
 
-		// i++
-		// if i >= 4 {
-		// 	fmt.Println("current: ", e.tk.Token())
-		// 	fmt.Println("exceed 4")
-		// 	return
-		// }
+		fmt.Println("sub classST", e.classST)
 	}
 
 }

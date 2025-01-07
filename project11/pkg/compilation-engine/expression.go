@@ -21,7 +21,6 @@ func (e *Engine) CompileExpression() {
 	for isOp {
 		// op
 		op := e.tk.Symbol()
-		fmt.Println("==op: ", op)
 
 		// e.writeSymbol()
 
@@ -35,7 +34,6 @@ func (e *Engine) CompileExpression() {
 			e.tk.Advance()
 		}
 
-		fmt.Println("==last line of for (op term) , token: ", e.tk.Token())
 		_, isOp = opSymbol[e.tk.Symbol()]
 	}
 

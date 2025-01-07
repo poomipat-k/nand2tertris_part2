@@ -180,8 +180,6 @@ func (e *Engine) CompileSubroutineDec() {
 
 		// e.WriteString("</subroutineDec>\n")
 		e.tk.Advance()
-
-		fmt.Println(" @@@@ subroutine ", subroutineName, " ST: ", e.subroutineST)
 	}
 }
 

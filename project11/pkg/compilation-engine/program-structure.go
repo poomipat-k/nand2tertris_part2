@@ -6,6 +6,7 @@ import (
 
 	symbolTable "github.com/poomipat-k/nand2tetris/project11/pkg/symbol-table"
 	jackTokenizer "github.com/poomipat-k/nand2tetris/project11/pkg/tokenizer"
+	vmWriter "github.com/poomipat-k/nand2tetris/project11/pkg/vm-writer"
 )
 
 /* class: 'class' className '{' classVarDec* subroutineDec* '}' */
@@ -135,6 +136,8 @@ func (e *Engine) CompileSubroutineDec() {
 	for subroutineDec[e.tk.Keyword()] {
 		e.subroutineST.Reset()
 
+		e.subroutineType = e.tk.Keyword()
+
 		// e.WriteString("<subroutineDec>\n")
 		// e.writeKeyword()
 
@@ -234,7 +237,25 @@ func (e *Engine) CompileSubroutineBody() {
 	e.CompileVarDec()
 	// end varDec*
 
-	e.vmWriter.WriteFunction(fmt.Sprintf("%s.%s", e.className, e.subroutineName), e.subroutineST.VarCount(symbolTable.VAR))
+	if e.subroutineType == CONSTRUCTOR {
+		e.vmWriter.WriteFunction(fmt.Sprintf("%s.%s", e.className, e.subroutineName), e.subroutineST.VarCount(symbolTable.VAR))
+
+		fieldCount := e.classST.VarCount(symbolTable.FIELD)
+		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, fieldCount)
+		e.vmWriter.WriteCall("Memory.alloc", 1)
+		e.vmWriter.WritePop(vmWriter.SEG_POINTER, 0)
+	} else if e.subroutineType == METHOD {
+		localVarCount := e.subroutineST.VarCount(symbolTable.VAR)
+		// function Class.subroutine nLocals
+		e.vmWriter.WriteFunction(fmt.Sprintf("%s.%s", e.className, e.subroutineName), localVarCount)
+		e.vmWriter.WritePush(vmWriter.SEG_ARG, 0) // first argument of a method is always "this"
+		e.vmWriter.WritePop(vmWriter.SEG_POINTER, 0)
+	} else if e.subroutineType == FUNCTION {
+		// function
+		e.vmWriter.WriteFunction(fmt.Sprintf("%s.%s", e.className, e.subroutineName), e.subroutineST.VarCount(symbolTable.VAR))
+	} else {
+		log.Fatal("Should be one of [constructor, method, function]")
+	}
 
 	// statements
 	e.CompileStatements()
@@ -252,6 +273,11 @@ func (e *Engine) CompileSubroutineBody() {
 /* varDec: 'var' type varName (',' varName)* ';' */
 func (e *Engine) CompileVarDec() {
 	fmt.Println("--- CompileVarDec ---")
+
+	if e.subroutineType == METHOD {
+		e.subroutineST.Define("this", e.className, symbolTable.ARG)
+	}
+
 	for e.tk.Keyword() == "var" {
 		// e.WriteString("<varDec>\n")
 		// 'var'
@@ -300,8 +326,6 @@ func (e *Engine) CompileVarDec() {
 		// e.writeSymbol()
 		// e.WriteString("</varDec>\n")
 		e.tk.Advance()
-
-		fmt.Println("sub classST", e.classST)
 	}
 
 }

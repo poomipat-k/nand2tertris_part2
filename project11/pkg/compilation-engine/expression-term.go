@@ -28,6 +28,8 @@ func (e *Engine) CompileTerm() {
 	} else if tokenType == jackTokenizer.STRING_CONST {
 		// e.writeStringConst()
 		fmt.Println("	TERM STRING_CONST")
+	} else if e.tk.Keyword() == "this" {
+		e.vmWriter.WritePush(vmWriter.SEG_POINTER, 0)
 	} else if constVal, isKeywordConst := keywordConstant[e.tk.Keyword()]; isKeywordConst {
 		// e.writeKeyword()
 		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, constVal)
@@ -64,7 +66,6 @@ func (e *Engine) CompileTerm() {
 		}
 
 	} else if tokenType == jackTokenizer.IDENTIFIER {
-		fmt.Println("==== CompileTerm, identifier: ", e.tk.Identifier())
 		prevId := e.tk.Identifier()
 
 		e.tk.Advance()
@@ -101,14 +102,15 @@ func (e *Engine) CompileTerm() {
 			nArgs := e.CompileExpressionList()
 
 			if e.tk.Symbol() != ")" {
-				log.Fatal("CompileTerm, expect a ')'")
+				log.Fatal("CompileTerm 1, expect a ')'")
 			}
 			// e.writeSymbol()
-			e.vmWriter.WriteCall(prevId, nArgs)
+			e.vmWriter.WritePush(vmWriter.SEG_POINTER, 0)
+			e.vmWriter.WriteCall(fmt.Sprintf("%s.%s", e.className, prevId), nArgs+1)
 
 		} else if e.tk.Symbol() == "." {
 			// "prevId" is either a className or a varName
-			prevIsVarName := true
+			prevIsClassVarInstance := true
 			var classTypeOfVar string
 			if e.subroutineST.KindOf(prevId) != "" {
 				// e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
@@ -118,7 +120,7 @@ func (e *Engine) CompileTerm() {
 				classTypeOfVar = e.classST.TypeOf(prevId)
 			} else {
 				// e.writeIdentifier(prevId, "used", symbolTable.CLASS)
-				prevIsVarName = false
+				prevIsClassVarInstance = false
 			}
 
 			// .
@@ -138,15 +140,25 @@ func (e *Engine) CompileTerm() {
 			// e.writeSymbol()
 
 			e.tk.Advance()
+
+			if prevIsClassVarInstance {
+				prevKind := e.getKindOfIdentifier(prevId)
+				prevSegment := e.vmWriter.KindToSegment(prevKind)
+				prevIndex := e.getIndexOfIdentifier(prevId)
+				// push prevId as a first method argument
+				e.vmWriter.WritePush(prevSegment, prevIndex)
+			}
 			nArgs := e.CompileExpressionList()
 
 			if e.tk.Symbol() != ")" {
-				log.Fatal("CompileTerm, expect a ')'")
+				log.Fatal("CompileTerm 2, expect a ')'")
 			}
 
-			if prevIsVarName {
+			if prevIsClassVarInstance {
+				nArgs++
 				e.vmWriter.WriteCall(fmt.Sprintf("%s.%s", classTypeOfVar, subroutineName), nArgs)
 			} else {
+				// prevId is a class
 				e.vmWriter.WriteCall(fmt.Sprintf("%s.%s", prevId, subroutineName), nArgs)
 			}
 
@@ -184,6 +196,7 @@ func (e *Engine) isTerm() bool {
 	return tokenType == jackTokenizer.INT_CONST ||
 		tokenType == jackTokenizer.STRING_CONST ||
 		isKeywordConst ||
+		e.tk.Keyword() == "this" ||
 		e.tk.Symbol() == "(" ||
 		isUnaryOp ||
 		tokenType == jackTokenizer.IDENTIFIER

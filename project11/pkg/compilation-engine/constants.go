@@ -29,7 +29,6 @@ var keywordConstant = map[string]int{
 	"true":  1,
 	"false": 0,
 	"null":  0,
-	"this":  0,
 }
 
 var opSymbol = map[string]string{

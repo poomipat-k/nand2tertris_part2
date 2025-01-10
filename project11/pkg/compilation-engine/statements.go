@@ -261,11 +261,11 @@ func (e *Engine) CompileReturn() {
 	// e.writeKeyword()
 
 	e.tk.Advance()
-	if e.tk.Symbol() != ";" {
-		e.CompileExpression()
+	if e.tk.Symbol() == ";" {
+		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, 0)
 		e.vmWriter.WriteReturn()
 	} else {
-		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, 0)
+		e.CompileExpression()
 		e.vmWriter.WriteReturn()
 	}
 

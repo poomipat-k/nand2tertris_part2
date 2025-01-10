@@ -11,6 +11,12 @@ import (
 	vmWriter "github.com/poomipat-k/nand2tetris/project11/pkg/vm-writer"
 )
 
+const (
+	CONSTRUCTOR = "constructor"
+	METHOD      = "method"
+	FUNCTION    = "function"
+)
+
 type Engine struct {
 	tk             *jackTokenizer.Tokenizer
 	classST        *symbolTable.SymbolTable
@@ -18,6 +24,7 @@ type Engine struct {
 	vmWriter       *vmWriter.VMWriter
 	className      string
 	subroutineName string
+	subroutineType string // constructor, method, function
 }
 
 func NewEngine(tokenizer *jackTokenizer.Tokenizer, outputPath string) *Engine {
@@ -32,11 +39,11 @@ func NewEngine(tokenizer *jackTokenizer.Tokenizer, outputPath string) *Engine {
 // 	check(err)
 // }
 
-func check(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+// func check(err error) {
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// }
 
 func (e *Engine) Close() {
 	e.vmWriter.Close()
@@ -54,6 +61,17 @@ func (e *Engine) getKindOfIdentifier(name string) string {
 	return kind
 }
 
+func (e *Engine) getIndexOfIdentifier(name string) int {
+	var index int
+	if e.subroutineST.IndexOf(name) != -1 {
+		index = e.subroutineST.IndexOf(name)
+	} else if e.classST.IndexOf(name) != -1 {
+		index = e.classST.IndexOf(name)
+	} else {
+		log.Fatal("getIndexOfIdentifier, not found in symbol tables, name: ", name)
+	}
+	return index
+}
 func generateLabel(className string) string {
 	uqId := uuid.New()
 	idStr := strings.ReplaceAll(uqId.String(), "-", "_")

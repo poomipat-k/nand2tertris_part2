@@ -90,7 +90,7 @@ func (v *VMWriter) KindToSegment(kind string) string {
 	} else if kind == symbolTable.FIELD {
 		segment = SEG_FIELD
 	} else if kind == symbolTable.STATIC {
-		segment = SEG_LOCAL
+		segment = SEG_STATIC
 	}
 
 	return segment

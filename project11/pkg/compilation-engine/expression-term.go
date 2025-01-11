@@ -22,7 +22,6 @@ func (e *Engine) CompileTerm() {
 		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, e.tk.IntVal())
 
 	} else if tokenType == jackTokenizer.STRING_CONST {
-		fmt.Println("		@@@@str:", e.tk.StringVal())
 		str := e.tk.StringVal()
 		sLen := len(str)
 

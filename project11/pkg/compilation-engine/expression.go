@@ -47,8 +47,6 @@ func (e *Engine) CompileExpressionList() int {
 	// e.WriteString("<expressionList>\n")
 	nArgs := 0
 	if !e.isTerm() {
-		fmt.Println("==not term")
-		// e.WriteString("</expressionList>\n")
 		return nArgs
 	}
 	e.CompileExpression()

@@ -127,7 +127,6 @@ func (e *Engine) compileOneClassVarDec() {
 	}
 
 	// write ;
-	// e.writeSymbol()
 }
 
 /* ('constructor' | 'function' | 'method') ('void' | type) subroutineName '(' parameterList ')' subroutineBody  */

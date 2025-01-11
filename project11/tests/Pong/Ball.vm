@@ -1,0 +1,427 @@
+function Ball.new 0
+push constant 15
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 10
+push argument 3
+push constant 6
+sub
+pop this 11
+push argument 4
+pop this 12
+push argument 5
+push constant 6
+sub
+pop this 13
+push constant 0
+pop this 14
+push pointer 0
+call Ball.show 1
+pop temp 0
+push pointer 0
+return
+function Ball.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Ball.show 0
+push argument 0
+pop pointer 0
+push constant 1
+neg
+call Screen.setColor 1
+pop temp 0
+push pointer 0
+call Ball.draw 1
+pop temp 0
+push constant 0
+return
+function Ball.hide 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push pointer 0
+call Ball.draw 1
+pop temp 0
+push constant 0
+return
+function Ball.draw 0
+push argument 0
+pop pointer 0
+push this 0
+push this 1
+push this 0
+push constant 5
+add
+push this 1
+push constant 5
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Ball.getLeft 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Ball.getRight 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 5
+add
+return
+function Ball.setDestination 3
+push argument 0
+pop pointer 0
+push argument 0
+push this 0
+sub
+pop this 2
+push argument 1
+push this 1
+sub
+pop this 3
+push this 2
+call Math.abs 1
+pop local 0
+push this 3
+call Math.abs 1
+pop local 1
+push local 0
+push local 1
+lt
+pop this 7
+push this 7
+not
+if-goto Ball_dcf3738f_5f86_4ccd_af4a_5000a6f9f70b
+push local 0
+pop local 2
+push local 1
+pop local 0
+push local 2
+pop local 1
+push this 1
+push argument 1
+lt
+pop this 8
+push this 0
+push argument 0
+lt
+pop this 9
+goto Ball_0a1d30d8_05ab_4de0_b232_c9be77707d1b
+label Ball_dcf3738f_5f86_4ccd_af4a_5000a6f9f70b
+push this 0
+push argument 0
+lt
+pop this 8
+push this 1
+push argument 1
+lt
+pop this 9
+label Ball_0a1d30d8_05ab_4de0_b232_c9be77707d1b
+push constant 2
+push local 1
+call Math.multiply 2
+push local 0
+sub
+pop this 4
+push constant 2
+push local 1
+call Math.multiply 2
+pop this 5
+push constant 2
+push local 1
+push local 0
+sub
+call Math.multiply 2
+pop this 6
+push constant 0
+return
+function Ball.move 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Ball.hide 1
+pop temp 0
+push this 4
+push constant 0
+lt
+not
+if-goto Ball_46eb4319_8666_4aa2_9ebb_f227a0e2a6d8
+push this 4
+push this 5
+add
+pop this 4
+goto Ball_e1d05628_d3b6_491f_95c0_d35d551e74f1
+label Ball_46eb4319_8666_4aa2_9ebb_f227a0e2a6d8
+push this 4
+push this 6
+add
+pop this 4
+push this 9
+not
+if-goto Ball_ad31300f_9dac_493d_aacc_882e31e393dc
+push this 7
+not
+if-goto Ball_34093549_d7e7_4779_90bf_cd12d7e50db7
+push this 0
+push constant 4
+add
+pop this 0
+goto Ball_535eadca_f55f_4402_8473_34869d851cfa
+label Ball_34093549_d7e7_4779_90bf_cd12d7e50db7
+push this 1
+push constant 4
+add
+pop this 1
+label Ball_535eadca_f55f_4402_8473_34869d851cfa
+goto Ball_6e7c36a8_2270_4468_b1c0_838d6668d8a5
+label Ball_ad31300f_9dac_493d_aacc_882e31e393dc
+push this 7
+not
+if-goto Ball_c7120f65_321b_47c3_abd0_040b678083b2
+push this 0
+push constant 4
+sub
+pop this 0
+goto Ball_c34f3ed1_5e81_44ef_8cbf_9d6a5a48716d
+label Ball_c7120f65_321b_47c3_abd0_040b678083b2
+push this 1
+push constant 4
+sub
+pop this 1
+label Ball_c34f3ed1_5e81_44ef_8cbf_9d6a5a48716d
+label Ball_6e7c36a8_2270_4468_b1c0_838d6668d8a5
+label Ball_e1d05628_d3b6_491f_95c0_d35d551e74f1
+push this 8
+not
+if-goto Ball_17107cc0_4470_49f8_a7fa_7f383374906b
+push this 7
+not
+if-goto Ball_8be1e965_cb98_474f_b450_0fb687384cca
+push this 1
+push constant 4
+add
+pop this 1
+goto Ball_bae7c932_0b22_4a91_ae04_f97ebf9fcc28
+label Ball_8be1e965_cb98_474f_b450_0fb687384cca
+push this 0
+push constant 4
+add
+pop this 0
+label Ball_bae7c932_0b22_4a91_ae04_f97ebf9fcc28
+goto Ball_3681c8dc_a5ed_4079_bb3e_272c429419dc
+label Ball_17107cc0_4470_49f8_a7fa_7f383374906b
+push this 7
+not
+if-goto Ball_44bf6e03_8d16_4030_9a22_166b5f5ec26b
+push this 1
+push constant 4
+sub
+pop this 1
+goto Ball_b85f097c_def0_4bcf_99b4_d5df34034ea7
+label Ball_44bf6e03_8d16_4030_9a22_166b5f5ec26b
+push this 0
+push constant 4
+sub
+pop this 0
+label Ball_b85f097c_def0_4bcf_99b4_d5df34034ea7
+label Ball_3681c8dc_a5ed_4079_bb3e_272c429419dc
+push this 0
+push this 10
+gt
+not
+not
+if-goto Ball_526de1fb_4350_4ff0_a9a6_9ca62c054920
+push constant 1
+pop this 14
+push this 10
+pop this 0
+label Ball_526de1fb_4350_4ff0_a9a6_9ca62c054920
+push this 0
+push this 11
+lt
+not
+not
+if-goto Ball_3c5fb324_3b46_4945_849c_32b6d8294c02
+push constant 2
+pop this 14
+push this 11
+pop this 0
+label Ball_3c5fb324_3b46_4945_849c_32b6d8294c02
+push this 1
+push this 12
+gt
+not
+not
+if-goto Ball_4ac165c9_27c0_4402_ac10_bf4b6505aa97
+push constant 3
+pop this 14
+push this 12
+pop this 1
+label Ball_4ac165c9_27c0_4402_ac10_bf4b6505aa97
+push this 1
+push this 13
+lt
+not
+not
+if-goto Ball_f95f1ca6_1960_4e0d_9f6d_3a24f8575736
+push constant 4
+pop this 14
+push this 13
+pop this 1
+label Ball_f95f1ca6_1960_4e0d_9f6d_3a24f8575736
+push pointer 0
+call Ball.show 1
+pop temp 0
+push this 14
+return
+function Ball.bounce 5
+push argument 0
+pop pointer 0
+push this 2
+push constant 10
+call Math.divide 2
+pop local 2
+push this 3
+push constant 10
+call Math.divide 2
+pop local 3
+push argument 0
+push constant 0
+eq
+not
+if-goto Ball_e2f09faa_1fc4_4509_a8b2_ff5662f06eab
+push constant 10
+pop local 4
+goto Ball_90ab61ff_f1eb_4b60_b5d2_cd23c4caa905
+label Ball_e2f09faa_1fc4_4509_a8b2_ff5662f06eab
+push this 2
+push constant 0
+lt
+not
+push argument 0
+push constant 1
+eq
+and
+push this 2
+push constant 0
+lt
+push argument 0
+push constant 1
+neg
+eq
+and
+or
+not
+if-goto Ball_1e658ede_bb2c_4a1e_b6be_ea3804baaa26
+push constant 20
+pop local 4
+goto Ball_07199988_c08d_4c78_a75c_b5f51c82d219
+label Ball_1e658ede_bb2c_4a1e_b6be_ea3804baaa26
+push constant 5
+pop local 4
+label Ball_07199988_c08d_4c78_a75c_b5f51c82d219
+label Ball_90ab61ff_f1eb_4b60_b5d2_cd23c4caa905
+push this 14
+push constant 1
+eq
+not
+if-goto Ball_a50d93f5_5a48_45fa_a7bb_05c1e896b060
+push constant 506
+pop local 0
+push local 3
+push constant 50
+neg
+call Math.multiply 2
+push local 2
+call Math.divide 2
+pop local 1
+push this 1
+push local 1
+push local 4
+call Math.multiply 2
+add
+pop local 1
+goto Ball_c370280b_67b9_4d6f_a715_85163d62023c
+label Ball_a50d93f5_5a48_45fa_a7bb_05c1e896b060
+push this 14
+push constant 2
+eq
+not
+if-goto Ball_4884dbaa_6781_4d7a_81d2_bfc6232aa8b8
+push constant 0
+pop local 0
+push local 3
+push constant 50
+call Math.multiply 2
+push local 2
+call Math.divide 2
+pop local 1
+push this 1
+push local 1
+push local 4
+call Math.multiply 2
+add
+pop local 1
+goto Ball_0d75cb33_fa4d_4774_95bf_253f1f2627ae
+label Ball_4884dbaa_6781_4d7a_81d2_bfc6232aa8b8
+push this 14
+push constant 3
+eq
+not
+if-goto Ball_a7bd8a79_9715_4654_872c_31d932916a8c
+push constant 250
+pop local 1
+push local 2
+push constant 25
+neg
+call Math.multiply 2
+push local 3
+call Math.divide 2
+pop local 0
+push this 0
+push local 0
+push local 4
+call Math.multiply 2
+add
+pop local 0
+goto Ball_e1e18e97_a3a8_48fe_aa89_8547dc4a0fee
+label Ball_a7bd8a79_9715_4654_872c_31d932916a8c
+push constant 0
+pop local 1
+push local 2
+push constant 25
+call Math.multiply 2
+push local 3
+call Math.divide 2
+pop local 0
+push this 0
+push local 0
+push local 4
+call Math.multiply 2
+add
+pop local 0
+label Ball_e1e18e97_a3a8_48fe_aa89_8547dc4a0fee
+label Ball_0d75cb33_fa4d_4774_95bf_253f1f2627ae
+label Ball_c370280b_67b9_4d6f_a715_85163d62023c
+push local 0
+push local 1
+push pointer 0
+call Ball.setDestination 3
+pop temp 0
+push constant 0
+return

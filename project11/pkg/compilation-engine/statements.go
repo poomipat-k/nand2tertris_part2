@@ -131,9 +131,6 @@ func (e *Engine) CompileLet() {
 func (e *Engine) CompileIf() {
 	fmt.Println("--- CompileIf ---")
 	// if
-	// e.WriteString("<ifStatement>\n")
-
-	// e.writeKeyword()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "(" {

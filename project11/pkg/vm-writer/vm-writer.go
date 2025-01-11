@@ -15,6 +15,8 @@ const (
 	SEG_FIELD    = "this"
 	SEG_CONSTANT = "constant"
 	SEG_POINTER  = "pointer"
+	SEG_THAT     = "that"
+	SEG_TEMP     = "temp"
 )
 
 type VMWriter struct {

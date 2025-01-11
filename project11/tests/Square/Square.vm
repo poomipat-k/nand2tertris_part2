@@ -73,7 +73,7 @@ push constant 510
 lt
 and
 not
-if-goto Square_ec92268f_923c_4999_9a37_270eaf14ee35
+if-goto Square_98dc524f_7491_4d6b_9815_83e78bd80e41
 push pointer 0
 call Square.erase 1
 pop temp 0
@@ -84,7 +84,7 @@ pop this 2
 push pointer 0
 call Square.draw 1
 pop temp 0
-label Square_ec92268f_923c_4999_9a37_270eaf14ee35
+label Square_98dc524f_7491_4d6b_9815_83e78bd80e41
 push constant 0
 return
 function Square.decSize 0
@@ -94,7 +94,7 @@ push this 2
 push constant 2
 gt
 not
-if-goto Square_7a862725_35d6_4eba_bcae_b1b435bdd79c
+if-goto Square_71443420_1a0a_4ea7_8dc5_40c39d218f2f
 push pointer 0
 call Square.erase 1
 pop temp 0
@@ -105,7 +105,7 @@ pop this 2
 push pointer 0
 call Square.draw 1
 pop temp 0
-label Square_7a862725_35d6_4eba_bcae_b1b435bdd79c
+label Square_71443420_1a0a_4ea7_8dc5_40c39d218f2f
 push constant 0
 return
 function Square.moveUp 0
@@ -115,7 +115,7 @@ push this 1
 push constant 1
 gt
 not
-if-goto Square_6e994d1c_f56a_4a67_a4b6_dab5e567dec6
+if-goto Square_6c7b2aa9_a4bb_466e_9c5e_4b1eb0d054ae
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -151,7 +151,7 @@ push constant 1
 add
 call Screen.drawRectangle 4
 pop temp 0
-label Square_6e994d1c_f56a_4a67_a4b6_dab5e567dec6
+label Square_6c7b2aa9_a4bb_466e_9c5e_4b1eb0d054ae
 push constant 0
 return
 function Square.moveDown 0
@@ -163,7 +163,7 @@ add
 push constant 254
 lt
 not
-if-goto Square_a9252fe7_bd38_462d_a5bc_9e716a886f45
+if-goto Square_6aa96747_fe6e_476d_ba9c_c9d28929f47b
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -199,7 +199,7 @@ push this 2
 add
 call Screen.drawRectangle 4
 pop temp 0
-label Square_a9252fe7_bd38_462d_a5bc_9e716a886f45
+label Square_6aa96747_fe6e_476d_ba9c_c9d28929f47b
 push constant 0
 return
 function Square.moveLeft 0
@@ -209,7 +209,7 @@ push this 0
 push constant 1
 gt
 not
-if-goto Square_e07962c2_19c5_423c_8380_e556fd452064
+if-goto Square_76775a04_5b3b_4126_80ed_764c24f75fdf
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -245,7 +245,7 @@ push this 2
 add
 call Screen.drawRectangle 4
 pop temp 0
-label Square_e07962c2_19c5_423c_8380_e556fd452064
+label Square_76775a04_5b3b_4126_80ed_764c24f75fdf
 push constant 0
 return
 function Square.moveRight 0
@@ -257,7 +257,7 @@ add
 push constant 510
 lt
 not
-if-goto Square_48f2123d_64d4_4f09_a863_d8f6675f3e7f
+if-goto Square_b6364cb9_592d_4d8f_8f9f_b2851fc30823
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -293,6 +293,6 @@ push this 2
 add
 call Screen.drawRectangle 4
 pop temp 0
-label Square_48f2123d_64d4_4f09_a863_d8f6675f3e7f
+label Square_b6364cb9_592d_4d8f_8f9f_b2851fc30823
 push constant 0
 return

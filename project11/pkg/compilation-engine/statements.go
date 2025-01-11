@@ -46,14 +46,18 @@ func (e *Engine) CompileStatements() {
 	// e.WriteString("</statements>\n")
 }
 
-/* 'let' varName('['expression']')? '=' expression ';' */
+/*
+'let' varName('['expression']')? '=' expression ';'
+
+compileLet
+
+	compileExpression
+	output "pop segment i"
+*/
 func (e *Engine) CompileLet() {
 	fmt.Println("--- CompileLet ---")
 
-	// e.WriteString("<letStatement>\n")
-
 	// let
-	// e.writeKeyword()
 
 	e.tk.Advance()
 	// varName
@@ -62,61 +66,65 @@ func (e *Engine) CompileLet() {
 	}
 
 	varName := e.tk.Identifier()
-	kind := e.subroutineST.KindOf(varName)
-	var offset int
-	if e.subroutineST.KindOf(varName) != "" {
-		kind = e.subroutineST.KindOf(varName)
-		offset = e.subroutineST.IndexOf(varName)
-	} else if e.classST.KindOf(varName) != "" {
-		kind = e.classST.KindOf(varName)
-		offset = e.classST.IndexOf(varName)
-	} else {
-		log.Fatal("CompileLet, varName: ", varName, " is not in any symbol tables")
+	kind := e.getKindOfIdentifier(varName)
+	segment := e.vmWriter.KindToSegment(kind)
+	index := e.getIndexOfIdentifier(varName)
+	if kind == "" {
+		log.Fatal("CompileLet, varName: ", varName, " is not in any symbol tables, kind: ", kind)
 	}
 
-	// kind := e.getKindOfIdentifier(e.tk.Identifier())
-	// e.writeIdentifier(e.tk.Identifier(), "used", kind)
-
 	e.tk.Advance()
-	// '['
+	// '[' go on with varName[expression]
 	if e.tk.Symbol() == "[" {
-		// e.writeSymbol()
+		// Array varName
+		e.vmWriter.WritePush(segment, index)
 
 		e.tk.Advance()
-		// expression
 		e.CompileExpression()
-		// end expression
 
 		if e.tk.Symbol() != "]" {
 			log.Fatal("CompileLet, expect a ]")
 		}
 		// ']'
-		// e.writeSymbol()
+
+		e.vmWriter.WriteArithmetic("add")
+
 		e.tk.Advance()
+		if e.tk.Symbol() != "=" {
+			log.Fatal("CompileLet, expect = or [")
+		}
+
+		// '='
+
+		e.tk.Advance()
+		e.CompileExpression()
+
+		if e.tk.Symbol() != ";" {
+			log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
+		}
+		// ';'
+		e.vmWriter.WritePop(vmWriter.SEG_TEMP, 0)
+		e.vmWriter.WritePop(vmWriter.SEG_POINTER, 1)
+		e.vmWriter.WritePush(vmWriter.SEG_TEMP, 0)
+		e.vmWriter.WritePop(vmWriter.SEG_THAT, 0)
+		return
 	}
 
+	// let varName = expression
 	if e.tk.Symbol() != "=" {
 		log.Fatal("CompileLet, expect = or [")
 	}
 
 	// '='
-	// e.writeSymbol()
 
 	e.tk.Advance()
-	// expression
 	e.CompileExpression()
-	// end expression
 
 	if e.tk.Symbol() != ";" {
 		log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
 	}
 	// ';'
-	// e.writeSymbol()
-
-	segment := e.vmWriter.KindToSegment(kind)
-	e.vmWriter.WritePop(segment, offset)
-
-	// e.WriteString("</letStatement>\n")
+	e.vmWriter.WritePop(segment, index)
 }
 
 /* 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')? */

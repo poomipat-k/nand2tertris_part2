@@ -16,42 +16,42 @@ term:
 */
 func (e *Engine) CompileTerm() {
 	fmt.Println("--- CompileTerm ---, token: ", e.tk.Token())
-
-	// e.WriteString("<term>\n")
-
 	tokenType := e.tk.TokenType()
 
 	if tokenType == jackTokenizer.INT_CONST {
-		// e.writeIntegerConst()
 		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, e.tk.IntVal())
 
 	} else if tokenType == jackTokenizer.STRING_CONST {
-		// e.writeStringConst()
-		fmt.Println("	TERM STRING_CONST")
+		fmt.Println("		@@@@str:", e.tk.StringVal())
+		str := e.tk.StringVal()
+		sLen := len(str)
+
+		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, sLen)
+		e.vmWriter.WriteCall("String.new", 1)
+		for i := 0; i < sLen; i++ {
+			e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, int(str[i]))
+			e.vmWriter.WriteCall("String.appendChar", 2)
+		}
+
 	} else if e.tk.Keyword() == "this" {
 		e.vmWriter.WritePush(vmWriter.SEG_POINTER, 0)
 	} else if constVal, isKeywordConst := keywordConstant[e.tk.Keyword()]; isKeywordConst {
-		// e.writeKeyword()
 		e.vmWriter.WritePush(vmWriter.SEG_CONSTANT, constVal)
 		if constVal == 1 {
 			e.vmWriter.WriteArithmetic("neg")
 		}
 	} else if e.tk.Symbol() == "(" {
-		// e.writeSymbol()
-
 		e.tk.Advance()
 		e.CompileExpression()
 
 		if e.tk.Symbol() != ")" {
 			log.Fatal("CompileTerm, (expression) expect a closing ), got", e.tk.Token())
 		}
-		// e.writeSymbol()
 
 		// eg. let i = i * (-j); we need to reset skipAdvance to false after j
 		e.tk.SetSkipAdvance(false)
 
 	} else if _, isUnaryOp := unaryOp[e.tk.Symbol()]; isUnaryOp {
-		// e.writeSymbol()
 		op := e.tk.Symbol()
 		e.tk.Advance()
 		e.CompileTerm()
@@ -71,32 +71,32 @@ func (e *Engine) CompileTerm() {
 		e.tk.Advance()
 		if e.tk.Symbol() == "[" {
 			// "prevId" is either in subroutineST or classST
-			if e.subroutineST.KindOf(prevId) != "" {
-				// e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
-			} else if e.classST.KindOf(prevId) != "" {
-				// e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
-			} else {
+			prevKind := e.getKindOfIdentifier(prevId)
+			if prevKind == "" {
 				log.Fatal("CompileTerm, identifier before [ should be in one of symbol tables, token: ", prevId)
 			}
+			prevSegment := e.vmWriter.KindToSegment(prevKind)
+			prevIndex := e.getIndexOfIdentifier(prevId)
 
-			// e.writeIdentifier(e.tk.Identifier(), "used", "")
-
-			// e.writeSymbol()
+			// push the Array var
+			e.vmWriter.WritePush(prevSegment, prevIndex)
 
 			e.tk.Advance()
 			e.CompileExpression()
 
+			e.vmWriter.WriteArithmetic("add")
+
 			if e.tk.Symbol() != "]" {
 				log.Fatal("CompileTerm, expect a ']', got: ", e.tk.Token())
 			}
-			// e.writeSymbol()
+
+			e.vmWriter.WritePop(vmWriter.SEG_POINTER, 1)
+			e.vmWriter.WritePush(vmWriter.SEG_THAT, 0) // push b[j] to top of stack
+			// e.vmWriter.WritePop(vmWriter.SEG_TEMP, 0)
 
 			// let sum = sum + a[i];
 			e.tk.SetSkipAdvance(false)
 		} else if e.tk.Symbol() == "(" {
-			// e.writeIdentifier(prevId, "used", symbolTable.SUBROUTINE)
-
-			// e.writeSymbol()
 
 			e.tk.Advance()
 			nArgs := e.CompileExpressionList()
@@ -104,7 +104,7 @@ func (e *Engine) CompileTerm() {
 			if e.tk.Symbol() != ")" {
 				log.Fatal("CompileTerm 1, expect a ')'")
 			}
-			// e.writeSymbol()
+
 			e.vmWriter.WritePush(vmWriter.SEG_POINTER, 0)
 			e.vmWriter.WriteCall(fmt.Sprintf("%s.%s", e.className, prevId), nArgs+1)
 
@@ -113,31 +113,25 @@ func (e *Engine) CompileTerm() {
 			prevIsClassVarInstance := true
 			var classTypeOfVar string
 			if e.subroutineST.KindOf(prevId) != "" {
-				// e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
 				classTypeOfVar = e.subroutineST.TypeOf(prevId)
 			} else if e.classST.KindOf(prevId) != "" {
-				// e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
 				classTypeOfVar = e.classST.TypeOf(prevId)
 			} else {
-				// e.writeIdentifier(prevId, "used", symbolTable.CLASS)
 				prevIsClassVarInstance = false
 			}
 
 			// .
-			// e.writeSymbol()
 
 			e.tk.Advance()
 			if e.tk.TokenType() != jackTokenizer.IDENTIFIER {
 				log.Fatal("CompileTerm className|varName (identifier) (expect identifier), got:", e.tk.Token())
 			}
 			subroutineName := e.tk.Identifier()
-			// e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.SUBROUTINE)
 
 			e.tk.Advance()
 			if e.tk.Symbol() != "(" {
 				log.Fatal("CompileTerm expect '('")
 			}
-			// e.writeSymbol()
 
 			e.tk.Advance()
 
@@ -161,18 +155,14 @@ func (e *Engine) CompileTerm() {
 				// prevId is a class
 				e.vmWriter.WriteCall(fmt.Sprintf("%s.%s", prevId, subroutineName), nArgs)
 			}
-
-			// e.writeSymbol()
 		} else {
 			// skip advance if the current is varName
 			var segment string
 			var index int
 			if e.subroutineST.KindOf(prevId) != "" {
-				// e.writeIdentifier(prevId, "used", e.subroutineST.KindOf(prevId))
 				segment = e.vmWriter.KindToSegment(e.subroutineST.KindOf(prevId))
 				index = e.subroutineST.IndexOf(prevId)
 			} else if e.classST.KindOf(prevId) != "" {
-				// e.writeIdentifier(prevId, "used", e.classST.KindOf(prevId))
 				segment = e.vmWriter.KindToSegment(e.classST.KindOf(prevId))
 				index = e.classST.IndexOf(prevId)
 			} else {
@@ -185,7 +175,6 @@ func (e *Engine) CompileTerm() {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
 
-	// e.WriteString("</term>\n")
 	fmt.Println("		END CompileTerm")
 }
 

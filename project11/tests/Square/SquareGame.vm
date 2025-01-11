@@ -29,38 +29,38 @@ push this 1
 push constant 1
 eq
 not
-if-goto SquareGame_56733c58_804b_4be5_840d_bfbc13848c5b
+if-goto SquareGame_4bd8b491_0b47_49eb_90ec_63b3b4fbcab4
 push this 0
 call Square.moveUp 1
 pop temp 0
-label SquareGame_56733c58_804b_4be5_840d_bfbc13848c5b
+label SquareGame_4bd8b491_0b47_49eb_90ec_63b3b4fbcab4
 push this 1
 push constant 2
 eq
 not
-if-goto SquareGame_61c2e56a_2016_4f49_955b_5858c7cfbd9f
+if-goto SquareGame_1abc27f9_4956_4874_8ec3_f0885f192791
 push this 0
 call Square.moveDown 1
 pop temp 0
-label SquareGame_61c2e56a_2016_4f49_955b_5858c7cfbd9f
+label SquareGame_1abc27f9_4956_4874_8ec3_f0885f192791
 push this 1
 push constant 3
 eq
 not
-if-goto SquareGame_678383dc_6c02_48d7_b2bb_5caff8e49ac8
+if-goto SquareGame_3ac30a2a_fa1e_44ec_b1be_7629df62bff1
 push this 0
 call Square.moveLeft 1
 pop temp 0
-label SquareGame_678383dc_6c02_48d7_b2bb_5caff8e49ac8
+label SquareGame_3ac30a2a_fa1e_44ec_b1be_7629df62bff1
 push this 1
 push constant 4
 eq
 not
-if-goto SquareGame_8e784a3e_6dec_4bd2_8e35_133db2a06589
+if-goto SquareGame_775f7aa7_335b_4b41_b3bb_e710b735d2e1
 push this 0
 call Square.moveRight 1
 pop temp 0
-label SquareGame_8e784a3e_6dec_4bd2_8e35_133db2a06589
+label SquareGame_775f7aa7_335b_4b41_b3bb_e710b735d2e1
 push constant 5
 call Sys.wait 1
 pop temp 0
@@ -71,98 +71,98 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 1
-label SquareGame_3001107c_d83a_4e33_8dc2_9211bf31d8d8
+label SquareGame_d66d4dde_e100_4184_ab6c_dd0c0483d2f4
 push local 1
 not
 not
-if-goto SquareGame_bb913ee8_4319_4a55_aa4c_cfe8a343062f
-label SquareGame_49b36d09_4623_46d5_966b_a3217737d85f
+if-goto SquareGame_6dc1e1f8_14d5_466c_accd_2ca320693947
+label SquareGame_9bdcef76_0dab_4fef_b23d_e1e3c3be2ced
 push local 0
 push constant 0
 eq
 not
-if-goto SquareGame_d4b95090_fedc_42cb_84b6_84e16bf0d054
+if-goto SquareGame_502f6886_0846_4ac2_8027_2b1780d31a29
 call Keyboard.keyPressed 0
 pop local 0
 push pointer 0
 call SquareGame.moveSquare 1
 pop temp 0
-goto SquareGame_49b36d09_4623_46d5_966b_a3217737d85f
-label SquareGame_d4b95090_fedc_42cb_84b6_84e16bf0d054
+goto SquareGame_9bdcef76_0dab_4fef_b23d_e1e3c3be2ced
+label SquareGame_502f6886_0846_4ac2_8027_2b1780d31a29
 push local 0
 push constant 81
 eq
 not
-if-goto SquareGame_39a865ab_a47d_499b_aaae_128b017e2a6f
+if-goto SquareGame_275094e1_c748_4bb9_8172_3742a3c9c5a4
 push constant 1
 neg
 pop local 1
-label SquareGame_39a865ab_a47d_499b_aaae_128b017e2a6f
+label SquareGame_275094e1_c748_4bb9_8172_3742a3c9c5a4
 push local 0
 push constant 90
 eq
 not
-if-goto SquareGame_851b4075_8850_44ab_b27c_70c871a2a184
+if-goto SquareGame_6a733d6e_82d2_4dba_8a31_88f6db289af6
 push this 0
 call Square.decSize 1
 pop temp 0
-label SquareGame_851b4075_8850_44ab_b27c_70c871a2a184
+label SquareGame_6a733d6e_82d2_4dba_8a31_88f6db289af6
 push local 0
 push constant 88
 eq
 not
-if-goto SquareGame_ad4526e8_bac1_43e7_81b1_af4b6c1be3bd
+if-goto SquareGame_7993d7ef_441f_46c9_915f_f908248f67b4
 push this 0
 call Square.incSize 1
 pop temp 0
-label SquareGame_ad4526e8_bac1_43e7_81b1_af4b6c1be3bd
+label SquareGame_7993d7ef_441f_46c9_915f_f908248f67b4
 push local 0
 push constant 131
 eq
 not
-if-goto SquareGame_563de7f3_277d_45e2_8a2a_f3b6fd609749
+if-goto SquareGame_99bed299_7aac_4bea_8cb8_caceee0da48f
 push constant 1
 pop this 1
-label SquareGame_563de7f3_277d_45e2_8a2a_f3b6fd609749
+label SquareGame_99bed299_7aac_4bea_8cb8_caceee0da48f
 push local 0
 push constant 133
 eq
 not
-if-goto SquareGame_690186f8_8fe9_4312_ac13_de5e2c6e8c2d
+if-goto SquareGame_f9f58513_234c_4487_944c_711ca95e12ba
 push constant 2
 pop this 1
-label SquareGame_690186f8_8fe9_4312_ac13_de5e2c6e8c2d
+label SquareGame_f9f58513_234c_4487_944c_711ca95e12ba
 push local 0
 push constant 130
 eq
 not
-if-goto SquareGame_e9a6d36b_1b2b_4bce_b228_44ab817e8df7
+if-goto SquareGame_d33e90ae_3d6a_45b2_9a82_05b16683338e
 push constant 3
 pop this 1
-label SquareGame_e9a6d36b_1b2b_4bce_b228_44ab817e8df7
+label SquareGame_d33e90ae_3d6a_45b2_9a82_05b16683338e
 push local 0
 push constant 132
 eq
 not
-if-goto SquareGame_55745c67_4e02_4ca2_add0_f4beb598b57f
+if-goto SquareGame_d7e939ce_4c21_4a54_8364_abcbb5c24756
 push constant 4
 pop this 1
-label SquareGame_55745c67_4e02_4ca2_add0_f4beb598b57f
-label SquareGame_3a51321f_db63_4862_8903_f15c597aec8b
+label SquareGame_d7e939ce_4c21_4a54_8364_abcbb5c24756
+label SquareGame_52f94b81_4cea_410d_aa40_ce5f6754bbdf
 push local 0
 push constant 0
 eq
 not
 not
-if-goto SquareGame_6612f4c1_128f_4a9c_ab6c_0222c01b195b
+if-goto SquareGame_448604ca_3001_4732_aa4b_b1d0791e8d51
 call Keyboard.keyPressed 0
 pop local 0
 push pointer 0
 call SquareGame.moveSquare 1
 pop temp 0
-goto SquareGame_3a51321f_db63_4862_8903_f15c597aec8b
-label SquareGame_6612f4c1_128f_4a9c_ab6c_0222c01b195b
-goto SquareGame_3001107c_d83a_4e33_8dc2_9211bf31d8d8
-label SquareGame_bb913ee8_4319_4a55_aa4c_cfe8a343062f
+goto SquareGame_52f94b81_4cea_410d_aa40_ce5f6754bbdf
+label SquareGame_448604ca_3001_4732_aa4b_b1d0791e8d51
+goto SquareGame_d66d4dde_e100_4184_ab6c_dd0c0483d2f4
+label SquareGame_6dc1e1f8_14d5_466c_accd_2ca320693947
 push constant 0
 return

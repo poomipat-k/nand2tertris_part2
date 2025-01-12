@@ -106,7 +106,7 @@ lt
 pop this 7
 push this 7
 not
-if-goto Ball_c1c1a1e1_af2c_4592_9cab_c167c3bd4c00
+if-goto Ball_88b238d6_8e87_404e_9304_139e0ea67717
 push local 0
 pop local 2
 push local 1
@@ -121,8 +121,8 @@ push this 0
 push argument 1
 lt
 pop this 9
-goto Ball_feeee1e3_31ba_406e_974a_bafd397bae0d
-label Ball_c1c1a1e1_af2c_4592_9cab_c167c3bd4c00
+goto Ball_ca91e6f1_87b2_4231_b40f_8603bf02e8a7
+label Ball_88b238d6_8e87_404e_9304_139e0ea67717
 push this 0
 push argument 1
 lt
@@ -131,7 +131,7 @@ push this 1
 push argument 2
 lt
 pop this 9
-label Ball_feeee1e3_31ba_406e_974a_bafd397bae0d
+label Ball_ca91e6f1_87b2_4231_b40f_8603bf02e8a7
 push constant 2
 push local 1
 call Math.multiply 2
@@ -160,130 +160,130 @@ push this 4
 push constant 0
 lt
 not
-if-goto Ball_5f78776e_6cf4_4c05_be7c_521e5ad5f95f
+if-goto Ball_f9bf7f6c_edaf_49e9_b323_ab4ee0be4d0c
 push this 4
 push this 5
 add
 pop this 4
-goto Ball_11a25346_d429_4b7d_8811_7c1a8d31b9fe
-label Ball_5f78776e_6cf4_4c05_be7c_521e5ad5f95f
+goto Ball_16ae2977_ff4b_4732_b7d6_0730a83dfc23
+label Ball_f9bf7f6c_edaf_49e9_b323_ab4ee0be4d0c
 push this 4
 push this 6
 add
 pop this 4
 push this 9
 not
-if-goto Ball_d281f055_5560_4560_bb6b_14e05988cbb3
+if-goto Ball_70308097_662f_4dc5_bb9c_f59372ff8e09
 push this 7
 not
-if-goto Ball_8dc7731e_2ce0_417a_b52e_7641e3641575
+if-goto Ball_d776ff37_1efe_4f9d_ad5a_ed978a7484e2
 push this 0
 push constant 4
 add
 pop this 0
-goto Ball_4949c1a5_9f47_47b4_a3e8_35fdf10a6cb8
-label Ball_8dc7731e_2ce0_417a_b52e_7641e3641575
+goto Ball_f0251bd8_8443_455c_927b_da867b04f095
+label Ball_d776ff37_1efe_4f9d_ad5a_ed978a7484e2
 push this 1
 push constant 4
 add
 pop this 1
-label Ball_4949c1a5_9f47_47b4_a3e8_35fdf10a6cb8
-goto Ball_321df2ec_6635_4070_b679_9a103001cdba
-label Ball_d281f055_5560_4560_bb6b_14e05988cbb3
+label Ball_f0251bd8_8443_455c_927b_da867b04f095
+goto Ball_c13493f8_8f0f_43f9_99f5_b3bc709cc233
+label Ball_70308097_662f_4dc5_bb9c_f59372ff8e09
 push this 7
 not
-if-goto Ball_b082eb86_55c1_4726_b52a_a99138602261
+if-goto Ball_3ec31197_9ae2_4b0c_a0b4_1e19694a0c94
 push this 0
 push constant 4
 sub
 pop this 0
-goto Ball_5d5147cd_2d54_42a3_aa9b_8d3953a2a395
-label Ball_b082eb86_55c1_4726_b52a_a99138602261
+goto Ball_1bf56596_0bf1_4f89_a940_c74bcbfeca4c
+label Ball_3ec31197_9ae2_4b0c_a0b4_1e19694a0c94
 push this 1
 push constant 4
 sub
 pop this 1
-label Ball_5d5147cd_2d54_42a3_aa9b_8d3953a2a395
-label Ball_321df2ec_6635_4070_b679_9a103001cdba
-label Ball_11a25346_d429_4b7d_8811_7c1a8d31b9fe
+label Ball_1bf56596_0bf1_4f89_a940_c74bcbfeca4c
+label Ball_c13493f8_8f0f_43f9_99f5_b3bc709cc233
+label Ball_16ae2977_ff4b_4732_b7d6_0730a83dfc23
 push this 8
 not
-if-goto Ball_a6bf7a1c_fa1b_4b4b_b782_02af7d7d311b
+if-goto Ball_9869d935_87d0_421c_bcc7_521b2be74505
 push this 7
 not
-if-goto Ball_6f9bad42_f71f_4ad0_8dbb_529ca9f9e464
+if-goto Ball_6d56d13a_25fd_40f4_ba74_342d8b57ce76
 push this 1
 push constant 4
 add
 pop this 1
-goto Ball_2ecaa5ba_6527_4e0f_af7d_884c1c68e42f
-label Ball_6f9bad42_f71f_4ad0_8dbb_529ca9f9e464
+goto Ball_eaf4f53d_92cf_47b0_a6fd_173a014c714b
+label Ball_6d56d13a_25fd_40f4_ba74_342d8b57ce76
 push this 0
 push constant 4
 add
 pop this 0
-label Ball_2ecaa5ba_6527_4e0f_af7d_884c1c68e42f
-goto Ball_c51e3e11_9135_407a_9d97_8891bbfe8459
-label Ball_a6bf7a1c_fa1b_4b4b_b782_02af7d7d311b
+label Ball_eaf4f53d_92cf_47b0_a6fd_173a014c714b
+goto Ball_3f756a04_2fda_4d85_b230_4b0203d50b10
+label Ball_9869d935_87d0_421c_bcc7_521b2be74505
 push this 7
 not
-if-goto Ball_c7196264_8343_45ad_9477_0740ab6b7513
+if-goto Ball_8a70f2be_c3a2_49f6_ac9d_2eac3b408fea
 push this 1
 push constant 4
 sub
 pop this 1
-goto Ball_1e2397e0_eda1_4de8_8bc4_8f3ca2f891d8
-label Ball_c7196264_8343_45ad_9477_0740ab6b7513
+goto Ball_87b6b1db_68fa_4427_a7ef_c15aee585aad
+label Ball_8a70f2be_c3a2_49f6_ac9d_2eac3b408fea
 push this 0
 push constant 4
 sub
 pop this 0
-label Ball_1e2397e0_eda1_4de8_8bc4_8f3ca2f891d8
-label Ball_c51e3e11_9135_407a_9d97_8891bbfe8459
+label Ball_87b6b1db_68fa_4427_a7ef_c15aee585aad
+label Ball_3f756a04_2fda_4d85_b230_4b0203d50b10
 push this 0
 push this 10
 gt
 not
 not
-if-goto Ball_b199d137_ccf1_443d_9f62_942ba07e8081
+if-goto Ball_8315e4a9_b4f5_4f76_b3bc_7f111fa53600
 push constant 1
 pop this 14
 push this 10
 pop this 0
-label Ball_b199d137_ccf1_443d_9f62_942ba07e8081
+label Ball_8315e4a9_b4f5_4f76_b3bc_7f111fa53600
 push this 0
 push this 11
 lt
 not
 not
-if-goto Ball_0c386c68_09ca_479f_861f_d49a9203695d
+if-goto Ball_f7c26e6c_7536_44c2_b7dd_d1a8a39a79d4
 push constant 2
 pop this 14
 push this 11
 pop this 0
-label Ball_0c386c68_09ca_479f_861f_d49a9203695d
+label Ball_f7c26e6c_7536_44c2_b7dd_d1a8a39a79d4
 push this 1
 push this 12
 gt
 not
 not
-if-goto Ball_36a46308_b365_4926_b045_17ae8c8a5833
+if-goto Ball_f4ec06cd_a70e_4ce5_87f0_19d778acdd2f
 push constant 3
 pop this 14
 push this 12
 pop this 1
-label Ball_36a46308_b365_4926_b045_17ae8c8a5833
+label Ball_f4ec06cd_a70e_4ce5_87f0_19d778acdd2f
 push this 1
 push this 13
 lt
 not
 not
-if-goto Ball_5e052688_051f_4c20_b010_d649f981c80f
+if-goto Ball_9f565ead_c8ad_4159_98aa_1d4bc4ca99b1
 push constant 4
 pop this 14
 push this 13
 pop this 1
-label Ball_5e052688_051f_4c20_b010_d649f981c80f
+label Ball_9f565ead_c8ad_4159_98aa_1d4bc4ca99b1
 push pointer 0
 call Ball.show 1
 pop temp 0
@@ -304,11 +304,11 @@ push argument 1
 push constant 0
 eq
 not
-if-goto Ball_744395c6_e7a1_4cd6_b8eb_7186d805946f
+if-goto Ball_6ad0a69e_d850_456f_abbb_7e1d0c134c80
 push constant 10
 pop local 4
-goto Ball_1ebaebda_8188_455b_b405_bae160cdbb93
-label Ball_744395c6_e7a1_4cd6_b8eb_7186d805946f
+goto Ball_aad8d1b3_7e78_4aec_b019_a3a39cfad077
+label Ball_6ad0a69e_d850_456f_abbb_7e1d0c134c80
 push this 2
 push constant 0
 lt
@@ -327,20 +327,20 @@ eq
 and
 or
 not
-if-goto Ball_bce7fb00_9278_4439_9a61_bd1a6106730d
+if-goto Ball_64d56528_1dce_4e93_b12e_114b91073b5e
 push constant 20
 pop local 4
-goto Ball_3495e7f8_9b3e_4047_b779_e4f52dddbe98
-label Ball_bce7fb00_9278_4439_9a61_bd1a6106730d
+goto Ball_ec64b2d6_87cd_4780_9ff5_0f327cc7276d
+label Ball_64d56528_1dce_4e93_b12e_114b91073b5e
 push constant 5
 pop local 4
-label Ball_3495e7f8_9b3e_4047_b779_e4f52dddbe98
-label Ball_1ebaebda_8188_455b_b405_bae160cdbb93
+label Ball_ec64b2d6_87cd_4780_9ff5_0f327cc7276d
+label Ball_aad8d1b3_7e78_4aec_b019_a3a39cfad077
 push this 14
 push constant 1
 eq
 not
-if-goto Ball_33ee1519_6270_42d1_acdc_8f9510e4daad
+if-goto Ball_6b7478e3_9bf5_4f9f_8d10_eb3b5ac098a8
 push constant 506
 pop local 0
 push local 3
@@ -356,13 +356,13 @@ push local 4
 call Math.multiply 2
 add
 pop local 1
-goto Ball_eb4ecc7a_2e3f_444d_b865_f2d433a690b5
-label Ball_33ee1519_6270_42d1_acdc_8f9510e4daad
+goto Ball_3e67e132_3214_42ab_b559_5be0afe485a1
+label Ball_6b7478e3_9bf5_4f9f_8d10_eb3b5ac098a8
 push this 14
 push constant 2
 eq
 not
-if-goto Ball_f8fb4e9f_cc14_4368_a60d_91c6d975a20e
+if-goto Ball_e4abc4da_d832_44e6_869c_db1f8bfa6c63
 push constant 0
 pop local 0
 push local 3
@@ -377,13 +377,13 @@ push local 4
 call Math.multiply 2
 add
 pop local 1
-goto Ball_0f615a3a_170b_4169_b128_98fb62b4057f
-label Ball_f8fb4e9f_cc14_4368_a60d_91c6d975a20e
+goto Ball_e0863bdd_0862_4820_8754_d8efebb2124c
+label Ball_e4abc4da_d832_44e6_869c_db1f8bfa6c63
 push this 14
 push constant 3
 eq
 not
-if-goto Ball_42c30e5f_6254_4f9e_8a4c_85dc1ee049a3
+if-goto Ball_6df035eb_9a99_4956_8f13_4a5e9f2292d4
 push constant 250
 pop local 1
 push local 2
@@ -399,8 +399,8 @@ push local 4
 call Math.multiply 2
 add
 pop local 0
-goto Ball_74a1cf57_2af2_49cd_b9a8_eb97ae4f1475
-label Ball_42c30e5f_6254_4f9e_8a4c_85dc1ee049a3
+goto Ball_d0e8ad49_133c_4093_b5e0_2aae0236f4d2
+label Ball_6df035eb_9a99_4956_8f13_4a5e9f2292d4
 push constant 0
 pop local 1
 push local 2
@@ -415,12 +415,12 @@ push local 4
 call Math.multiply 2
 add
 pop local 0
-label Ball_74a1cf57_2af2_49cd_b9a8_eb97ae4f1475
-label Ball_0f615a3a_170b_4169_b128_98fb62b4057f
-label Ball_eb4ecc7a_2e3f_444d_b865_f2d433a690b5
+label Ball_d0e8ad49_133c_4093_b5e0_2aae0236f4d2
+label Ball_e0863bdd_0862_4820_8754_d8efebb2124c
+label Ball_3e67e132_3214_42ab_b559_5be0afe485a1
+push pointer 0
 push local 0
 push local 1
-push pointer 0
 call Ball.setDestination 3
 pop temp 0
 push constant 0

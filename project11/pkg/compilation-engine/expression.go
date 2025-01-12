@@ -3,7 +3,6 @@ package compilationEngine
 /* expression: term (op term)* */
 func (e *Engine) CompileExpression() {
 	// fmt.Println("--- CompileExpression ---, token: ", e.tk.Token())
-	// e.WriteString("<expression>\n")
 
 	// term
 	e.CompileTerm()
@@ -32,14 +31,12 @@ func (e *Engine) CompileExpression() {
 
 		_, isOp = opSymbol[e.tk.Symbol()]
 	}
-
-	// fmt.Println("	END CompileExpression")
 }
 
 /* expressionList: (expression(',' expression)*)? */
 func (e *Engine) CompileExpressionList() int {
 	// fmt.Println("--- CompileExpressionList ---, token: ", e.tk.Token())
-	// e.WriteString("<expressionList>\n")
+
 	nArgs := 0
 	if !e.isTerm() {
 		return nArgs
@@ -48,14 +45,11 @@ func (e *Engine) CompileExpressionList() int {
 	nArgs++
 
 	for e.tk.Symbol() == "," {
-		// e.writeSymbol()
 
 		e.tk.Advance()
 		e.CompileExpression()
 		nArgs++
 	}
-	// e.WriteString("</expressionList>\n")
 	e.tk.SetSkipAdvance(false)
-	// fmt.Println("		END CompileExpressionList")
 	return nArgs
 }

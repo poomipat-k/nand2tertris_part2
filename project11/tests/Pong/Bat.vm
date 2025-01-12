@@ -102,7 +102,7 @@ push this 4
 push constant 1
 eq
 not
-if-goto Bat_a74bbf5d_b696_4e8b_87e3_65810245a4c1
+if-goto Bat_0332f19e_bf49_4ba4_aff6_70e04d8f2a27
 push this 0
 push constant 4
 sub
@@ -111,10 +111,10 @@ push this 0
 push constant 0
 lt
 not
-if-goto Bat_3533ee6c_fa90_46fe_b050_b1c55dbfd87e
+if-goto Bat_79786ef1_ac1c_4253_ae13_da88609a243c
 push constant 0
 pop this 0
-label Bat_3533ee6c_fa90_46fe_b050_b1c55dbfd87e
+label Bat_79786ef1_ac1c_4253_ae13_da88609a243c
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -148,8 +148,8 @@ push this 3
 add
 call Screen.drawRectangle 4
 pop temp 0
-goto Bat_4f4e7313_6ad9_4025_9cf9_882b0e8c62b8
-label Bat_a74bbf5d_b696_4e8b_87e3_65810245a4c1
+goto Bat_8b4931d0_f0f7_4b8b_84c5_9c9e6332c9ca
+label Bat_0332f19e_bf49_4ba4_aff6_70e04d8f2a27
 push this 0
 push constant 4
 add
@@ -160,12 +160,12 @@ add
 push constant 511
 gt
 not
-if-goto Bat_08348aca_5766_4591_a900_b5bd5dcc7e51
+if-goto Bat_9c4bb7d3_0c02_4102_bcf1_358997710d8a
 push constant 511
 push this 2
 sub
 pop this 0
-label Bat_08348aca_5766_4591_a900_b5bd5dcc7e51
+label Bat_9c4bb7d3_0c02_4102_bcf1_358997710d8a
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -199,6 +199,6 @@ push this 3
 add
 call Screen.drawRectangle 4
 pop temp 0
-label Bat_4f4e7313_6ad9_4025_9cf9_882b0e8c62b8
+label Bat_8b4931d0_f0f7_4b8b_84c5_9c9e6332c9ca
 push constant 0
 return

@@ -406,7 +406,7 @@ push local 2
 push constant 0
 eq
 not
-if-goto Main_936cbde8_118a_424e_bbae_4b91dbaf6c0c
+if-goto Main_8dc61165_3994_4872_8149_3286f1208bc8
 push local 0
 push constant 10
 call Main.fill 2
@@ -463,7 +463,7 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
-label Main_936cbde8_118a_424e_bbae_4b91dbaf6c0c
+label Main_8dc61165_3994_4872_8149_3286f1208bc8
 push constant 44
 call String.new 1
 push constant 84
@@ -676,12 +676,12 @@ push constant 2
 call Math.multiply 2
 return
 function Main.fill 0
-label Main_6ece4fad_716e_4105_aaa5_caa89f60b349
+label Main_2177cc76_9adf_469b_89df_570209ce746a
 push argument 1
 push constant 0
 gt
 not
-if-goto Main_d4e0eafa_31d7_4a3f_9cff_9b1f6755850e
+if-goto Main_035709a8_54f0_4262_9959_474da5145229
 push argument 1
 push constant 1
 sub
@@ -695,7 +695,7 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
-goto Main_6ece4fad_716e_4105_aaa5_caa89f60b349
-label Main_d4e0eafa_31d7_4a3f_9cff_9b1f6755850e
+goto Main_2177cc76_9adf_469b_89df_570209ce746a
+label Main_035709a8_54f0_4262_9959_474da5145229
 push constant 0
 return

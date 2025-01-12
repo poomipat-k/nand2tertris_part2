@@ -90,12 +90,12 @@ return
 function PongGame.run 1
 push argument 0
 pop pointer 0
-label PongGame_d926e289_1592_4023_83e3_34fb7ab9f92b
+label PongGame_e8ef66ac_eeec_4fe2_828f_c19631e16cc9
 push this 3
 not
 not
-if-goto PongGame_cf88ec6a_98dc_40c3_be49_e6d93614de05
-label PongGame_11f4df29_dd80_4e9a_acc5_0ad24c106a68
+if-goto PongGame_ff3a58eb_e709_4536_8c56_6dce5960a334
+label PongGame_60f13936_4ea6_4f18_89ca_ce532a9cfcb8
 push local 0
 push constant 0
 eq
@@ -103,7 +103,7 @@ push this 3
 not
 and
 not
-if-goto PongGame_4f110b4e_8db8_4cc2_bd56_6b72fe9ed278
+if-goto PongGame_e37214b7_ca3e_4940_ad22_5eb71689f153
 call Keyboard.keyPressed 0
 pop local 0
 push this 0
@@ -115,42 +115,42 @@ pop temp 0
 push constant 50
 call Sys.wait 1
 pop temp 0
-goto PongGame_11f4df29_dd80_4e9a_acc5_0ad24c106a68
-label PongGame_4f110b4e_8db8_4cc2_bd56_6b72fe9ed278
+goto PongGame_60f13936_4ea6_4f18_89ca_ce532a9cfcb8
+label PongGame_e37214b7_ca3e_4940_ad22_5eb71689f153
 push local 0
 push constant 130
 eq
 not
-if-goto PongGame_181c917d_7e3c_4a55_b28d_4ad054d47c31
+if-goto PongGame_bb17926e_e0c0_4479_8bcd_5a32da5d6bbd
 push this 0
 push constant 1
 call Bat.setDirection 2
 pop temp 0
-goto PongGame_296fa360_3f09_4590_9b91_839fb4e12753
-label PongGame_181c917d_7e3c_4a55_b28d_4ad054d47c31
+goto PongGame_6c8896cc_048e_4388_bf0c_e8f716b5237c
+label PongGame_bb17926e_e0c0_4479_8bcd_5a32da5d6bbd
 push local 0
 push constant 132
 eq
 not
-if-goto PongGame_9360d69d_52a7_4691_a874_8a3a7a086d4a
+if-goto PongGame_cca86cd5_cbb4_495b_a93f_bf1bbbe02916
 push this 0
 push constant 2
 call Bat.setDirection 2
 pop temp 0
-goto PongGame_279cadc0_c008_42c6_8852_5ff1befe5ac8
-label PongGame_9360d69d_52a7_4691_a874_8a3a7a086d4a
+goto PongGame_00802969_7b74_4c06_bcc3_9c40fa640a6b
+label PongGame_cca86cd5_cbb4_495b_a93f_bf1bbbe02916
 push local 0
 push constant 140
 eq
 not
-if-goto PongGame_89f33288_d0f3_4441_b435_b0f765d2da9a
+if-goto PongGame_94f85d5c_4dfb_4e1a_a9e0_356af8133b04
 push constant 1
 neg
 pop this 3
-label PongGame_89f33288_d0f3_4441_b435_b0f765d2da9a
-label PongGame_279cadc0_c008_42c6_8852_5ff1befe5ac8
-label PongGame_296fa360_3f09_4590_9b91_839fb4e12753
-label PongGame_8acce9b9_29e1_4e85_ae25_76395099c010
+label PongGame_94f85d5c_4dfb_4e1a_a9e0_356af8133b04
+label PongGame_00802969_7b74_4c06_bcc3_9c40fa640a6b
+label PongGame_6c8896cc_048e_4388_bf0c_e8f716b5237c
+label PongGame_9d1d4ad0_ad5e_4e01_8e93_e600fc0e3c40
 push local 0
 push constant 0
 eq
@@ -159,7 +159,7 @@ push this 3
 not
 and
 not
-if-goto PongGame_54f40704_7dc9_4691_8a2d_479b4f75d37f
+if-goto PongGame_798701c0_ec33_406f_8417_1d694cb3bea8
 call Keyboard.keyPressed 0
 pop local 0
 push this 0
@@ -171,13 +171,13 @@ pop temp 0
 push constant 50
 call Sys.wait 1
 pop temp 0
-goto PongGame_8acce9b9_29e1_4e85_ae25_76395099c010
-label PongGame_54f40704_7dc9_4691_8a2d_479b4f75d37f
-goto PongGame_d926e289_1592_4023_83e3_34fb7ab9f92b
-label PongGame_cf88ec6a_98dc_40c3_be49_e6d93614de05
+goto PongGame_9d1d4ad0_ad5e_4e01_8e93_e600fc0e3c40
+label PongGame_798701c0_ec33_406f_8417_1d694cb3bea8
+goto PongGame_e8ef66ac_eeec_4fe2_828f_c19631e16cc9
+label PongGame_ff3a58eb_e709_4536_8c56_6dce5960a334
 push this 3
 not
-if-goto PongGame_135abfee_93a9_467c_82cc_8f381016c11f
+if-goto PongGame_ea74844e_d795_49a7_95f7_ff1b36ca0118
 push constant 10
 push constant 27
 call Output.moveCursor 2
@@ -204,7 +204,7 @@ push constant 114
 call String.appendChar 2
 call Output.printString 1
 pop temp 0
-label PongGame_135abfee_93a9_467c_82cc_8f381016c11f
+label PongGame_ea74844e_d795_49a7_95f7_ff1b36ca0118
 push constant 0
 return
 function PongGame.moveBall 5
@@ -222,7 +222,7 @@ eq
 not
 and
 not
-if-goto PongGame_b2bf8867_9619_4ee3_a525_ace16b6cbbf9
+if-goto PongGame_4ffe6626_9a9f_4870_b9a2_3a89937c6ccc
 push this 2
 pop this 5
 push constant 0
@@ -243,7 +243,7 @@ push this 2
 push constant 4
 eq
 not
-if-goto PongGame_52c1c751_cc2a_49d3_bd7f_16a0aac16487
+if-goto PongGame_6222f2da_3d82_4814_a8c0_8b80b7357c51
 push local 1
 push local 4
 gt
@@ -255,30 +255,30 @@ pop this 3
 push this 3
 not
 not
-if-goto PongGame_76f0e543_6abb_472f_89e1_cc5d594f21bb
+if-goto PongGame_f023dffc_aeb4_4a12_b1d9_e0acb9fb2d92
 push local 4
 push local 1
 push constant 10
 add
 lt
 not
-if-goto PongGame_78ab29c3_dfac_4bc0_b6fe_cf2efbd46705
+if-goto PongGame_48bb0591_7522_41c4_aa37_09109ead4efb
 push constant 1
 neg
 pop local 0
-goto PongGame_66cd497b_e8d4_4202_b19d_c0416f496116
-label PongGame_78ab29c3_dfac_4bc0_b6fe_cf2efbd46705
+goto PongGame_db5d775e_c4b6_402b_8540_d5b9efd58fdd
+label PongGame_48bb0591_7522_41c4_aa37_09109ead4efb
 push local 3
 push local 2
 push constant 10
 sub
 gt
 not
-if-goto PongGame_d2bfa505_2046_465d_8298_2fe6950dc6c9
+if-goto PongGame_a5cf44d3_9cb5_4947_ad99_b8a027e4b18d
 push constant 1
 pop local 0
-label PongGame_d2bfa505_2046_465d_8298_2fe6950dc6c9
-label PongGame_66cd497b_e8d4_4202_b19d_c0416f496116
+label PongGame_a5cf44d3_9cb5_4947_ad99_b8a027e4b18d
+label PongGame_db5d775e_c4b6_402b_8540_d5b9efd58fdd
 push this 6
 push constant 2
 sub
@@ -298,12 +298,12 @@ pop temp 0
 push this 4
 call Output.printInt 1
 pop temp 0
-label PongGame_76f0e543_6abb_472f_89e1_cc5d594f21bb
-label PongGame_52c1c751_cc2a_49d3_bd7f_16a0aac16487
+label PongGame_f023dffc_aeb4_4a12_b1d9_e0acb9fb2d92
+label PongGame_6222f2da_3d82_4814_a8c0_8b80b7357c51
 push this 1
 push local 0
 call Ball.bounce 2
 pop temp 0
-label PongGame_b2bf8867_9619_4ee3_a525_ace16b6cbbf9
+label PongGame_4ffe6626_9a9f_4870_b9a2_3a89937c6ccc
 push constant 0
 return

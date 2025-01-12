@@ -91,20 +91,19 @@ func (e *Engine) CompileTerm() {
 
 			e.vmWriter.WritePop(vmWriter.SEG_POINTER, 1)
 			e.vmWriter.WritePush(vmWriter.SEG_THAT, 0) // push b[j] to top of stack
-			// e.vmWriter.WritePop(vmWriter.SEG_TEMP, 0)
 
 			// let sum = sum + a[i];
 			e.tk.SetSkipAdvance(false)
 		} else if e.tk.Symbol() == "(" {
 
 			e.tk.Advance()
+			e.vmWriter.WritePush(vmWriter.SEG_POINTER, 0)
+
 			nArgs := e.CompileExpressionList()
 
 			if e.tk.Symbol() != ")" {
 				log.Fatal("CompileTerm 1, expect a ')'")
 			}
-
-			e.vmWriter.WritePush(vmWriter.SEG_POINTER, 0)
 			e.vmWriter.WriteCall(fmt.Sprintf("%s.%s", e.className, prevId), nArgs+1)
 
 		} else if e.tk.Symbol() == "." {
@@ -173,8 +172,6 @@ func (e *Engine) CompileTerm() {
 	} else {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
-
-	// fmt.Println("		END CompileTerm")
 }
 
 func (e *Engine) isTerm() bool {

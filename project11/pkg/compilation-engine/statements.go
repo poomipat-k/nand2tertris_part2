@@ -15,8 +15,6 @@ func (e *Engine) CompileStatements() {
 
 	// no statements
 	if !statementKeywords[e.tk.Keyword()] {
-		// e.WriteString("<statements>\n")
-		// e.WriteString("</statements>\n")
 		return
 	}
 
@@ -42,7 +40,6 @@ func (e *Engine) CompileStatements() {
 		}
 
 	}
-	// e.WriteString("</statements>\n")
 }
 
 /*
@@ -135,7 +132,6 @@ func (e *Engine) CompileIf() {
 	if e.tk.Symbol() != "(" {
 		log.Fatal("CompileIf, expect a '('")
 	}
-	// e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileExpression()
@@ -143,13 +139,11 @@ func (e *Engine) CompileIf() {
 	if e.tk.Symbol() != ")" {
 		log.Fatal("CompileIf, expect a ')'")
 	}
-	// e.writeSymbol()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "{" {
 		log.Fatal("CompileIf, expect a '{'")
 	}
-	// e.writeSymbol()
 
 	// not
 	e.vmWriter.WriteArithmetic("not")
@@ -163,19 +157,16 @@ func (e *Engine) CompileIf() {
 	if e.tk.Symbol() != "}" {
 		log.Fatal("CompileIf, expect a '}'")
 	}
-	// e.writeSymbol()
 
 	e.tk.Advance()
 	// else
 	label2 := generateLabel(e.className)
 	if e.tk.Keyword() == "else" {
-		// e.writeKeyword()
 
 		e.tk.Advance()
 		if e.tk.Symbol() != "{" {
 			log.Fatal("CompileIf, expect a '{'")
 		}
-		// e.writeSymbol()
 
 		e.vmWriter.WriteGoto(label2)
 
@@ -187,7 +178,6 @@ func (e *Engine) CompileIf() {
 		if e.tk.Symbol() != "}" {
 			log.Fatal("CompileIf, expect a '}'")
 		}
-		// e.writeSymbol()
 
 		e.tk.Advance()
 
@@ -196,21 +186,16 @@ func (e *Engine) CompileIf() {
 		// no else block
 		e.vmWriter.WriteLabel(label1)
 	}
-	// e.WriteString("</ifStatement>\n")
 }
 
 /* 'while' '(' expression ')' '{' expressions '}' */
 func (e *Engine) CompileWhile() {
 	// fmt.Println("--- CompileWhile ---")
 
-	// e.WriteString("<whileStatement>\n")
-	// e.writeKeyword()
-
 	e.tk.Advance()
 	if e.tk.Symbol() != "(" {
 		log.Fatal("CompileWhile, expect a '('")
 	}
-	// e.writeSymbol()
 
 	label1 := generateLabel(e.className)
 	e.vmWriter.WriteLabel(label1)
@@ -225,13 +210,11 @@ func (e *Engine) CompileWhile() {
 	if e.tk.Symbol() != ")" {
 		log.Fatal("CompileWhile, expect a ')'")
 	}
-	// e.writeSymbol()
 
 	e.tk.Advance()
 	if e.tk.Symbol() != "{" {
 		log.Fatal("CompileWhile, expect a '{'")
 	}
-	// e.writeSymbol()
 
 	e.tk.Advance()
 	e.CompileStatements()
@@ -243,14 +226,11 @@ func (e *Engine) CompileWhile() {
 	if e.tk.Symbol() != "}" {
 		log.Fatal("CompileWhile, expect a '}'")
 	}
-	// e.writeSymbol()
-	// e.WriteString("</whileStatement>\n")
-
 }
 
 /* 'do' subroutineCall ';' */
 func (e *Engine) CompileDo() {
-	// fmt.Println("--- CompileDo ---")
+
 	e.tk.Advance()
 
 	e.CompileExpression()
@@ -260,9 +240,6 @@ func (e *Engine) CompileDo() {
 /* 'return' expression? ';' */
 func (e *Engine) CompileReturn() {
 	// fmt.Println("--- CompileReturn ---")
-	// e.WriteString("<returnStatement>\n")
-
-	// e.writeKeyword()
 
 	e.tk.Advance()
 	if e.tk.Symbol() == ";" {
@@ -276,8 +253,4 @@ func (e *Engine) CompileReturn() {
 	if e.tk.Symbol() != ";" {
 		log.Fatal("CompileLet, expect a ';', got: ", e.tk.Token())
 	}
-	// e.writeSymbol()
-
-	// e.WriteString("</returnStatement>\n")
-
 }

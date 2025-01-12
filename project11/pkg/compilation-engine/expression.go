@@ -1,12 +1,8 @@
 package compilationEngine
 
-import (
-	"fmt"
-)
-
 /* expression: term (op term)* */
 func (e *Engine) CompileExpression() {
-	fmt.Println("--- CompileExpression ---, token: ", e.tk.Token())
+	// fmt.Println("--- CompileExpression ---, token: ", e.tk.Token())
 	// e.WriteString("<expression>\n")
 
 	// term
@@ -37,13 +33,12 @@ func (e *Engine) CompileExpression() {
 		_, isOp = opSymbol[e.tk.Symbol()]
 	}
 
-	// e.WriteString("</expression>\n")
-	fmt.Println("	END CompileExpression")
+	// fmt.Println("	END CompileExpression")
 }
 
 /* expressionList: (expression(',' expression)*)? */
 func (e *Engine) CompileExpressionList() int {
-	fmt.Println("--- CompileExpressionList ---, token: ", e.tk.Token())
+	// fmt.Println("--- CompileExpressionList ---, token: ", e.tk.Token())
 	// e.WriteString("<expressionList>\n")
 	nArgs := 0
 	if !e.isTerm() {
@@ -61,6 +56,6 @@ func (e *Engine) CompileExpressionList() int {
 	}
 	// e.WriteString("</expressionList>\n")
 	e.tk.SetSkipAdvance(false)
-	fmt.Println("		END CompileExpressionList")
+	// fmt.Println("		END CompileExpressionList")
 	return nArgs
 }

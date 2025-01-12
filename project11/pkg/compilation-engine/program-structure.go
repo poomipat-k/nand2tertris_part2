@@ -11,7 +11,7 @@ import (
 
 /* class: 'class' className '{' classVarDec* subroutineDec* '}' */
 func (e *Engine) CompileClass() {
-	fmt.Println("---- compile class ----")
+	// fmt.Println("---- compile class ----")
 	if e.tk.Keyword() != "class" {
 		log.Fatal("current token is not a 'class'")
 	}
@@ -52,7 +52,7 @@ func (e *Engine) CompileClass() {
 (('static' | 'field') type varName (',' varName)* ';')*
 */
 func (e *Engine) CompileClassVarDec() {
-	fmt.Println("---- compile classVarDec ----")
+	// fmt.Println("---- compile classVarDec ----")
 	if !classVarScope[e.tk.Keyword()] {
 		return
 	}
@@ -137,9 +137,6 @@ func (e *Engine) CompileSubroutineDec() {
 
 		e.subroutineType = e.tk.Keyword()
 
-		// e.WriteString("<subroutineDec>\n")
-		// e.writeKeyword()
-
 		e.tk.Advance()
 		// subroutine return type
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && (jackType[e.tk.Keyword()] || e.tk.Keyword() == "void") {
@@ -182,21 +179,27 @@ func (e *Engine) CompileSubroutineDec() {
 
 		// e.WriteString("</subroutineDec>\n")
 		e.tk.Advance()
+
+		if e.subroutineType == METHOD {
+			fmt.Println("METHOD: ", e.subroutineName)
+			fmt.Println(e.subroutineST)
+		}
 	}
 }
 
 func (e *Engine) CompileParameterList() {
-	fmt.Println("--- CompileParameterList ---")
-	// e.WriteString("<parameterList>\n")
+	// fmt.Println("--- CompileParameterList ---")
+	if e.subroutineType == METHOD {
+		e.subroutineST.Define("this", e.className, symbolTable.ARG)
+	}
 
 	for e.tk.Symbol() != ")" {
 		// type
 		var dataType string
 		if e.tk.TokenType() == jackTokenizer.KEYWORD && jackType[e.tk.Keyword()] {
-			// e.writeKeyword()
 			dataType = e.tk.Keyword()
 		} else if e.tk.TokenType() == jackTokenizer.IDENTIFIER {
-			// e.writeIdentifier(e.tk.Identifier(), "used", symbolTable.CLASS)
+			// className type
 			dataType = e.tk.Identifier()
 		} else {
 			log.Fatal("expect 'int' | 'char' | 'boolean' | className(identifier)")
@@ -208,22 +211,18 @@ func (e *Engine) CompileParameterList() {
 			log.Fatal("parameterList varName: expect an identifier")
 		}
 		e.subroutineST.Define(e.tk.Identifier(), dataType, symbolTable.ARG)
-		// e.writeIdentifier(e.tk.Identifier(), "dec", symbolTable.ARG)
 
 		e.tk.Advance()
 		// optional ","
 		if e.tk.Symbol() == "," {
-			// e.writeSymbol()
 			e.tk.Advance()
 		}
 	}
-
-	// e.WriteString("</parameterList>\n")
 }
 
 /* '{' varDec* statements '}' */
 func (e *Engine) CompileSubroutineBody() {
-	fmt.Println("--- CompileSubroutineBody ---")
+	// fmt.Println("--- CompileSubroutineBody ---")
 
 	// e.WriteString("<subroutineBody>\n")
 	if e.tk.Symbol() != "{" {
@@ -263,19 +262,11 @@ func (e *Engine) CompileSubroutineBody() {
 	if e.tk.Symbol() != "}" {
 		log.Fatal("CompileSubroutineBody, expect a '}', got: ", e.tk.Token())
 	}
-	// e.writeSymbol()
-
-	// e.WriteString("</subroutineBody>\n")
-
 }
 
 /* varDec: 'var' type varName (',' varName)* ';' */
 func (e *Engine) CompileVarDec() {
-	fmt.Println("--- CompileVarDec ---")
-
-	if e.subroutineType == METHOD {
-		e.subroutineST.Define("this", e.className, symbolTable.ARG)
-	}
+	// fmt.Println("--- CompileVarDec ---")
 
 	for e.tk.Keyword() == "var" {
 		// e.WriteString("<varDec>\n")
@@ -322,8 +313,6 @@ func (e *Engine) CompileVarDec() {
 			e.tk.Advance()
 		}
 		// write ';'
-		// e.writeSymbol()
-		// e.WriteString("</varDec>\n")
 		e.tk.Advance()
 	}
 

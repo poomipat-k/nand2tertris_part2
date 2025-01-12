@@ -1,7 +1,6 @@
 package compilationEngine
 
 import (
-	"fmt"
 	"log"
 
 	vmWriter "github.com/poomipat-k/nand2tetris/project11/pkg/vm-writer"
@@ -12,7 +11,7 @@ statements: statement*
 statement: letStatement | ifStatement | whileStatement | doStatement | returnStatement
 */
 func (e *Engine) CompileStatements() {
-	fmt.Println("--- CompileStatements ---")
+	// fmt.Println("--- CompileStatements ---")
 
 	// no statements
 	if !statementKeywords[e.tk.Keyword()] {
@@ -55,7 +54,7 @@ compileLet
 	output "pop segment i"
 */
 func (e *Engine) CompileLet() {
-	fmt.Println("--- CompileLet ---")
+	// fmt.Println("--- CompileLet ---")
 
 	// let
 
@@ -129,7 +128,7 @@ func (e *Engine) CompileLet() {
 
 /* 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')? */
 func (e *Engine) CompileIf() {
-	fmt.Println("--- CompileIf ---")
+	// fmt.Println("--- CompileIf ---")
 	// if
 
 	e.tk.Advance()
@@ -202,7 +201,7 @@ func (e *Engine) CompileIf() {
 
 /* 'while' '(' expression ')' '{' expressions '}' */
 func (e *Engine) CompileWhile() {
-	fmt.Println("--- CompileWhile ---")
+	// fmt.Println("--- CompileWhile ---")
 
 	// e.WriteString("<whileStatement>\n")
 	// e.writeKeyword()
@@ -251,7 +250,7 @@ func (e *Engine) CompileWhile() {
 
 /* 'do' subroutineCall ';' */
 func (e *Engine) CompileDo() {
-	fmt.Println("--- CompileDo ---")
+	// fmt.Println("--- CompileDo ---")
 	e.tk.Advance()
 
 	e.CompileExpression()
@@ -260,7 +259,7 @@ func (e *Engine) CompileDo() {
 
 /* 'return' expression? ';' */
 func (e *Engine) CompileReturn() {
-	fmt.Println("--- CompileReturn ---")
+	// fmt.Println("--- CompileReturn ---")
 	// e.WriteString("<returnStatement>\n")
 
 	// e.writeKeyword()

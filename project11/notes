@@ -29,3 +29,5 @@ go run main.go tests/Square/Main.jack
 go run main.go tests/ConvertToBin
 
 go run main.go tests/Average
+
+> > > > > > > > BAT st: &{map[Awidth:{int ARG 0} this:{Bat ARG 1}] 0 2 0 0}

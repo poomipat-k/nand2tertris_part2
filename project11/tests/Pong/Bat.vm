@@ -66,7 +66,7 @@ return
 function Bat.setDirection 0
 push argument 0
 pop pointer 0
-push argument 0
+push argument 1
 pop this 4
 push constant 0
 return
@@ -88,7 +88,7 @@ pop pointer 0
 push pointer 0
 call Bat.hide 1
 pop temp 0
-push argument 0
+push argument 1
 pop this 2
 push pointer 0
 call Bat.show 1
@@ -102,7 +102,7 @@ push this 4
 push constant 1
 eq
 not
-if-goto Bat_1eafabbc_15e2_4397_88ec_d0ab8f7498af
+if-goto Bat_a74bbf5d_b696_4e8b_87e3_65810245a4c1
 push this 0
 push constant 4
 sub
@@ -111,10 +111,10 @@ push this 0
 push constant 0
 lt
 not
-if-goto Bat_bc88fff6_140e_4dab_b473_83d860496f57
+if-goto Bat_3533ee6c_fa90_46fe_b050_b1c55dbfd87e
 push constant 0
 pop this 0
-label Bat_bc88fff6_140e_4dab_b473_83d860496f57
+label Bat_3533ee6c_fa90_46fe_b050_b1c55dbfd87e
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -148,8 +148,8 @@ push this 3
 add
 call Screen.drawRectangle 4
 pop temp 0
-goto Bat_fca0245f_2e08_4ffe_86b4_fae50a52ebd3
-label Bat_1eafabbc_15e2_4397_88ec_d0ab8f7498af
+goto Bat_4f4e7313_6ad9_4025_9cf9_882b0e8c62b8
+label Bat_a74bbf5d_b696_4e8b_87e3_65810245a4c1
 push this 0
 push constant 4
 add
@@ -160,12 +160,12 @@ add
 push constant 511
 gt
 not
-if-goto Bat_653f3529_9d10_4b29_83e3_5fc683ed7f8d
+if-goto Bat_08348aca_5766_4591_a900_b5bd5dcc7e51
 push constant 511
 push this 2
 sub
 pop this 0
-label Bat_653f3529_9d10_4b29_83e3_5fc683ed7f8d
+label Bat_08348aca_5766_4591_a900_b5bd5dcc7e51
 push constant 0
 call Screen.setColor 1
 pop temp 0
@@ -199,6 +199,6 @@ push this 3
 add
 call Screen.drawRectangle 4
 pop temp 0
-label Bat_fca0245f_2e08_4ffe_86b4_fae50a52ebd3
+label Bat_4f4e7313_6ad9_4025_9cf9_882b0e8c62b8
 push constant 0
 return

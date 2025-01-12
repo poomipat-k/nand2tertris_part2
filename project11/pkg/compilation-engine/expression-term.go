@@ -15,7 +15,7 @@ term:
 	varName'['expression']' | subroutineCall | '('expression')' | unaryOp term
 */
 func (e *Engine) CompileTerm() {
-	fmt.Println("--- CompileTerm ---, token: ", e.tk.Token())
+	// fmt.Println("--- CompileTerm ---, token: ", e.tk.Token())
 	tokenType := e.tk.TokenType()
 
 	if tokenType == jackTokenizer.INT_CONST {
@@ -174,7 +174,7 @@ func (e *Engine) CompileTerm() {
 		log.Fatal("CompileTerm, unsupported term, got:", e.tk.Token())
 	}
 
-	fmt.Println("		END CompileTerm")
+	// fmt.Println("		END CompileTerm")
 }
 
 func (e *Engine) isTerm() bool {

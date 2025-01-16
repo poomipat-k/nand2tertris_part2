@@ -76,6 +76,7 @@ class Screen {
     function void drawLine(int x1, int y1, int x2, int y2) {
         var int dx, dy, a, b, diff;
         var int aDx, aDy, direction;
+        var int temp, startBlock, endBlock, nBlocks, endLeft, midL, midR;
 
         let dx = x2 - x1;
         let dy = y2 - y1;
@@ -103,24 +104,60 @@ class Screen {
             }
             return;
         }
-        // horizontal
+
+        // horizontal optimized
         if (dy = 0) {
-            if (x2 > x1) {
-                // go right
-                while (x2 > x1) {
+            if (x1 > x2) {
+                let temp = x2;
+                let x2 = x1;
+                let x1 = temp;
+            }
+            let startBlock = x1 / 16;
+            let endBlock = x2 / 16;
+            let nBlocks = endBlock - startBlock + 1;
+            if (nBlocks > 2) {
+                // left
+                let endLeft = (startBlock + 1) * 16;
+                while (x1 < endLeft) {
+                    do Screen.drawPixel(x1, y1);
+                    let x1 = x1 + 1;
+                }
+
+                // mid
+                if (black) {
+                    let midL = (32 * y1) + startBlock + 1;
+                    let midR = (32 * y1) + endBlock;
+                    while (midL < midR) {
+                        do Memory.poke(base + midL, -1);
+                        let midL = midL + 1;
+                    }
+                } else {
+                    let midL = (32 * y1) + startBlock + 1;
+                    let midR = (32 * y1) + endBlock;
+                    while (midL < midR) {
+                        do Memory.poke(base + midL, 0);
+                        let midL = midL + 1;
+                    }
+                }
+
+                // right
+                let x1 = endBlock * 16;
+                let x2 = x2 + 1;
+                while (x1 < x2) {
                     do Screen.drawPixel(x1, y1);
                     let x1 = x1 + 1;
                 }
             } else {
-                // go left
-                while (x2 < x1) {
+                while (x2 > x1) {
                     do Screen.drawPixel(x1, y1);
-                    let x1 = x1 - 1;
+                    let x1 = x1 + 1;
                 }
             }
             return;
         }
 
+
+        // non straight line
         let direction = 0;
         if (dx > 0) {
             if (dy < 0) {

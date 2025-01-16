@@ -78,6 +78,10 @@ class Screen {
         var int aDx, aDy, direction;
         var int temp, startBlock, endBlock, nBlocks, endLeft, midL, midR;
 
+        if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0)) {
+            do Sys.error(8);
+        }
+
         let dx = x2 - x1;
         let dy = y2 - y1;
         let a = 0; // right counter
@@ -85,7 +89,8 @@ class Screen {
         let diff = 0;
 
         if ((dx = 0) & (dy = 0)) {
-            do Sys.error(8);
+            // do Screen.drawPixel(x1, y1);
+            return;
         }
         // vertical
         if (dx = 0) {
@@ -210,6 +215,9 @@ class Screen {
      *  and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
         var int minY, maxY, minX, maxX;
+        if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0)) {
+            do Sys.error(9);
+        }
         let minX = Math.min(x1, x2);
         let maxX = Math.max(x1, x2);
         let minY = Math.min(y1, y2);
@@ -223,6 +231,19 @@ class Screen {
 
     /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
     function void drawCircle(int x, int y, int r) {
+        var int dy, diff;
+        if ((x < 0) | (y < 0)) {
+            do Sys.error(12);
+        }
+        if ((r < 0) | (r > 181) | ((x-r) < 0) | ((x+r) > 511) | ((y-r) < 0) | ((y+r) > 255))  {
+            do Sys.error(13);
+        }
+        let dy = -r;
+        while (dy < r) {
+            let diff = Math.sqrt((r*r) - (dy*dy));
+            do Screen.drawLine(x - diff, y + dy, x + diff, y + dy);
+            let dy = dy + 1;
+        }
         return;
     }
 

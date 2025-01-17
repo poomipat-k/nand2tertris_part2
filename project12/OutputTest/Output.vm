@@ -1514,30 +1514,6 @@ label Output_2
     return
 function Output.printChar 6
     push argument 0
-    push constant 128
-    eq
-    not
-    if-goto Output_5
-    call Output.println 0
-    pop temp 0
-    push constant 0
-    return
-    goto Output_4
-label Output_5
-label Output_4
-    push argument 0
-    push constant 129
-    eq
-    not
-    if-goto Output_7
-    call Output.backSpace 0
-    pop temp 0
-    push constant 0
-    return
-    goto Output_6
-label Output_7
-label Output_6
-    push argument 0
     call Output.getMap 1
     pop local 0
     push constant 0
@@ -1548,12 +1524,12 @@ label Output_6
     push constant 1
     eq
     pop local 5
-label Output_8
+label Output_4
     push local 1
     push constant 11
     lt
     not
-    if-goto Output_9
+    if-goto Output_5
     push static 1
     push constant 32
     push static 3
@@ -1579,14 +1555,14 @@ label Output_8
     pop local 4
     push local 5
     not
-    if-goto Output_11
+    if-goto Output_7
     push local 4
     push constant 256
     call Math.multiply 2
     pop local 4
-    goto Output_10
-label Output_11
-label Output_10
+    goto Output_6
+label Output_7
+label Output_6
     push local 3
     push local 4
     or
@@ -1599,26 +1575,26 @@ label Output_10
     push constant 1
     add
     pop local 1
-    goto Output_8
-label Output_9
+    goto Output_4
+label Output_5
     push static 2
     push constant 1
     add
     push constant 63
     gt
     not
-    if-goto Output_13
+    if-goto Output_9
     call Output.println 0
     pop temp 0
-    goto Output_12
-label Output_13
+    goto Output_8
+label Output_9
     push static 3
     push static 2
     push constant 1
     add
     call Output.moveCursor 2
     pop temp 0
-label Output_12
+label Output_8
     push constant 0
     return
 function Output.printString 3
@@ -1627,12 +1603,12 @@ function Output.printString 3
     push argument 0
     call String.length 1
     pop local 0
-label Output_14
+label Output_10
     push local 1
     push local 0
     lt
     not
-    if-goto Output_15
+    if-goto Output_11
     push argument 0
     push local 1
     call String.charAt 2
@@ -1644,8 +1620,8 @@ label Output_14
     push constant 1
     add
     pop local 1
-    goto Output_14
-label Output_15
+    goto Output_10
+label Output_11
     push constant 0
     return
 function Output.printInt 1
@@ -1668,20 +1644,20 @@ function Output.println 0
     push constant 22
     gt
     not
-    if-goto Output_17
+    if-goto Output_13
     push constant 0
     push constant 0
     call Output.moveCursor 2
     pop temp 0
-    goto Output_16
-label Output_17
+    goto Output_12
+label Output_13
     push static 3
     push constant 1
     add
     push constant 0
     call Output.moveCursor 2
     pop temp 0
-label Output_16
+label Output_12
     push constant 0
     return
 function Output.backSpace 4
@@ -1689,7 +1665,7 @@ function Output.backSpace 4
     push constant 0
     gt
     not
-    if-goto Output_19
+    if-goto Output_15
     push static 3
     push static 2
     push constant 1
@@ -1704,12 +1680,12 @@ function Output.backSpace 4
     pop local 3
     push constant 0
     pop local 2
-label Output_20
+label Output_16
     push local 2
     push constant 11
     lt
     not
-    if-goto Output_21
+    if-goto Output_17
     push static 1
     push constant 32
     push static 3
@@ -1729,19 +1705,19 @@ label Output_20
     pop local 1
     push local 3
     not
-    if-goto Output_23
+    if-goto Output_19
     push local 1
     push constant 255
     and
     pop local 1
-    goto Output_22
-label Output_23
+    goto Output_18
+label Output_19
     push local 1
     push constant 256
     neg
     and
     pop local 1
-label Output_22
+label Output_18
     push local 0
     push local 1
     call Memory.poke 2
@@ -1750,10 +1726,10 @@ label Output_22
     push constant 1
     add
     pop local 2
-    goto Output_20
-label Output_21
-    goto Output_18
-label Output_19
-label Output_18
+    goto Output_16
+label Output_17
+    goto Output_14
+label Output_15
+label Output_14
     push constant 0
     return

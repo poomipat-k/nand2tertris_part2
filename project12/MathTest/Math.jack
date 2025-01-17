@@ -56,6 +56,9 @@ class Math {
     function int divide(int x, int y) {
         var int ax, ay;
         var boolean isPos;
+        if (y < 0) {
+            do Sys.error(3);
+        }
         let ax = Math.abs(x);
         let ay = Math.abs(y);
         let isPos = (x > 0 & y > 0) | (x = 0) | (x < 0 & y < 0);
@@ -82,7 +85,7 @@ class Math {
     function int sqrt(int x) {
         var int y, j, k;
         if (x < 0) {
-            return 0;
+            do Sys.error(4);
         }
         let y = 0;
         let j = (n / 2) - 1;

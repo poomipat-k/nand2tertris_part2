@@ -282,9 +282,9 @@ class Output {
                 let addr = base + (32 * ((cy * 11) + i)) + (cx / 2);
                 let ramVal = Memory.peek(addr);
                 if (onRight) {
-                    let ramVal = ramVal & (255);
+                    let ramVal = ramVal & (255); // 255 = 1111111100000000 LSB is on the left on the screen (clear char on the right)
                 } else {
-                    let ramVal = ramVal & (-256);
+                    let ramVal = ramVal & (-256); // -256 = 0000000011111111
                 }
                 do Memory.poke(addr, ramVal);
                 let i = i + 1;

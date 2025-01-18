@@ -10,34 +10,66 @@
  * string-oriented operations.
  */
 class String {
+    field int m, n; // m maxLength, n actual string length
+    field Array s;
 
     /** constructs a new empty string with a maximum length of maxLength
      *  and initial length of 0. */
     constructor String new(int maxLength) {
+        if (maxLength < 0) {
+            do Sys.error(14);
+        }
+        let s = Array.new(maxLength);
+        let n = 0;
+        let m = maxLength;
     }
 
     /** Disposes this string. */
     method void dispose() {
+        do Memory.deAlloc(this);
+        return;
     }
 
     /** Returns the current length of this string. */
     method int length() {
+        return n;
     }
 
     /** Returns the character at the j-th location of this string. */
     method char charAt(int j) {
+        if ((j < 0) | (j > (n - 1))) {
+            do Sys.error(15);
+        }
+        return s[j];
     }
 
     /** Sets the character at the j-th location of this string to c. */
     method void setCharAt(int j, char c) {
+        if ((j < 0) | (j > (n - 1))) {
+            do Sys.error(16);
+        }
+        let s[j] = c;
+        return;
     }
 
     /** Appends c to this string's end and returns this string. */
     method String appendChar(char c) {
+        if (n = m) {
+            do Sys.error(17);
+        }
+        let s[n] = c;
+        let n = n + 1;
+        return this;
     }
 
     /** Erases the last character from this string. */
     method void eraseLastChar() {
+        if (n = 0) {
+            do Sys.error(18);
+        }
+        let s[n] = 0;
+        let n = n - 1;
+        return;
     }
 
     /** Returns the integer value of this string, 
@@ -51,13 +83,16 @@ class String {
 
     /** Returns the new line character. */
     function char newLine() {
+        return 128;
     }
 
     /** Returns the backspace character. */
     function char backSpace() {
+        return 129;
     }
 
     /** Returns the double quote (") character. */
     function char doubleQuote() {
+        return 34;
     }
 }

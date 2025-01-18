@@ -1,6 +1,6 @@
 class Array {
     function Array new(int size) {
-        return;
+        return Memory.alloc(size);
     }
 
     method void dispose() {

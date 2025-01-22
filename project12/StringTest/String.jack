@@ -22,7 +22,7 @@ class String {
         }
         if (maxLength = 0) {
             let str = Array.new(1);
-            let m = 0;
+            let m = 1;
         } else {
             let str = Array.new(maxLength);
             let m = maxLength;

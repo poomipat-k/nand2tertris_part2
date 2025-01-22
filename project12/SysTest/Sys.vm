@@ -30,7 +30,7 @@ function Sys.wait 2
     pop local 0
 label Sys_2
     push local 0
-    push constant 10000
+    push argument 0
     lt
     not
     if-goto Sys_3
@@ -38,7 +38,7 @@ label Sys_2
     pop local 1
 label Sys_4
     push local 1
-    push constant 365
+    push constant 360
     lt
     not
     if-goto Sys_5

@@ -76,7 +76,6 @@ class Screen {
     function void drawLine(int x1, int y1, int x2, int y2) {
         var int dx, dy, a, b, diff;
         var int aDx, aDy, direction;
-        var int temp, startBlock, endBlock, nBlocks, endLeft, midL, midR;
 
         if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0)) {
             do Sys.error(8);
@@ -110,54 +109,9 @@ class Screen {
             return;
         }
 
-        // horizontal optimized
+        // horizontal line
         if (dy = 0) {
-            if (x1 > x2) {
-                let temp = x2;
-                let x2 = x1;
-                let x1 = temp;
-            }
-            let startBlock = x1 / 16;
-            let endBlock = x2 / 16;
-            let nBlocks = endBlock - startBlock + 1;
-            if (nBlocks > 2) {
-                // left
-                let endLeft = (startBlock + 1) * 16;
-                while (x1 < endLeft) {
-                    do Screen.drawPixel(x1, y1);
-                    let x1 = x1 + 1;
-                }
-
-                // mid
-                if (black) {
-                    let midL = (32 * y1) + startBlock + 1;
-                    let midR = (32 * y1) + endBlock;
-                    while (midL < midR) {
-                        do Memory.poke(base + midL, -1);
-                        let midL = midL + 1;
-                    }
-                } else {
-                    let midL = (32 * y1) + startBlock + 1;
-                    let midR = (32 * y1) + endBlock;
-                    while (midL < midR) {
-                        do Memory.poke(base + midL, 0);
-                        let midL = midL + 1;
-                    }
-                }
-
-                // right
-                let x1 = endBlock * 16;
-                let x2 = x2 + 1;
-                while (x1 < x2) {
-                    do Screen.drawPixel(x1, y1);
-                    let x1 = x1 + 1;
-                }
-            } else {
-                while (x2 > x1) {
-                    do Screen.drawPixel(x1, y1);
-                    let x1 = x1 + 1;
-                }
-            }
+            do Screen.drawHorizontalLine(x1, x2, y1);
             return;
         }
 
@@ -209,6 +163,91 @@ class Screen {
             }
         }
         return;
+    }
+
+    function void drawHorizontalLine(int x1, int x2, int y) {
+        var int temp1, temp2;
+        var int startBlock, endBlock, nBlocks, address;
+        var int leftVal, rightVal;
+        if (x1 > x2) {
+            let temp1 = x2;
+            let x2 = x1;
+            let x1 = temp1;
+        }
+        let startBlock = x1 / 16;
+        let endBlock = x2 / 16;
+        let nBlocks = endBlock - startBlock + 1;
+
+        if (nBlocks = 1) {
+            let address = (32 * y) + startBlock;
+            let leftVal = Memory.peek(base + address);
+            let temp1 = Screen.mod16(x1);
+            let temp2 = Screen.mod16(x2);
+            while (~(temp1 > temp2)) {
+                if (black) {
+                    let leftVal = leftVal | powersOfTwo[temp1];
+                } else {
+                    if (leftVal & powersOfTwo[temp1] = powersOfTwo[temp1]) {
+                        let leftVal = leftVal - powersOfTwo[temp1];
+                    }
+                }
+                let temp1 = temp1 + 1;
+            }
+            do Memory.poke(base + address, leftVal);
+            return;
+        }
+        if (nBlocks = 2) {
+            return;
+        }
+        if (nBlocks = 3) {
+            return;
+        }
+
+
+
+        // if (nBlocks > 2) {
+        //     // left
+        //     let endLeft = (startBlock + 1) * 16;
+        //     while (x1 < endLeft) {
+        //         do Screen.drawPixel(x1, y1);
+        //         let x1 = x1 + 1;
+        //     }
+
+        //     // mid
+        //     if (black) {
+        //         let midL = (32 * y1) + startBlock + 1;
+        //         let midR = (32 * y1) + endBlock;
+        //         while (midL < midR) {
+        //             do Memory.poke(base + midL, -1);
+        //             let midL = midL + 1;
+        //         }
+        //     } else {
+        //         let midL = (32 * y1) + startBlock + 1;
+        //         let midR = (32 * y1) + endBlock;
+        //         while (midL < midR) {
+        //             do Memory.poke(base + midL, 0);
+        //             let midL = midL + 1;
+        //         }
+        //     }
+
+        //     // right
+        //     let x1 = endBlock * 16;
+        //     let x2 = x2 + 1;
+        //     while (x1 < x2) {
+        //         do Screen.drawPixel(x1, y1);
+        //         let x1 = x1 + 1;
+        //     }
+        // } else {
+        //     while (x2 > x1) {
+        //         do Screen.drawPixel(x1, y1);
+        //         let x1 = x1 + 1;
+        //     }
+        // }
+        return;
+    }
+
+    function int mod16(int x) {
+        return (x & 1) + (x & 2) + (x & 4) + (x & 8);
     }
 
     /** Draws a filled rectangle whose top left corner is (x1, y1)

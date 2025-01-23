@@ -75,11 +75,7 @@ label Memory_2
     not
     not
     if-goto Memory_5
-    push constant 0
     push local 0
-    add
-    pop pointer 1
-    push that 0
     push constant 1
     push local 0
     add

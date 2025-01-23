@@ -11,18 +11,20 @@ class Main {
         var String s;
         var String i;
 
-        let s = String.new(20);
+        let s = String.new(10);
         let s = s.appendChar(97);
         let s = s.appendChar(98);
         let s = s.appendChar(99);
         let s = s.appendChar(100);
-        // let s = s.appendChar(101);
+        let s = s.appendChar(101);
 
         do Output.printString(s);
+        do Output.printString(":end123");
         do Output.println();
 
-        do Output.printString("new,appendChar: ");
+        do Output.printString("new,appendChar12345: ");
         do Output.printString(s);                // new, appendChar: abcde
+        do Output.printString(":end123");
         do Output.println();
         // END my test
         

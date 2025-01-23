@@ -45,7 +45,8 @@ class Memory {
         let cur = freeList;
         while (~(cur = 0)) {
             if (~(cur[1] < (size + 2))) {
-                let base = cur[0] + (cur[1] - size);
+                // let base = cur[0] + (cur[1] - size);
+                let base = cur + (cur[1] - size);
                 let base[0] = 0;
                 let base[1] = size;
                 let cur[1] = cur[1] - size - 2;

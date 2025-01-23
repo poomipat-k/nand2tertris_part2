@@ -56,7 +56,7 @@ class Math {
     function int divide(int x, int y) {
         var int ax, ay;
         var boolean isPos;
-        if (y < 0) {
+        if (y = 0) {
             do Sys.error(3);
         }
         let ax = Math.abs(x);

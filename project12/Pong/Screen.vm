@@ -480,10 +480,13 @@ label Screen_44
 label Screen_48
     push local 0
     push local 1
-    lt
+    gt
     not
     not
     if-goto Screen_49
+    push static 0
+    not
+    if-goto Screen_51
     push local 6
     push local 0
     push static 2
@@ -492,6 +495,35 @@ label Screen_48
     push that 0
     or
     pop local 6
+    goto Screen_50
+label Screen_51
+    push local 6
+    push local 0
+    push static 2
+    add
+    pop pointer 1
+    push that 0
+    and
+    push local 0
+    push static 2
+    add
+    pop pointer 1
+    push that 0
+    eq
+    not
+    if-goto Screen_53
+    push local 6
+    push local 0
+    push static 2
+    add
+    pop pointer 1
+    push that 0
+    sub
+    pop local 6
+    goto Screen_52
+label Screen_53
+label Screen_52
+label Screen_50
     push local 0
     push constant 1
     add
@@ -513,22 +545,22 @@ label Screen_46
     push constant 2
     eq
     not
-    if-goto Screen_51
+    if-goto Screen_55
     push constant 0
     return
-    goto Screen_50
-label Screen_51
-label Screen_50
+    goto Screen_54
+label Screen_55
+label Screen_54
     push local 4
     push constant 3
     eq
     not
-    if-goto Screen_53
+    if-goto Screen_57
     push constant 0
     return
-    goto Screen_52
-label Screen_53
-label Screen_52
+    goto Screen_56
+label Screen_57
+label Screen_56
     push constant 0
     return
 function Screen.mod16 0
@@ -565,13 +597,13 @@ function Screen.drawRectangle 4
     lt
     or
     not
-    if-goto Screen_55
+    if-goto Screen_59
     push constant 9
     call Sys.error 1
     pop temp 0
-    goto Screen_54
-label Screen_55
-label Screen_54
+    goto Screen_58
+label Screen_59
+label Screen_58
     push argument 0
     push argument 2
     call Math.min 2
@@ -588,12 +620,12 @@ label Screen_54
     push argument 3
     call Math.max 2
     pop local 1
-label Screen_56
+label Screen_60
     push local 0
     push local 1
     lt
     not
-    if-goto Screen_57
+    if-goto Screen_61
     push local 2
     push local 0
     push local 3
@@ -604,8 +636,8 @@ label Screen_56
     push constant 1
     add
     pop local 0
-    goto Screen_56
-label Screen_57
+    goto Screen_60
+label Screen_61
     push constant 0
     return
 function Screen.drawCircle 2
@@ -617,13 +649,13 @@ function Screen.drawCircle 2
     lt
     or
     not
-    if-goto Screen_59
+    if-goto Screen_63
     push constant 12
     call Sys.error 1
     pop temp 0
-    goto Screen_58
-label Screen_59
-label Screen_58
+    goto Screen_62
+label Screen_63
+label Screen_62
     push argument 2
     push constant 0
     lt
@@ -656,22 +688,22 @@ label Screen_58
     gt
     or
     not
-    if-goto Screen_61
+    if-goto Screen_65
     push constant 13
     call Sys.error 1
     pop temp 0
-    goto Screen_60
-label Screen_61
-label Screen_60
+    goto Screen_64
+label Screen_65
+label Screen_64
     push argument 2
     neg
     pop local 0
-label Screen_62
+label Screen_66
     push local 0
     push argument 2
     lt
     not
-    if-goto Screen_63
+    if-goto Screen_67
     push argument 2
     push argument 2
     call Math.multiply 2
@@ -699,8 +731,8 @@ label Screen_62
     push constant 1
     add
     pop local 0
-    goto Screen_62
-label Screen_63
+    goto Screen_66
+label Screen_67
     push constant 0
     return
 function Screen.bit 0

@@ -196,7 +196,11 @@ class Screen {
             do Memory.poke(base + address, leftVal);
             return;
         }
+        
         if (nBlocks = 2) {
+            // fill leftBlock from x1 to the end of block
+
+            // fill rightBlock from 0 to x2
             return;
         }
         if (nBlocks = 3) {

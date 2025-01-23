@@ -82,7 +82,7 @@ label Math_3
 function Math.divide 3
     push argument 1
     push constant 0
-    lt
+    eq
     not
     if-goto Math_7
     push constant 3

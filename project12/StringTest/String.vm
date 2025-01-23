@@ -162,30 +162,98 @@ label String_10
     pop this 1
     push constant 0
     return
-function String.intValue 0
+function String.intValue 4
     push argument 0
     pop pointer 0
     push constant 0
+    pop local 0
+    push constant 0
+    pop local 1
+    push constant 0
+    pop local 3
+    push pointer 0
+    push constant 0
+    call String.charAt 2
+    push constant 45
+    eq
+    not
+    if-goto String_13
+    push constant 1
+    neg
+    pop local 3
+    push constant 1
+    pop local 1
+    goto String_12
+label String_13
+label String_12
+label String_14
+    push local 1
+    push this 1
+    lt
+    not
+    if-goto String_15
+    push pointer 0
+    push local 1
+    call String.charAt 2
+    pop local 2
+    push local 2
+    push constant 48
+    lt
+    push local 2
+    push constant 57
+    gt
+    or
+    not
+    if-goto String_17
+    push local 0
+    return
+    goto String_16
+label String_17
+label String_16
+    push local 0
+    push constant 10
+    call Math.multiply 2
+    push local 2
+    push constant 48
+    sub
+    add
+    pop local 0
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto String_14
+label String_15
+    push local 3
+    not
+    if-goto String_19
+    push local 0
+    neg
+    return
+    goto String_18
+label String_19
+label String_18
+    push local 0
     return
 function String.setInt 0
     push argument 0
     pop pointer 0
-label String_12
+label String_20
     push this 1
     push constant 0
     gt
     not
-    if-goto String_13
+    if-goto String_21
     push pointer 0
     call String.eraseLastChar 1
     pop temp 0
-    goto String_12
-label String_13
+    goto String_20
+label String_21
     push argument 1
     push constant 0
     lt
     not
-    if-goto String_15
+    if-goto String_23
     push pointer 0
     push constant 45
     call String.appendChar 2
@@ -197,9 +265,9 @@ label String_13
     pop temp 0
     push constant 0
     return
-    goto String_14
-label String_15
-label String_14
+    goto String_22
+label String_23
+label String_22
     push pointer 0
     push argument 1
     call String.doSetInt 2
@@ -220,13 +288,13 @@ function String.doSetInt 2
     push constant 10
     lt
     not
-    if-goto String_17
+    if-goto String_25
     push pointer 0
     push local 1
     call String.appendChar 2
     return
-    goto String_16
-label String_17
+    goto String_24
+label String_25
     push pointer 0
     push argument 1
     push constant 10
@@ -237,7 +305,7 @@ label String_17
     push local 1
     call String.appendChar 2
     return
-label String_16
+label String_24
 function String.newLine 0
     push constant 128
     return

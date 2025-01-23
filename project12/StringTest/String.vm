@@ -170,27 +170,43 @@ function String.intValue 0
 function String.setInt 0
     push argument 0
     pop pointer 0
+label String_12
+    push this 1
+    push constant 0
+    gt
+    not
+    if-goto String_13
+    push pointer 0
+    call String.eraseLastChar 1
+    pop temp 0
+    goto String_12
+label String_13
     push argument 1
     push constant 0
     lt
     not
-    if-goto String_13
+    if-goto String_15
+    push pointer 0
+    push constant 45
+    call String.appendChar 2
+    pop temp 0
     push pointer 0
     push argument 1
     call Math.abs 1
     call String.doSetInt 2
-    neg
+    pop temp 0
+    push constant 0
     return
-    goto String_12
-label String_13
-label String_12
+    goto String_14
+label String_15
+label String_14
     push pointer 0
     push argument 1
     call String.doSetInt 2
     pop temp 0
     push constant 0
     return
-function String.doSetInt 3
+function String.doSetInt 2
     push argument 0
     pop pointer 0
     push argument 1
@@ -204,22 +220,24 @@ function String.doSetInt 3
     push constant 10
     lt
     not
-    if-goto String_15
+    if-goto String_17
+    push pointer 0
     push local 1
+    call String.appendChar 2
     return
-    goto String_14
-label String_15
+    goto String_16
+label String_17
     push pointer 0
     push argument 1
     push constant 10
     call Math.divide 2
     call String.doSetInt 2
-    pop local 2
-    push local 2
+    pop temp 0
+    push pointer 0
     push local 1
     call String.appendChar 2
     return
-label String_14
+label String_16
 function String.newLine 0
     push constant 128
     return

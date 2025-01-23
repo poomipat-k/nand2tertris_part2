@@ -88,8 +88,15 @@ class String {
 
     /** Sets this string to hold a representation of the given value. */
     method void setInt(int val) {
+        // clean up
+        while (len > 0) {
+            do eraseLastChar();
+        }
+
         if (val < 0) {
-            return -doSetInt(Math.abs(val));
+            do appendChar(45); // - symbol
+            do doSetInt(Math.abs(val));
+            return;
         }
         do doSetInt(val);
         return;
@@ -98,14 +105,13 @@ class String {
     method String doSetInt(int val) {
         var int lastDigit;
         var char c;
-        var String s;
         let lastDigit = String.mod10(val);
         let c = lastDigit + 48;
         if (val < 10) {
-            return c;
+            return appendChar(c);
         } else {
-            let s = doSetInt(val/10);
-            return s.appendChar(c);
+            do doSetInt(val/10);
+            return appendChar(c);
         }
     }
 

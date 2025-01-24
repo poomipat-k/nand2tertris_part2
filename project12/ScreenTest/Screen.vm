@@ -4,8 +4,7 @@ function Screen.init 2
     pop static 0
     push constant 16384
     pop static 1
-    push constant 16
-    call Array.new 1
+    push constant 16384
     pop static 2
     push constant 16
     call Array.new 1
@@ -13,14 +12,9 @@ function Screen.init 2
     push constant 16
     call Array.new 1
     pop static 4
-    push constant 0
-    push static 2
-    add
-    push constant 1
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
+    push constant 16
+    call Array.new 1
+    pop static 5
     push constant 0
     push static 3
     add
@@ -31,6 +25,14 @@ function Screen.init 2
     pop that 0
     push constant 0
     push static 4
+    add
+    push constant 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 0
+    push static 5
     add
     push constant 1
     neg
@@ -53,7 +55,7 @@ label Screen_0
     add
     pop local 1
     push local 0
-    push static 2
+    push static 3
     add
     push local 1
     pop temp 0
@@ -61,12 +63,12 @@ label Screen_0
     push temp 0
     pop that 0
     push local 0
-    push static 3
+    push static 4
     add
     push local 0
     push constant 1
     sub
-    push static 3
+    push static 4
     add
     pop pointer 1
     push that 0
@@ -77,12 +79,12 @@ label Screen_0
     push temp 0
     pop that 0
     push local 0
-    push static 4
+    push static 5
     add
     push local 0
     push constant 1
     sub
-    push static 4
+    push static 5
     add
     pop pointer 1
     push that 0
@@ -109,12 +111,14 @@ label Screen_2
     lt
     not
     if-goto Screen_3
-    push static 1
     push local 0
+    push static 2
     add
     push constant 0
-    call Memory.poke 2
     pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
     push local 0
     push constant 1
     add
@@ -152,10 +156,11 @@ label Screen_4
     call Math.divide 2
     add
     pop local 0
-    push static 1
     push local 0
+    push static 2
     add
-    call Memory.peek 1
+    pop pointer 1
+    push that 0
     pop local 2
     push argument 0
     push constant 1
@@ -184,7 +189,7 @@ label Screen_4
     if-goto Screen_9
     push local 2
     push local 1
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -202,7 +207,7 @@ label Screen_7
     if-goto Screen_11
     push local 2
     push local 1
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -212,12 +217,14 @@ label Screen_7
 label Screen_11
 label Screen_10
 label Screen_6
-    push static 1
     push local 0
+    push static 2
     add
     push local 2
-    call Memory.poke 2
     pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
     push constant 0
     return
 function Screen.drawLine 8
@@ -521,10 +528,11 @@ label Screen_44
     push local 2
     add
     pop local 5
-    push static 1
     push local 5
+    push static 2
     add
-    call Memory.peek 1
+    pop pointer 1
+    push that 0
     pop local 6
     push argument 0
     call Screen.mod16 1
@@ -544,7 +552,7 @@ label Screen_48
     if-goto Screen_51
     push local 6
     push local 0
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -554,13 +562,13 @@ label Screen_48
 label Screen_51
     push local 6
     push local 0
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0
     and
     push local 0
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -569,7 +577,7 @@ label Screen_51
     if-goto Screen_53
     push local 6
     push local 0
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -585,12 +593,14 @@ label Screen_50
     pop local 0
     goto Screen_48
 label Screen_49
-    push static 1
     push local 5
+    push static 2
     add
     push local 6
-    call Memory.poke 2
     pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
     push constant 0
     return
     goto Screen_46
@@ -640,21 +650,25 @@ label Screen_56
     push static 0
     not
     if-goto Screen_59
-    push static 1
     push local 5
+    push static 2
     add
     push constant 1
     neg
-    call Memory.poke 2
     pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
     goto Screen_58
 label Screen_59
-    push static 1
     push local 5
+    push static 2
     add
     push constant 0
-    call Memory.poke 2
     pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
 label Screen_58
     push local 2
     push constant 1
@@ -676,10 +690,11 @@ function Screen.fillLeftBlock 3
     push argument 2
     add
     pop local 0
-    push static 1
     push local 0
+    push static 2
     add
-    call Memory.peek 1
+    pop pointer 1
+    push that 0
     pop local 1
     push argument 0
     call Screen.mod16 1
@@ -689,7 +704,7 @@ function Screen.fillLeftBlock 3
     if-goto Screen_61
     push local 1
     push local 2
-    push static 4
+    push static 5
     add
     pop pointer 1
     push that 0
@@ -699,19 +714,21 @@ function Screen.fillLeftBlock 3
 label Screen_61
     push local 1
     push local 2
-    push static 3
+    push static 4
     add
     pop pointer 1
     push that 0
     and
     pop local 1
 label Screen_60
-    push static 1
     push local 0
+    push static 2
     add
     push local 1
-    call Memory.poke 2
     pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
     push constant 0
     return
 function Screen.fillRightBlock 3
@@ -721,10 +738,11 @@ function Screen.fillRightBlock 3
     push argument 2
     add
     pop local 0
-    push static 1
     push local 0
+    push static 2
     add
-    call Memory.peek 1
+    pop pointer 1
+    push that 0
     pop local 1
     push argument 0
     call Screen.mod16 1
@@ -734,7 +752,7 @@ function Screen.fillRightBlock 3
     if-goto Screen_63
     push local 1
     push local 2
-    push static 3
+    push static 4
     add
     pop pointer 1
     push that 0
@@ -744,19 +762,21 @@ function Screen.fillRightBlock 3
 label Screen_63
     push local 1
     push local 2
-    push static 4
+    push static 5
     add
     pop pointer 1
     push that 0
     and
     pop local 1
 label Screen_62
-    push static 1
     push local 0
+    push static 2
     add
     push local 1
-    call Memory.poke 2
     pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
     push constant 0
     return
 function Screen.mod16 0
@@ -954,13 +974,13 @@ label Screen_77
 function Screen.bit 0
     push argument 0
     push argument 1
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0
     and
     push argument 1
-    push static 2
+    push static 3
     add
     pop pointer 1
     push that 0

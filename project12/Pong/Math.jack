@@ -55,14 +55,18 @@ class Math {
      *  Thus, x/y and Math.divide(x,y) return the same value. */
     function int divide(int x, int y) {
         var int ax, ay;
-        var boolean isPos;
         if (y = 0) {
             do Sys.error(3);
         }
         let ax = Math.abs(x);
         let ay = Math.abs(y);
-        let isPos = (x > 0 & y > 0) | (x = 0) | (x < 0 & y < 0);
-        if (isPos) {
+        if (x > 0 & y > 0) {
+            return Math.divideHelper(ax, ay);
+        }
+        if (x = 0) {
+            return Math.divideHelper(ax, ay);
+        }
+        if (x < 0 & y < 0) {
             return Math.divideHelper(ax, ay);
         }
         return -Math.divideHelper(ax, ay);

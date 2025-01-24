@@ -79,7 +79,7 @@ label Math_4
 label Math_3
     push local 0
     return
-function Math.divide 3
+function Math.divide 2
     push argument 1
     push constant 0
     eq
@@ -104,20 +104,6 @@ label Math_6
     and
     push constant 0
     gt
-    push argument 0
-    push constant 0
-    eq
-    or
-    push argument 0
-    push constant 0
-    lt
-    push argument 1
-    and
-    push constant 0
-    lt
-    or
-    pop local 2
-    push local 2
     not
     if-goto Math_9
     push local 0
@@ -127,6 +113,34 @@ label Math_6
     goto Math_8
 label Math_9
 label Math_8
+    push argument 0
+    push constant 0
+    eq
+    not
+    if-goto Math_11
+    push local 0
+    push local 1
+    call Math.divideHelper 2
+    return
+    goto Math_10
+label Math_11
+label Math_10
+    push argument 0
+    push constant 0
+    lt
+    push argument 1
+    and
+    push constant 0
+    lt
+    not
+    if-goto Math_13
+    push local 0
+    push local 1
+    call Math.divideHelper 2
+    return
+    goto Math_12
+label Math_13
+label Math_12
     push local 0
     push local 1
     call Math.divideHelper 2
@@ -141,12 +155,12 @@ function Math.divideHelper 1
     lt
     or
     not
-    if-goto Math_11
+    if-goto Math_15
     push constant 0
     return
-    goto Math_10
-label Math_11
-label Math_10
+    goto Math_14
+label Math_15
+label Math_14
     push argument 0
     push constant 2
     push argument 1
@@ -163,14 +177,14 @@ label Math_10
     push argument 1
     lt
     not
-    if-goto Math_13
+    if-goto Math_17
     push constant 2
     push local 0
     call Math.multiply 2
     return
-    goto Math_12
-label Math_13
-label Math_12
+    goto Math_16
+label Math_17
+label Math_16
     push constant 2
     push local 0
     call Math.multiply 2
@@ -182,13 +196,13 @@ function Math.sqrt 3
     push constant 0
     lt
     not
-    if-goto Math_15
+    if-goto Math_19
     push constant 4
     call Sys.error 1
     pop temp 0
-    goto Math_14
-label Math_15
-label Math_14
+    goto Math_18
+label Math_19
+label Math_18
     push constant 0
     pop local 0
     push static 0
@@ -197,13 +211,13 @@ label Math_14
     push constant 1
     sub
     pop local 1
-label Math_16
+label Math_20
     push local 1
     push constant 0
     lt
     not
     not
-    if-goto Math_17
+    if-goto Math_21
     push local 0
     push local 1
     push static 1
@@ -229,7 +243,7 @@ label Math_16
     gt
     and
     not
-    if-goto Math_19
+    if-goto Math_23
     push local 0
     push local 1
     push static 1
@@ -238,15 +252,15 @@ label Math_16
     push that 0
     add
     pop local 0
-    goto Math_18
-label Math_19
-label Math_18
+    goto Math_22
+label Math_23
+label Math_22
     push local 1
     push constant 1
     sub
     pop local 1
-    goto Math_16
-label Math_17
+    goto Math_20
+label Math_21
     push local 0
     return
 function Math.max 0
@@ -254,12 +268,12 @@ function Math.max 0
     push argument 1
     gt
     not
-    if-goto Math_21
+    if-goto Math_25
     push argument 0
     return
-    goto Math_20
-label Math_21
-label Math_20
+    goto Math_24
+label Math_25
+label Math_24
     push argument 1
     return
 function Math.min 0
@@ -267,12 +281,12 @@ function Math.min 0
     push argument 1
     lt
     not
-    if-goto Math_23
+    if-goto Math_27
     push argument 0
     return
-    goto Math_22
-label Math_23
-label Math_22
+    goto Math_26
+label Math_27
+label Math_26
     push argument 1
     return
 function Math.abs 0
@@ -280,13 +294,13 @@ function Math.abs 0
     push constant 0
     lt
     not
-    if-goto Math_25
+    if-goto Math_29
     push argument 0
     neg
     return
-    goto Math_24
-label Math_25
-label Math_24
+    goto Math_28
+label Math_29
+label Math_28
     push argument 0
     return
 function Math.bit 0

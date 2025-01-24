@@ -11,6 +11,7 @@
 class Screen {
     static boolean black;
     static int base;
+    static Array screen;
     static Array powersOfTwo; // Stores 2^0, 2^1, 2^2,..., 2^(n-1)
     static Array leftToMidMask;
     static Array midToRightMask;
@@ -20,6 +21,7 @@ class Screen {
         var int i, x;
         let black = true;
         let base = 16384;
+        let screen = 16384;
         let powersOfTwo = Array.new(16);
         let leftToMidMask = Array.new(16);
         let midToRightMask = Array.new(16);
@@ -46,7 +48,7 @@ class Screen {
         var int i;
         let i = 0;
         while (i < 8192) {
-            do Memory.poke(base + i, 0);
+            let screen[i] = 0;
             let i = i + 1;
         }
         return;
@@ -66,7 +68,8 @@ class Screen {
             do Sys.error(7);
         }
         let address = (32 * y) + (x / 16);
-        let value = Memory.peek(base + address);
+        // let value = Memory.peek(base + address);
+        let value = screen[address];
         // set the (x % 16)th bit of value to the current color
         let xMod16 = (x & 1) + (x & 2) + (x & 4) + (x & 8);
         if (black) {
@@ -79,7 +82,8 @@ class Screen {
             }
         }
 
-        do Memory.poke(base + address, value);
+        // do Memory.poke(base + address, value);
+        let screen[address] = value;
         return;
     }
 
@@ -191,7 +195,8 @@ class Screen {
 
         if (nBlocks = 1) {
             let address = (32 * y) + startBlock;
-            let leftVal = Memory.peek(base + address);
+            // let leftVal = Memory.peek(base + address);
+            let leftVal = screen[address];
             let temp1 = Screen.mod16(x1);
             let temp2 = Screen.mod16(x2);
             while (~(temp1 > temp2)) {
@@ -204,7 +209,8 @@ class Screen {
                 }
                 let temp1 = temp1 + 1;
             }
-            do Memory.poke(base + address, leftVal);
+            // do Memory.poke(base + address, leftVal);
+            let screen[address] = leftVal;
             return;
         }
 
@@ -222,9 +228,11 @@ class Screen {
         while (startBlock < endBlock) {
             let address = (32 * y) + startBlock;
             if (black) {
-                do Memory.poke(base + address, -1);
+                // do Memory.poke(base + address, -1);
+                let screen[address] = -1;
             } else {
-                do Memory.poke(base + address, 0);
+                // do Memory.poke(base + address, 0);
+                let screen[address] = 0;
             }
             let startBlock = startBlock + 1;
         }
@@ -237,14 +245,16 @@ class Screen {
     function void fillLeftBlock(int x, int y, int startBlock) {
         var int address, leftVal, k;
         let address = (32 * y) + startBlock;
-        let leftVal = Memory.peek(base + address);
+        // let leftVal = Memory.peek(base + address);
+        let leftVal = screen[address];
         let k = Screen.mod16(x);
         if (black) {
             let leftVal = leftVal | midToRightMask[k];
         } else {
             let leftVal = leftVal & leftToMidMask[k];
         }
-        do Memory.poke(base + address, leftVal);
+        // do Memory.poke(base + address, leftVal);
+        let screen[address] = leftVal;
         return;
     }
 
@@ -252,14 +262,16 @@ class Screen {
     function void fillRightBlock(int x, int y, int endBlock) {
         var int address, rightVal, k;
         let address = (32 * y) + endBlock;
-        let rightVal = Memory.peek(base + address);
+        // let rightVal = Memory.peek(base + address);
+        let rightVal = screen[address];
         let k = Screen.mod16(x);
         if (black) {
             let rightVal = rightVal | leftToMidMask[k];
         } else {
             let rightVal = rightVal & midToRightMask[k];
         }
-        do Memory.poke(base + address, rightVal);
+        // do Memory.poke(base + address, rightVal);
+        let screen[address] = rightVal;
         return;
     }
 
@@ -270,30 +282,23 @@ class Screen {
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      *  and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
-        var int minY, maxY, minX, maxX;
-        var int startBlock, endBlock, col;
-        var int firstLineAddress;
+        var int temp;
         if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0) | (x1 = x2) | (y1 = y2)) {
             do Sys.error(9);
         }
-        let minX = Math.min(x1, x2);
-        let maxX = Math.max(x1, x2);
-        let minY = Math.min(y1, y2);
-        let maxY = Math.max(y1, y2);
-        let startBlock = minX / 16;
-        let endBlock = maxX / 16;
-        do Screen.drawLine(minX, minY, maxX, minY);
-        let firstLineAddress = minY * 32;
-        let minY = minY + 1;
-
-        while (minY < maxY) {
-            let col = startBlock;
-            while (~(col > endBlock)) {
-                let address = (32 * minY) + col;
-                do Memory.poke(base + address, Memory.peek(firstLineAddress + col));
-                let col = col + 1;
-            }
-            let minY = minY + 1;
+        if (x1 > x2) {
+            let temp = x1;
+            let x1 = x2;
+            let x2 = temp;
+        }
+        if (y1 > y2) {
+            let temp = y1;
+            let y1 = y2;
+            let y2 = temp;
+        }
+        while (~(y1 > y2)) {
+            do Screen.drawHorizontalLine(x1, x2, y1);
+            let y1 = y1 + 1;
         }
         return;
     }

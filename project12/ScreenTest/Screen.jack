@@ -197,11 +197,9 @@ class Screen {
             while (~(temp1 > temp2)) {
                 if (black) {
                     let leftVal = leftVal | powersOfTwo[temp1];
-                    do Output.printString("b");
                 } else {
                     if (leftVal & powersOfTwo[temp1] = powersOfTwo[temp1]) {
                         let leftVal = leftVal - powersOfTwo[temp1];
-                        do Output.printString("w");
                     }
                 }
                 let temp1 = temp1 + 1;
@@ -211,7 +209,6 @@ class Screen {
         }
 
         if (nBlocks = 2) {
-            do Output.printString("two:");
             do Screen.fillLeftBlock(x1, y, startBlock);
             do Screen.fillRightBlock(x2, y, endBlock);
             return;
@@ -245,7 +242,11 @@ class Screen {
         if (black) {
             let leftVal = leftVal | midToRightMask[k];
         } else {
-            let leftVal = leftVal & leftToMidMask[k];
+            if (k = 0) {
+                let leftVal = 0;
+            } else {
+                let leftVal = leftVal & leftToMidMask[k-1];
+            }
         }
         let screen[address] = leftVal;
         return;
@@ -260,7 +261,11 @@ class Screen {
         if (black) {
             let rightVal = rightVal | leftToMidMask[k];
         } else {
-            let rightVal = rightVal & midToRightMask[k];
+            if (k = 15) {
+                let rightVal = 0;
+            } else {
+                let rightVal = rightVal & midToRightMask[k+1];
+            }
         }
         let screen[address] = rightVal;
         return;

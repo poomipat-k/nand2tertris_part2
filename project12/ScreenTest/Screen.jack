@@ -197,9 +197,11 @@ class Screen {
             while (~(temp1 > temp2)) {
                 if (black) {
                     let leftVal = leftVal | powersOfTwo[temp1];
+                    do Output.printString("b");
                 } else {
                     if (leftVal & powersOfTwo[temp1] = powersOfTwo[temp1]) {
                         let leftVal = leftVal - powersOfTwo[temp1];
+                        do Output.printString("w");
                     }
                 }
                 let temp1 = temp1 + 1;
@@ -209,6 +211,7 @@ class Screen {
         }
 
         if (nBlocks = 2) {
+            do Output.printString("two:");
             do Screen.fillLeftBlock(x1, y, startBlock);
             do Screen.fillRightBlock(x2, y, endBlock);
             return;

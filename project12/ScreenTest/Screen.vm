@@ -4,7 +4,8 @@ function Screen.init 2
     pop static 0
     push constant 16384
     pop static 1
-    push constant 16384
+    push constant 16
+    call Array.new 1
     pop static 2
     push constant 16
     call Array.new 1
@@ -12,9 +13,14 @@ function Screen.init 2
     push constant 16
     call Array.new 1
     pop static 4
-    push constant 16
-    call Array.new 1
-    pop static 5
+    push constant 0
+    push static 2
+    add
+    push constant 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
     push constant 0
     push static 3
     add
@@ -25,14 +31,6 @@ function Screen.init 2
     pop that 0
     push constant 0
     push static 4
-    add
-    push constant 1
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push constant 0
-    push static 5
     add
     push constant 1
     neg
@@ -55,7 +53,7 @@ label Screen_0
     add
     pop local 1
     push local 0
-    push static 3
+    push static 2
     add
     push local 1
     pop temp 0
@@ -63,12 +61,12 @@ label Screen_0
     push temp 0
     pop that 0
     push local 0
-    push static 4
+    push static 3
     add
     push local 0
     push constant 1
     sub
-    push static 4
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -79,12 +77,12 @@ label Screen_0
     push temp 0
     pop that 0
     push local 0
-    push static 5
+    push static 4
     add
     push local 0
     push constant 1
     sub
-    push static 5
+    push static 4
     add
     pop pointer 1
     push that 0
@@ -112,7 +110,7 @@ label Screen_2
     not
     if-goto Screen_3
     push local 0
-    push static 2
+    push static 1
     add
     push constant 0
     pop temp 0
@@ -157,7 +155,7 @@ label Screen_4
     add
     pop local 0
     push local 0
-    push static 2
+    push static 1
     add
     pop pointer 1
     push that 0
@@ -189,7 +187,7 @@ label Screen_4
     if-goto Screen_9
     push local 2
     push local 1
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0
@@ -207,7 +205,7 @@ label Screen_7
     if-goto Screen_11
     push local 2
     push local 1
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0
@@ -218,7 +216,7 @@ label Screen_11
 label Screen_10
 label Screen_6
     push local 0
-    push static 2
+    push static 1
     add
     push local 2
     pop temp 0
@@ -529,7 +527,7 @@ label Screen_44
     add
     pop local 5
     push local 5
-    push static 2
+    push static 1
     add
     pop pointer 1
     push that 0
@@ -552,23 +550,29 @@ label Screen_48
     if-goto Screen_51
     push local 6
     push local 0
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0
     or
     pop local 6
+    push constant 1
+    call String.new 1
+    push constant 98
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
     goto Screen_50
 label Screen_51
     push local 6
     push local 0
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0
     and
     push local 0
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0
@@ -577,12 +581,18 @@ label Screen_51
     if-goto Screen_53
     push local 6
     push local 0
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0
     sub
     pop local 6
+    push constant 1
+    call String.new 1
+    push constant 119
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
     goto Screen_52
 label Screen_53
 label Screen_52
@@ -594,7 +604,7 @@ label Screen_50
     goto Screen_48
 label Screen_49
     push local 5
-    push static 2
+    push static 1
     add
     push local 6
     pop temp 0
@@ -611,6 +621,18 @@ label Screen_46
     eq
     not
     if-goto Screen_55
+    push constant 4
+    call String.new 1
+    push constant 116
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
     push argument 0
     push argument 2
     push local 2
@@ -651,7 +673,7 @@ label Screen_56
     not
     if-goto Screen_59
     push local 5
-    push static 2
+    push static 1
     add
     push constant 1
     neg
@@ -662,7 +684,7 @@ label Screen_56
     goto Screen_58
 label Screen_59
     push local 5
-    push static 2
+    push static 1
     add
     push constant 0
     pop temp 0
@@ -691,7 +713,7 @@ function Screen.fillLeftBlock 3
     add
     pop local 0
     push local 0
-    push static 2
+    push static 1
     add
     pop pointer 1
     push that 0
@@ -704,7 +726,7 @@ function Screen.fillLeftBlock 3
     if-goto Screen_61
     push local 1
     push local 2
-    push static 5
+    push static 4
     add
     pop pointer 1
     push that 0
@@ -714,7 +736,7 @@ function Screen.fillLeftBlock 3
 label Screen_61
     push local 1
     push local 2
-    push static 4
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -722,7 +744,7 @@ label Screen_61
     pop local 1
 label Screen_60
     push local 0
-    push static 2
+    push static 1
     add
     push local 1
     pop temp 0
@@ -739,7 +761,7 @@ function Screen.fillRightBlock 3
     add
     pop local 0
     push local 0
-    push static 2
+    push static 1
     add
     pop pointer 1
     push that 0
@@ -752,7 +774,7 @@ function Screen.fillRightBlock 3
     if-goto Screen_63
     push local 1
     push local 2
-    push static 4
+    push static 3
     add
     pop pointer 1
     push that 0
@@ -762,7 +784,7 @@ function Screen.fillRightBlock 3
 label Screen_63
     push local 1
     push local 2
-    push static 5
+    push static 4
     add
     pop pointer 1
     push that 0
@@ -770,7 +792,7 @@ label Screen_63
     pop local 1
 label Screen_62
     push local 0
-    push static 2
+    push static 1
     add
     push local 1
     pop temp 0
@@ -974,13 +996,13 @@ label Screen_77
 function Screen.bit 0
     push argument 0
     push argument 1
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0
     and
     push argument 1
-    push static 3
+    push static 2
     add
     pop pointer 1
     push that 0

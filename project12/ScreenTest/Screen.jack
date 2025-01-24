@@ -270,8 +270,7 @@ class Screen {
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      *  and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
-        var int startBlock, endBlock, col, address, temp;
-        var int firstLineAddress, val;
+        var int temp;
         if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0) | (x1 = x2) | (y1 = y2)) {
             do Sys.error(9);
         }
@@ -285,21 +284,8 @@ class Screen {
             let y1 = y2;
             let y2 = temp;
         }
-
-        let startBlock = x1 / 16;
-        let endBlock = x2 / 16;
-
-        do Screen.drawLine(x1, y1, x2, y1);
-        let firstLineAddress = base + (y1 * 32);
-        let y1 = y1 + 1;
         while (~(y1 > y2)) {
-            let col = startBlock;
-            while (~(col > endBlock)) {
-                let address = (32 * y1) + col;
-                let val =  Memory.peek(firstLineAddress + col);
-                do Memory.poke(base + address, val);
-                let col = col + 1;
-            }
+            do Screen.drawHorizontalLine(x1, x2, y1);
             let y1 = y1 + 1;
         }
         return;

@@ -209,73 +209,58 @@ class Screen {
         }
 
         if (nBlocks = 2) {
-            // fill the left block from x1 to the end of the first block (fill mid to right)
-            let address = (32 * y) + startBlock;
-            let leftVal = Memory.peek(base + address);
-            let temp1 = Screen.mod16(x1);
-            if (black) {
-                let leftVal = leftVal | midToRightMask[temp1];
-            } else {
-                let leftVal = leftVal & leftToMidMask[temp1];
-            }
-            do Memory.poke(base + address, leftVal);
-            // fill the right block from the start of right block to x2 (fill left to mid)
-            let address = (32 * y) + endBlock;
-            let rightVal = Memory.peek(base + address);
-            let temp1 = Screen.mod16(x2);
-            if (black) {
-                let rightVal = rightVal | leftToMidMask[temp1];
-            } else {
-                let rightVal = rightVal & midToRightMask[temp1];
-            }
-            do Memory.poke(base + address, rightVal);
+            do Screen.fillLeftBlock(x1, y, startBlock);
+            do Screen.fillRightBlock(x2, y, endBlock);
             return;
         }
 
         // nBlocks > 2
+        // fill left
+        do Screen.fillLeftBlock(x1, y, startBlock);
+        // fill middle blocks
+        let startBlock = startBlock + 1;
+        while (startBlock < endBlock) {
+            let address = (32 * y) + startBlock;
+            if (black) {
+                do Memory.poke(base + address, -1);
+            } else {
+                do Memory.poke(base + address, 0);
+            }
+            let startBlock = startBlock + 1;
+        }
+        // file right
+        do Screen.fillRightBlock(x2, y, endBlock);
         return;
+    }
 
+    /** fill the left block from x1 to the end of the first block (fill mid to right) */
+    function void fillLeftBlock(int x, int y, int startBlock) {
+        var int address, leftVal, k;
+        let address = (32 * y) + startBlock;
+        let leftVal = Memory.peek(base + address);
+        let k = Screen.mod16(x);
+        if (black) {
+            let leftVal = leftVal | midToRightMask[k];
+        } else {
+            let leftVal = leftVal & leftToMidMask[k];
+        }
+        do Memory.poke(base + address, leftVal);
+        return;
+    }
 
-
-        // if (nBlocks > 2) {
-        //     // left
-        //     let endLeft = (startBlock + 1) * 16;
-        //     while (x1 < endLeft) {
-        //         do Screen.drawPixel(x1, y1);
-        //         let x1 = x1 + 1;
-        //     }
-
-        //     // mid
-        //     if (black) {
-        //         let midL = (32 * y1) + startBlock + 1;
-        //         let midR = (32 * y1) + endBlock;
-        //         while (midL < midR) {
-        //             do Memory.poke(base + midL, -1);
-        //             let midL = midL + 1;
-        //         }
-        //     } else {
-        //         let midL = (32 * y1) + startBlock + 1;
-        //         let midR = (32 * y1) + endBlock;
-        //         while (midL < midR) {
-        //             do Memory.poke(base + midL, 0);
-        //             let midL = midL + 1;
-        //         }
-        //     }
-
-        //     // right
-        //     let x1 = endBlock * 16;
-        //     let x2 = x2 + 1;
-        //     while (x1 < x2) {
-        //         do Screen.drawPixel(x1, y1);
-        //         let x1 = x1 + 1;
-        //     }
-        // } else {
-        //     while (x2 > x1) {
-        //         do Screen.drawPixel(x1, y1);
-        //         let x1 = x1 + 1;
-        //     }
-        // }
-        // return;
+    /** fill the right block from the start of right block to x2 (fill left to mid) */
+    function void fillRightBlock(int x, int y, int endBlock) {
+        var int address, rightVal, k;
+        let address = (32 * y) + endBlock;
+        let rightVal = Memory.peek(base + address);
+        let k = Screen.mod16(x);
+        if (black) {
+            let rightVal = rightVal | leftToMidMask[k];
+        } else {
+            let rightVal = rightVal & midToRightMask[k];
+        }
+        do Memory.poke(base + address, rightVal);
+        return;
     }
 
     function int mod16(int x) {

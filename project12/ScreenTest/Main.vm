@@ -3,19 +3,19 @@ function Main.main 0
     neg
     call Screen.setColor 1
     pop temp 0
+    push constant 3
     push constant 0
-    push constant 220
-    push constant 15
-    push constant 220
+    push constant 28
+    push constant 0
     call Screen.drawLine 4
     pop temp 0
     push constant 0
     call Screen.setColor 1
     pop temp 0
-    push constant 4
-    push constant 220
-    push constant 12
-    push constant 220
+    push constant 10
+    push constant 0
+    push constant 20
+    push constant 0
     call Screen.drawLine 4
     pop temp 0
     push constant 0

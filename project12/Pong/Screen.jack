@@ -271,15 +271,28 @@ class Screen {
      *  and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
         var int minY, maxY, minX, maxX;
-        if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0)) {
+        var int startBlock, endBlock, col;
+        var int firstLineAddress;
+        if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0) | (x1 = x2) | (y1 = y2)) {
             do Sys.error(9);
         }
         let minX = Math.min(x1, x2);
         let maxX = Math.max(x1, x2);
         let minY = Math.min(y1, y2);
         let maxY = Math.max(y1, y2);
+        let startBlock = minX / 16;
+        let endBlock = maxX / 16;
+        do Screen.drawLine(minX, minY, maxX, minY);
+        let firstLineAddress = minY * 32;
+        let minY = minY + 1;
+
         while (minY < maxY) {
-            do Screen.drawLine(minX, minY, maxX, minY);
+            let col = startBlock;
+            while (~(col > endBlock)) {
+                let address = (32 * minY) + col;
+                do Memory.poke(base + address, Memory.peek(firstLineAddress + col));
+                let col = col + 1;
+            }
             let minY = minY + 1;
         }
         return;

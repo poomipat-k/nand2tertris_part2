@@ -270,17 +270,37 @@ class Screen {
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      *  and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
-        var int minY, maxY, minX, maxX;
-        if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0)) {
+        var int startBlock, endBlock, col, address, temp;
+        var int firstLineAddress, val;
+        if ((x1 < 0) | (y1 < 0) | (x2 < 0) | (y2 < 0) | (x1 = x2) | (y1 = y2)) {
             do Sys.error(9);
         }
-        let minX = Math.min(x1, x2);
-        let maxX = Math.max(x1, x2);
-        let minY = Math.min(y1, y2);
-        let maxY = Math.max(y1, y2);
-        while (minY < maxY) {
-            do Screen.drawLine(minX, minY, maxX, minY);
-            let minY = minY + 1;
+        if (x1 > x2) {
+            let temp = x1;
+            let x1 = x2;
+            let x2 = temp;
+        }
+        if (y1 > y2) {
+            let temp = y1;
+            let y1 = y2;
+            let y2 = temp;
+        }
+
+        let startBlock = x1 / 16;
+        let endBlock = x2 / 16;
+
+        do Screen.drawLine(x1, y1, x2, y1);
+        let firstLineAddress = base + (y1 * 32);
+        let y1 = y1 + 1;
+        while (~(y1 > y2)) {
+            let col = startBlock;
+            while (~(col > endBlock)) {
+                let address = (32 * y1) + col;
+                let val =  Memory.peek(firstLineAddress + col);
+                do Memory.poke(base + address, val);
+                let col = col + 1;
+            }
+            let y1 = y1 + 1;
         }
         return;
     }

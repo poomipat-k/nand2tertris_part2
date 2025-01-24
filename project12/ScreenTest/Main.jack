@@ -25,6 +25,9 @@ class Main {
         // do Screen.setColor(true);               // test > 2 blocks
         // do Screen.drawLine(5,0,500,0);
 
+        // do Screen.setColor(true);
+        // do Screen.drawRectangle(0,0,70, 10);
+
 
 
         // Provided tests
